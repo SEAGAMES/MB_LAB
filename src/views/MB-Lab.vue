@@ -94,11 +94,13 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     form: {
       rent_name: "ธนกฤต นิ่มนวล",
       telNo: "",
+      lab_room: ''
     },
     telNoRules: [
       (v) => !!v || "กรุณาใส่เบอร์โทรศัพท์",
@@ -110,10 +112,26 @@ export default {
     ],
   }),
 
+  mounted() {
+    this.getRoomLab();
+  },
+
   methods: {
     async validate() {
       this.$refs.form.validate();
       //console.log(this.$refs.form.validate());
+    },
+
+    async getRoomLab() {
+      axios
+        .get("http://10.20.5.205:9200/mb_lab_room")
+        .then((res) => {
+          this.form.lab_room = res.data
+          console.log('lab_room ' , res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
