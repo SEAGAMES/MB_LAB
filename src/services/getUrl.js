@@ -1,0 +1,1 @@
+export const apiUrl = "http://10.20.5.205:9200/";

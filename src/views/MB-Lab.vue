@@ -94,13 +94,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import apiRoomLab from "../services/apiRoomLab"
+
 export default {
   data: () => ({
     form: {
       rent_name: "ธนกฤต นิ่มนวล",
       telNo: "",
-      lab_room: ''
+      lab_room: []
     },
     telNoRules: [
       (v) => !!v || "กรุณาใส่เบอร์โทรศัพท์",
@@ -123,16 +124,22 @@ export default {
     },
 
     async getRoomLab() {
-      axios
-        .get("http://10.20.5.205:9200/mb_lab_room")
-        .then((res) => {
-          this.form.lab_room = res.data
-          console.log('lab_room ' , res.data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+      this.form.lab_room = await apiRoomLab.getRoomLab()
+      console.log(this.form.lab_room[0].id)
+      console.log(typeof(this.form.lab_room))
+    }
+
+    // async getRoomLab() {
+    //   axios
+    //     .get("http://10.20.5.205:9200/mb_lab_room")
+    //     .then((res) => {
+    //       this.lab_room = res.data;
+    //       //console.log('lab_room ' , res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
   },
 };
 </script>
