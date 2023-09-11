@@ -94,14 +94,16 @@
 </template>
 
 <script>
-import apiRoomLab from "../services/apiRoomLab"
+// import axios from "axios";
+// import { apiUrl } from "../services/getUrl";
+import apiRoomLab from "../services/apiRoomLab";
 
 export default {
   data: () => ({
     form: {
       rent_name: "ธนกฤต นิ่มนวล",
       telNo: "",
-      lab_room: []
+      lab_room: [],
     },
     telNoRules: [
       (v) => !!v || "กรุณาใส่เบอร์โทรศัพท์",
@@ -111,10 +113,25 @@ export default {
       (v) => !!v || "กรุณาระบุห้องให้ชัดเจน",
       //(v) => v >= 9 || "Height is more than 1",
     ],
+
+    objTest: {
+      ac_name: "thanakrit.nim",
+      name: "Thanakrit Nimnual",
+      phone: "062-169xxxx",
+      zone: 'A',
+      floor: '1',
+      where_lab: 'A103',
+      start_date: '2023-01-19 10:00:00',
+      endtime: '2023-01-19 11:00:00',
+      timebook: '2023-01-19 11:10:27',
+      appove_status: 'true',
+      appove_ac_name: 'thanakrit.nim'
+    },
   }),
 
   mounted() {
     this.getRoomLab();
+    this.ceateBookLabRoom();
   },
 
   methods: {
@@ -123,18 +140,22 @@ export default {
       //console.log(this.$refs.form.validate());
     },
 
+    async ceateBookLabRoom() {
+      await apiRoomLab.createBookLabRoom(this.objTest);
+    },
+
     async getRoomLab() {
-      this.form.lab_room = await apiRoomLab.getRoomLab()
-      console.log(this.form.lab_room[0].id)
-      console.log(typeof(this.form.lab_room))
-    }
+      this.form.lab_room = await apiRoomLab.getRoomLab();
+      console.log(this.form.lab_room);
+      //console.log(typeof(this.form.lab_room))
+    },
 
     // async getRoomLab() {
     //   axios
-    //     .get("http://10.20.5.205:9200/mb_lab_room")
+    //     .get(`${apiUrl}mb_lab_room`)
     //     .then((res) => {
-    //       this.lab_room = res.data;
-    //       //console.log('lab_room ' , res.data)
+    //       this.form.lab_room = res.data;
+    //       console.log("lab_room ", res.data);
     //     })
     //     .catch((err) => {
     //       console.log(err);

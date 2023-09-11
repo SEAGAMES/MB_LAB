@@ -17,12 +17,21 @@ import { apiUrl } from '../services/getUrl'
 // }
 
 const getRoomLab = async () => {
-  const  { data } = await axios.get(`${apiUrl}mb_lab_room`);
-  console.log(data.data[0])
-  console.log(typeof(data.data))
+  const { data } = await axios.get(`${apiUrl}mb_lab_room`);
+  //console.log(data.data[0])
+  //console.log(typeof(data.data))
   return data.data
 };
 
+
+
+const createBookLabRoom = async (data) => {
+  console.log('API : ' , data)
+  axios.post(`${apiUrl}bookLabRoom` , data)
+}
+
+
 export default {
   getRoomLab,
+  createBookLabRoom
 };
