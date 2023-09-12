@@ -117,21 +117,22 @@ export default {
     objTest: {
       ac_name: "thanakrit.nim",
       name: "Thanakrit Nimnual",
+      num_in_team: 5,
       phone: "062-169xxxx",
-      zone: 'A',
-      floor: '1',
-      where_lab: 'A103',
-      start_date: '2023-01-19 10:00:00',
-      endtime: '2023-01-19 11:00:00',
-      timebook: '2023-01-19 11:10:27',
-      appove_status: 'true',
-      appove_ac_name: 'thanakrit.nim'
+      zone: "A",
+      floor: "1",
+      where_lab: "A103",
+      start_date: "2023-01-19 10:00:00",
+      endtime: "2023-01-19 11:00:00",
+      timebook: "2023-01-19 11:10:27",
+      appove_status: "true",
+      appove_ac_name: "thanakrit.nim",
     },
   }),
 
   mounted() {
     this.getRoomLab();
-    this.ceateBookLabRoom();
+    //this.ceateBookLabRoom();
   },
 
   methods: {
@@ -146,21 +147,22 @@ export default {
 
     async getRoomLab() {
       this.form.lab_room = await apiRoomLab.getRoomLab();
-      console.log(this.form.lab_room);
+
+      let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
+      this.form.lab_room2 = dataForUse
+
+      console.log('this.form.lab_room2 ' , this.form.lab_room)
+      //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
       //console.log(typeof(this.form.lab_room))
     },
 
-    // async getRoomLab() {
-    //   axios
-    //     .get(`${apiUrl}mb_lab_room`)
-    //     .then((res) => {
-    //       this.form.lab_room = res.data;
-    //       console.log("lab_room ", res.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
+    convertData_From_Proxy(data) {
+      const proxy1 = new Proxy(data, {});
+      //console.log(proxy1);
+      //console.log({ ...proxy1 });
+        let result_data = JSON.parse(JSON.stringify(proxy1))
+        return result_data
+    }
   },
 };
 </script>
