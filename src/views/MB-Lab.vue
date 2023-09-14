@@ -73,15 +73,15 @@
           <v-row class="fontSize18 mt-2">
             <v-col>
               <div>
-                <p>ช่วงเวลาที่ต้องการจอง :</p>
+                <p>ช่วงเวลาที่ต้องการจอง :</p> 
               </div></v-col
-            >
-            <v-col><v-text-field dense></v-text-field></v-col>
-            
+            ><v-col class="mt-n1"><a-range-picker v-model:value="value2" show-time /></v-col>
+       
+                 
           </v-row>
           <v-row>
             <v-btn
-              @click="validate"
+              @click="getdataDate()"
               class="mt-11"
               color="green"
               append-icon="mdi-check-circle"
@@ -102,7 +102,11 @@
 <script>
 // import axios from "axios";
 // import { apiUrl } from "../services/getUrl";
-import apiRoomLab from "../services/apiRoomLab";
+// import apiRoomLab from "../services/apiRoomLab";
+import { ref } from 'vue';
+
+const value2 = ref();
+
 
 
 export default {
@@ -136,10 +140,12 @@ export default {
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
     },
+
+    date: ''
   }),
 
   async mounted() {
-    this.getRoomLab();
+    //this.getRoomLab();
     //this.ceateBookLabRoom();
 
 
@@ -151,20 +157,24 @@ export default {
       //console.log(this.$refs.form.validate());
     },
 
-    async ceateBookLabRoom() {
-      await apiRoomLab.createBookLabRoom(this.objTest);
+    async getdataDate() {
+      console.log(value2)
     },
 
-    async getRoomLab() {
-      this.form.lab_room = await apiRoomLab.getRoomLab();
+    // async ceateBookLabRoom() {
+    //   await apiRoomLab.createBookLabRoom(this.objTest);
+    // },
 
-      // let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
-      // this.form.lab_room2 = dataForUse
+    // async getRoomLab() {
+    //   this.form.lab_room = await apiRoomLab.getRoomLab();
 
-      console.log("this.form.lab_room2 ", this.form.lab_room);
-      //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
-      //console.log(typeof(this.form.lab_room))
-    },
+    //   // let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
+    //   // this.form.lab_room2 = dataForUse
+
+    //   console.log("this.form.lab_room2 ", this.form.lab_room);
+    //   //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
+    //   //console.log(typeof(this.form.lab_room))
+    // },
 
     // convertData_From_Proxy(data) {
     //   const proxy1 = new Proxy(data, {});
