@@ -1,5 +1,6 @@
 <template>
   <v-container class="fontSarabun">
+    
     <v-row>
       <v-spacer></v-spacer>
       <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
@@ -76,6 +77,7 @@
               </div></v-col
             >
             <v-col><v-text-field dense></v-text-field></v-col>
+            
           </v-row>
           <v-row>
             <v-btn
@@ -89,6 +91,10 @@
           </v-row>
         </v-card-text>
       </v-card>
+      <div>
+  
+
+  </div>
     </v-form>
   </v-container>
 </template>
@@ -97,6 +103,7 @@
 // import axios from "axios";
 // import { apiUrl } from "../services/getUrl";
 import apiRoomLab from "../services/apiRoomLab";
+
 
 export default {
   data: () => ({
@@ -113,6 +120,7 @@ export default {
       (v) => !!v || "กรุณาระบุห้องให้ชัดเจน",
       //(v) => v >= 9 || "Height is more than 1",
     ],
+    
 
     objTest: {
       ac_name: "thanakrit.nim",
@@ -130,9 +138,11 @@ export default {
     },
   }),
 
-  mounted() {
+  async mounted() {
     this.getRoomLab();
     //this.ceateBookLabRoom();
+
+
   },
 
   methods: {
@@ -148,21 +158,21 @@ export default {
     async getRoomLab() {
       this.form.lab_room = await apiRoomLab.getRoomLab();
 
-      let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
-      this.form.lab_room2 = dataForUse
+      // let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
+      // this.form.lab_room2 = dataForUse
 
-      console.log('this.form.lab_room2 ' , this.form.lab_room)
+      console.log("this.form.lab_room2 ", this.form.lab_room);
       //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
       //console.log(typeof(this.form.lab_room))
     },
 
-    convertData_From_Proxy(data) {
-      const proxy1 = new Proxy(data, {});
-      //console.log(proxy1);
-      //console.log({ ...proxy1 });
-        let result_data = JSON.parse(JSON.stringify(proxy1))
-        return result_data
-    }
+    // convertData_From_Proxy(data) {
+    //   const proxy1 = new Proxy(data, {});
+    //   //console.log(proxy1);
+    //   //console.log({ ...proxy1 });
+    //     let result_data = JSON.parse(JSON.stringify(proxy1))
+    //     return result_data
+    // }
   },
 };
 </script>

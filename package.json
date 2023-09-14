@@ -10,13 +10,15 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@syncfusion/ej2-vue-calendars": "^22.2.12",
+    "ant-design-vue": "^4.0.3",
     "axios": "^1.5.0",
     "core-js": "^3.29.0",
     "cors": "^2.8.5",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
-    "vuetify": "^3.0.0",
+    "vuetify": "^3.3.16",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
