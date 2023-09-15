@@ -1,6 +1,5 @@
 <template>
   <v-container class="fontSarabun">
-    
     <v-row>
       <v-spacer></v-spacer>
       <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
@@ -38,23 +37,25 @@
             <v-col>
               <div>
                 <v-select
+                  v-model="selectRoomLab.zone"
                   :rules="floorRules"
                   label="โซน"
                   required
                   outlined
                   dense
-                  :items="['A', 'B', 'C', 'D']"
+                  :items="['B', 'C', 'D']"
                   variant="outlined"
                 ></v-select></div
             ></v-col>
             <v-col>
               <div>
                 <v-select
+                  v-model="selectRoomLab.floor"
                   :rules="floorRules"
                   label="ชั้น"
                   outlined
                   dense
-                  :items="['1', '2', '3', '4']"
+                  :items="['2', '3', '4']"
                   variant="outlined"
                 ></v-select></div
             ></v-col>
@@ -65,7 +66,7 @@
                   label="ห้อง"
                   outlined
                   dense
-                  :items="['101', '102', '103', '104']"
+                  :items="room_list"
                   variant="outlined"
                 ></v-select></div
             ></v-col>
@@ -73,11 +74,9 @@
           <v-row class="fontSize18 mt-2">
             <v-col>
               <div>
-                <p>ช่วงเวลาที่ต้องการจอง :</p> 
+                <p>ช่วงเวลาที่ต้องการจอง :</p>
               </div></v-col
-            ><v-col class="mt-n1"><a-range-picker v-model:value="value2" show-time /></v-col>
-       
-                 
+            >
           </v-row>
           <v-row>
             <v-btn
@@ -91,10 +90,7 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <div>
-  
-
-  </div>
+      <div></div>
     </v-form>
   </v-container>
 </template>
@@ -102,12 +98,7 @@
 <script>
 // import axios from "axios";
 // import { apiUrl } from "../services/getUrl";
-// import apiRoomLab from "../services/apiRoomLab";
-import { ref } from 'vue';
-
-const value2 = ref();
-
-
+import apiRoomLab from "../services/apiRoomLab";
 
 export default {
   data: () => ({
@@ -124,7 +115,11 @@ export default {
       (v) => !!v || "กรุณาระบุห้องให้ชัดเจน",
       //(v) => v >= 9 || "Height is more than 1",
     ],
-    
+
+    selectRoomLab: {
+      zone: "",
+      floor: ""
+    },
 
     objTest: {
       ac_name: "thanakrit.nim",
@@ -141,14 +136,13 @@ export default {
       appove_ac_name: "thanakrit.nim",
     },
 
-    date: ''
+    date: "",
+    
   }),
 
   async mounted() {
-    //this.getRoomLab();
+    this.getRoomLab();
     //this.ceateBookLabRoom();
-
-
   },
 
   methods: {
@@ -157,32 +151,28 @@ export default {
       //console.log(this.$refs.form.validate());
     },
 
-    async getdataDate() {
-      console.log(value2)
-    },
-
     // async ceateBookLabRoom() {
     //   await apiRoomLab.createBookLabRoom(this.objTest);
     // },
 
-    // async getRoomLab() {
-    //   this.form.lab_room = await apiRoomLab.getRoomLab();
+    async getRoomLab() {
+      this.form.lab_room = await apiRoomLab.getRoomLab();
 
-    //   // let dataForUse = this.convertData_From_Proxy(this.form.lab_room)
-    //   // this.form.lab_room2 = dataForUse
+    },
+  },
+  computed: {
+    room_list() {
+      let room = [];
+      let room_filter = this.form.lab_room.filter((row) => {
+        return row.zone == this.selectRoomLab.zone && row.floor == this.selectRoomLab.floor;
+      });
 
-    //   console.log("this.form.lab_room2 ", this.form.lab_room);
-    //   //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
-    //   //console.log(typeof(this.form.lab_room))
-    // },
-
-    // convertData_From_Proxy(data) {
-    //   const proxy1 = new Proxy(data, {});
-    //   //console.log(proxy1);
-    //   //console.log({ ...proxy1 });
-    //     let result_data = JSON.parse(JSON.stringify(proxy1))
-    //     return result_data
-    // }
+      room_filter.forEach((element) => {
+        //console.log(element.room_no);
+        room.push(element.room_no);
+      });
+      return room;
+    },
   },
 };
 </script>
