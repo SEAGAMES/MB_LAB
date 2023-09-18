@@ -15,13 +15,13 @@
               <div align="center" class="mt-3">
                 <p>ผู้จอง : {{ form.rent_name }}</p>
               </div>
-            </v-col> 
+            </v-col>
 
             <v-col>
               <div align="center">
                 <v-text-field
                   label="เบอร์ติดต่อ"
-                  v-model="dataBookLab.phone"
+                  v-model="form.telNo"
                   prepend-inner-icon="mdi-phone-plus"
                   :rules="telNoRules"
                   single-line
@@ -87,7 +87,7 @@
           </v-row>
           <v-row>
             <v-btn
-              @click="validate()"
+              @click="validate"
               class="mt-11"
               color="green"
               append-icon="mdi-check-circle"
@@ -110,10 +110,9 @@
 // import { apiUrl } from "../services/getUrl";
 import apiRoomLab from "../services/apiRoomLab";
 // import moment from 'moment';
-// const inputDatetime = "2023-09-17T17:00:24.937Z";
-// const formattedDatetime = moment(inputDatetime).format("DD/MM/YYYY HH:mm:ss");
-// console.log(formattedDatetime);
-
+// // ตัวอย่างการใช้ Moment.js
+// const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+// console.log(currentTime);
 
 export default {
   data: () => ({
@@ -131,11 +130,6 @@ export default {
       //(v) => v >= 9 || "Height is more than 1",
     ],
 
-    selectRoomLab: {
-      zone: "",
-      floor: "",
-    },
-
     dataBookLab: {
       ac_name: "thanakrit.nim",
       name: "Thanakrit Nimnual",
@@ -149,13 +143,11 @@ export default {
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
     },
-
-    date: [],
   }),
 
-  async mounted() {
-    // this.getRoomLab();
-    // this.ceateBookLabRoom();
+  mounted() {
+    this.getRoomLab();
+    //this.ceateBookLabRoom();
   },
 
   methods: {
@@ -179,6 +171,7 @@ export default {
           // จัดการข้อผิดพลาดที่อาจเกิดขึ้นในระหว่างการทำ Promise
           console.error(error);
         });
+      //console.log(this.$refs.form.validate());
     },
 
     async ceateBookLabRoom() {
@@ -187,16 +180,20 @@ export default {
 
     async getRoomLab() {
       this.form.lab_room = await apiRoomLab.getRoomLab();
-      console.log(this.form.lab_room.room)
+
+      //console.log("this.form.lab_room2 ", this.form.lab_room);
+      //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
+      //console.log(typeof(this.form.lab_room))
     },
   },
+
   computed: {
     room_list() {
       let room = [];
       let room_filter = this.form.lab_room.filter((row) => {
         return (
-          row.zone == this.selectRoomLab.zone &&
-          row.floor == this.selectRoomLab.floor
+          row.zone === this.dataBookLab.zone &&
+          row.floor === this.dataBookLab.floor
         );
       });
 
