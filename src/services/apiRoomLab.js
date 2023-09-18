@@ -12,9 +12,10 @@ const getRoomLab = async () => {
 
 
 const createBookLabRoom = async (data) => {
-  const result = axios.post(`${apiUrl}bookLabRoom` , data)
+  console.log('API : ' , data)
+  //const result = axios.post(`${apiUrl}bookLabRoom` , data)
   //console.log('result : ', result)
-  return result
+  //return result
 }
 
 

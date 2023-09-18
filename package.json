@@ -16,8 +16,11 @@
     "axios": "^1.5.0",
     "core-js": "^3.29.0",
     "cors": "^2.8.5",
+    "gapi-client": "^0.0.3",
+    "moment": "^2.29.4",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
+    "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.0.0",
     "vuetify": "^3.3.16",
     "webfontloader": "^1.0.0"
