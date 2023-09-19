@@ -21,7 +21,7 @@
               <div align="center">
                 <v-text-field
                   label="เบอร์ติดต่อ"
-                  v-model="form.telNo"
+                  v-model="dataBookLab.phone"
                   prepend-inner-icon="mdi-phone-plus"
                   :rules="telNoRules"
                   single-line
@@ -53,6 +53,7 @@
                   v-model="dataBookLab.floor"
                   :rules="floorRules"
                   label="ชั้น"
+                  required
                   outlined
                   dense
                   :items="['2', '3', '4']"
@@ -65,6 +66,7 @@
                   v-model="dataBookLab.where_lab"
                   :rules="floorRules"
                   label="ห้อง"
+                  required
                   outlined
                   dense
                   :items="room_list"
@@ -97,9 +99,7 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-card
-        ><a-calendar 
-      /></v-card>
+      <v-card><a-calendar /></v-card>
       <div></div>
     </v-form>
   </v-container>
@@ -158,14 +158,13 @@ export default {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true) {
-            console.log("ceateBookLabRoom");
+            const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
+            this.dataBookLab.start_date = dayObject[0];
+            this.dataBookLab.endtime = dayObject[1];
+            this.ceateBookLabRoom();
             // this.ceateBookLabRoom();
           }
           //console.log("IsValid:", isValid);
-          const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
-          this.dataBookLab.start_date = dayObject[0];
-          this.dataBookLab.endtime = dayObject[1];
-          this.ceateBookLabRoom();
         })
         .catch((error) => {
           // จัดการข้อผิดพลาดที่อาจเกิดขึ้นในระหว่างการทำ Promise
@@ -181,7 +180,7 @@ export default {
     async getRoomLab() {
       this.form.lab_room = await apiRoomLab.getRoomLab();
 
-      //console.log("this.form.lab_room2 ", this.form.lab_room);
+      console.log("this.form.lab_room ", this.form.lab_room);
       //console.log(JSON.parse(JSON.stringify(this.form.lab_room)));
       //console.log(typeof(this.form.lab_room))
     },
