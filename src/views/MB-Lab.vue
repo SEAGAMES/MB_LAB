@@ -82,14 +82,14 @@
             ><v-col class="mt-n2"
               ><a-range-picker
                 v-model:value="dateSelect"
+                :rules="dateRules"
                 show-time
                 required
-                :rules="floorRules"
             /></v-col>
           </v-row>
           <v-row>
             <v-btn
-              @click="validate"
+              @click="validate()"
               class="mt-11"
               color="green"
               append-icon="mdi-check-circle"
@@ -99,9 +99,22 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-card><a-calendar /></v-card>
-      <div></div>
     </v-form>
+
+    <div class="iframe-container">
+      <iframe
+        src="https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043"
+        frameborder="0"
+      ></iframe>
+      <iframe
+        src="https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043"
+        frameborder="0"
+      ></iframe>
+      <iframe
+        src="https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043"
+        frameborder="0"
+      ></iframe>
+    </div>
   </v-container>
 </template>
 
@@ -109,6 +122,7 @@
 // import axios from "axios";
 // import { apiUrl } from "../services/getUrl";
 import apiRoomLab from "../services/apiRoomLab";
+
 // import moment from 'moment';
 // // ตัวอย่างการใช้ Moment.js
 // const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -121,14 +135,9 @@ export default {
       telNo: "",
       lab_room: [],
     },
-    telNoRules: [
-      (v) => !!v || "กรุณาใส่เบอร์โทรศัพท์",
-      //(v) => v >= 9 || "Height is more than 1",
-    ],
-    floorRules: [
-      (v) => !!v || "กรุณาระบุห้องให้ชัดเจน",
-      //(v) => v >= 9 || "Height is more than 1",
-    ],
+    telNoRules: [(v) => !!v || "กรุณาใส่เบอร์โทรศัพท์"],
+    floorRules: [(v) => !!v || "กรุณาระบุข้อมูล"],
+    dateRules: [(v) => !!v || "กรุณาระบุวันที่จอง"],
 
     dataBookLab: {
       ac_name: "thanakrit.nim",
@@ -143,6 +152,8 @@ export default {
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
     },
+    googleIframe:
+      "https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043",
   }),
 
   mounted() {
@@ -164,6 +175,7 @@ export default {
             this.ceateBookLabRoom();
             // this.ceateBookLabRoom();
           }
+          console.log(this.dataBookLab);
           //console.log("IsValid:", isValid);
         })
         .catch((error) => {
@@ -205,3 +217,25 @@ export default {
   },
 };
 </script>
+
+<style>
+.background-image {
+  background-image: url("../assets//background/mb-building.jpg");
+  /* ปรับแต่ง properties อื่นๆ ตามความต้องการ */
+  background-size: cover;
+  background-position: center;
+  height: 300px; /* ปรับความสูงตามความต้องการ */
+}
+.iframe-container {
+  display: flex;
+  flex-wrap: nowrap; /* ป้องกันการขึ้นบันไดในกรณีที่ความกว้างเกินขอบเขตของ container */
+  overflow-x: auto; /* เพื่อสามารถเลื่อนตามเนื้อหา */
+  gap: 10px; /* ระยะห่างระหว่าง iframe */
+}
+
+.iframe-container iframe {
+  border: none;
+  width: 100%; /* กำหนดความกว้างของ iframe เป็น 100% ของ container */
+  height: 575px;
+}
+</style>

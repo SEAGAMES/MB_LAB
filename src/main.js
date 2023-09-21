@@ -15,6 +15,7 @@ import 'ant-design-vue/dist/reset.css';
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+
 const app = createApp(App)
 
 registerPlugins(app)
