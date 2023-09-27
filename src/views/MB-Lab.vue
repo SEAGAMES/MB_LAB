@@ -151,6 +151,7 @@ export default {
       endtime: "",
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
+      room_code: ''
     },
     googleIframe:
       "https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043",
@@ -174,6 +175,21 @@ export default {
             this.dataBookLab.endtime = dayObject[1];
             this.ceateBookLabRoom();
             // this.ceateBookLabRoom();
+
+          //   if (isValid === true) {
+          //   const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
+
+          //   // แปลงข้อมูล start_date และ endtime เป็นวัตถุ Date
+          //   const startDate = new Date(dayObject[0]);
+          //   const endDate = new Date(dayObject[1]);
+
+          //   console.log('1 : ', startDate , endDate )
+
+          //   this.dataBookLab.start_date = startDate;
+          //   this.dataBookLab.endtime = endDate;
+          //   this.ceateBookLabRoom();
+          //   // this.ceateBookLabRoom();
+          // }
           }
           console.log(this.dataBookLab);
           //console.log("IsValid:", isValid);
@@ -211,6 +227,7 @@ export default {
       room_filter.forEach((element) => {
         //console.log(element.room_no);
         room.push(element.room_no);
+        this.dataBookLab.room_code = element.room_code
       });
       return room;
     },

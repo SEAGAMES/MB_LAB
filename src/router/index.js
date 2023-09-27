@@ -16,7 +16,7 @@ const routes = [
       },
       {
         path: '/mb-lab',
-        name: 'Mb_lab',
+        name: 'Mb_Lab',
         component: () => import('../views/MB-Lab.vue'),
       },
     ],
