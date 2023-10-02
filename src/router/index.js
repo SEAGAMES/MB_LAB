@@ -19,6 +19,11 @@ const routes = [
         name: 'Mb_Lab',
         component: () => import('../views/MB-Lab.vue'),
       },
+      {
+        path: '/mb-approve',
+        name: 'Mb_Approve',
+        component: () => import('../views/Booking-Approve.vue'),
+      },
     ],
   },
 ]

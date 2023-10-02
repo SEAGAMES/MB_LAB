@@ -10,16 +10,23 @@ const getRoomLab = async () => {
   return data.data
 };
 
+const getBookingLab = async () => {
+  const { data } = await axios.get(`${apiUrl}mb_booking_lab`);
+  //console.log(data)
+  //console.log(typeof(data.data))
+  return data.data
+};
+
 
 const createBookLabRoom = async (data) => {
-  console.log('API : ' , data)
-  const result = axios.post(`${apiUrl}bookLabRoom` , data)
-  // console.log('result : ', result)
+  const result = axios.post(`${apiUrl}bookLabRoom`, data)
   return result
 }
 
 
+
 export default {
   getRoomLab,
+  getBookingLab,
   createBookLabRoom
 };

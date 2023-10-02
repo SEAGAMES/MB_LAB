@@ -75,20 +75,21 @@
             ></v-col>
           </v-row>
           <v-row class="fontSize18">
-            <v-col>
-              <div>
-                <p>ช่วงเวลาที่ต้องการจอง :</p>
-              </div></v-col
-            ><v-col
-              ><a-range-picker
+            <div>
+              <p>ช่วงเวลาที่ต้องการจอง : </p>
+            </div>
+            <div class="mt-n1 ml-2">
+              <a-range-picker
                 v-model:value="dateSelect"
                 :rules="dateRules"
                 show-time
                 required
-            /></v-col>
+              />
+            </div>
           </v-row>
-          <v-row>
+          <v-row> 
             <v-btn
+            class="mt-5"
               @click="validate()"
               color="green"
               append-icon="mdi-check-circle"
@@ -145,14 +146,7 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import { apiUrl } from "../services/getUrl";
 import apiRoomLab from "../services/apiRoomLab";
-
-// import moment from 'moment';
-// // ตัวอย่างการใช้ Moment.js
-// const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
-// console.log(currentTime);
 
 export default {
   data: () => ({
