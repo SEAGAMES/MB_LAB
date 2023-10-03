@@ -23,6 +23,7 @@
         <template v-slot:default="{ record }">
           <a-button
             class="custom-button"
+            @click="selectStatus"
             :style="getStatusButtonStyle(record.appove_status)"
           >
             {{ getStatusLabel(record.appove_status) }}
@@ -57,15 +58,46 @@
         </template>
       </a-table-column> -->
     </a-table>
+    <a-button
+      style="background-color: lightcoral"
+      @click="$router.push({ name: 'Mb_Lab' })"
+      >กลับ</a-button
+    >
   </v-container>
+
+  <!-- popup เปลี่ยนสถานะ -->
+  <div>
+    <a-modal
+      v-model:open="changeStatus"
+      title="เปลี่ยนสถานะ"
+      @cancel="changeStatus === false"
+      @ok="changStatus()"
+    >
+      <a-select
+        v-model="selectedOption"
+        :options="options"
+        style="width: 100%"
+      />
+    </a-modal>
+  </div>
 </template>
   
   <script>
 import { ref, onMounted } from "vue";
+import { Select } from "ant-design-vue";
 import apiRoomLab from "../services/apiRoomLab";
 
 export default {
-  data: () => ({}),
+  components: {
+    "a-select": Select,
+  },
+  data: () => ({
+    changeStatus: false,
+    bookingStatus: [
+      { status_code: 0, status_name: "รออนุมัติ" },
+      // เพิ่มข้อมูลสถานะอื่น ๆ ตามต้องการ
+    ],
+  }),
 
   setup() {
     const dataLoad = ref([]);
@@ -78,6 +110,13 @@ export default {
       { key: "endtime", title: "ถึง", dataIndex: "endtime" },
     ]);
 
+    const selectedOption = ref(null);
+    const options = ref([
+      { label: "รออนุมัติ", value: "0" },
+      { label: "อนุมัติ", value: "1" },
+      { label: "ไม่อนุมัติ", value: "2" },
+    ]);
+
     // ใช้ onMounted เพื่อเพิ่มข้อมูลลงในตารางเมื่อคอมโพเนนต์ถูกแสดง
     onMounted(() => {
       // ในที่นี้คุณสามารถดึงข้อมูลจาก API หรือที่เก็บข้อมูลอื่น ๆ แล้วกำหนดให้กับ dataSource
@@ -86,6 +125,8 @@ export default {
     return {
       dataLoad,
       columns,
+      selectedOption,
+      options,
     };
   },
 
@@ -119,8 +160,6 @@ export default {
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString} น.)`;
-
-      //console.log(formattedDate); // วันจันทร์ 02/10/2023 (02:00:00 AM)
       return formattedDate;
     },
 
@@ -142,9 +181,9 @@ export default {
         case 0:
           return "รออนุมัติ";
         case 1:
-          return "ไม่อนุมัติ";
-        case 2:
           return "อนุมัติแล้ว";
+        case 2:
+          return "ไม่อนุมัติ";
         default:
           return "";
       }
@@ -162,6 +201,11 @@ export default {
       this.dataLoad = data;
       //console.log(data);
     },
+
+    selectStatus() {
+      this.changeStatus = true,
+      console.log("change status");
+    },
   },
 };
 </script>
@@ -171,5 +215,6 @@ export default {
   width: 100px; /* ปรับความกว้างตามต้องการ */
   height: 40px; /* ปรับความสูงตามต้องการ */
 }
+
 </style>
   

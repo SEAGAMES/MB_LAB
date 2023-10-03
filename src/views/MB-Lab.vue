@@ -4,6 +4,11 @@
       <v-spacer></v-spacer>
       <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
       <v-spacer></v-spacer>
+      <a-button
+        style="background-color: lightgreen"
+        @click="$router.push({ name: 'Mb_Approve' })"
+        >สำหรับอนุมัติ</a-button
+      >
     </v-row>
 
     <!-- v-card input data -->
@@ -76,7 +81,7 @@
           </v-row>
           <v-row class="fontSize18">
             <div>
-              <p>ช่วงเวลาที่ต้องการจอง : </p>
+              <p>ช่วงเวลาที่ต้องการจอง :</p>
             </div>
             <div class="mt-n1 ml-2">
               <a-range-picker
@@ -87,10 +92,11 @@
               />
             </div>
           </v-row>
-          <v-row> 
+          <v-row>
             <v-btn
-            class="mt-5"
+              class="mt-5"
               @click="validate()"
+              :loading="loadingBtn"
               color="green"
               append-icon="mdi-check-circle"
               block
@@ -142,6 +148,16 @@
         <v-window-item value="three"> Three </v-window-item>
       </v-window>
     </v-card>
+    
+    <!-- snackbar -->
+    <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
+      <div class="text-center">
+        {{ snackBar.titleSnackBar }}
+        <v-icon large class="ml-1" :color="snackBar.colorSnackBar">{{
+          snackBar.iconSnackBar
+        }}</v-icon>
+      </div>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -150,6 +166,13 @@ import apiRoomLab from "../services/apiRoomLab";
 
 export default {
   data: () => ({
+    snackBar: {
+      showSnackBar: false,
+      titleSnackBar: "",
+      colorSnackBar: "",
+      iconSnackBar: "",
+    },
+
     form: {
       rent_name: "ธนกฤต นิ่มนวล",
       telNo: "",
@@ -176,6 +199,7 @@ export default {
     googleIframe:
       "https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043",
     tab: null,
+    loadingBtn: false,
   }),
 
   mounted() {
@@ -185,6 +209,15 @@ export default {
   },
 
   methods: {
+    alertShow(show, title, color, icon) {
+      this.snackBar = {
+        showSnackBar: show,
+        titleSnackBar: title,
+        colorSnackBar: color,
+        iconSnackBar: icon,
+      };
+    },
+
     async validate() {
       this.$refs.form
         .validate()
@@ -216,7 +249,23 @@ export default {
     },
 
     async ceateBookLabRoom() {
-      await apiRoomLab.createBookLabRoom(this.dataBookLab);
+      this.loadingBtn = true;
+      const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
+
+      setTimeout(async () => {
+        if (result.data.msg === "ok") {
+          this.alertShow(true, "Success", "success", "mdi-shield-check");
+          this.loadingBtn = false;
+        } else {
+          this.alertShow(
+            true,
+            "มีการใช้ช่วงเวลานี้เเล้ว",
+            "red",
+            "mdi-shield-alert"
+          );
+          this.loadingBtn = false;
+        }
+      }, 1500);
     },
 
     async getRoomLab() {
