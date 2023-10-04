@@ -23,10 +23,20 @@ const createBookLabRoom = async (data) => {
   return result
 }
 
+const updateApproveStatus = async (id, statusCode) => {
+  const result = axios.post(`${apiUrl}updateApproveStatus`, {
+    id: id,
+    statusCode: statusCode,
+  })
+  console.log(result)
+  return result
+}
+
 
 
 export default {
   getRoomLab,
   getBookingLab,
-  createBookLabRoom
+  createBookLabRoom,
+  updateApproveStatus
 };

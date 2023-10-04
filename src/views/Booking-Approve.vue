@@ -13,8 +13,11 @@
         :key="column.key"
         :title="column.title"
       >
+        <!-- กำหนดการแสดงผลข้อมูลในแต่ละ cell -->
         <template v-slot:default="{ record }">
-          {{ record[column.dataIndex] }}
+          <tr @click="selectRow(record)" style="cursor: pointer">
+            <td>{{ record[column.key] }}</td>
+          </tr>
         </template>
       </a-table-column>
 
@@ -23,7 +26,7 @@
         <template v-slot:default="{ record }">
           <a-button
             class="custom-button"
-            @click="selectStatus"
+            @click="selectRow(record)"
             :style="getStatusButtonStyle(record.appove_status)"
           >
             {{ getStatusLabel(record.appove_status) }}
@@ -71,15 +74,26 @@
       v-model:open="changeStatus"
       title="เปลี่ยนสถานะ"
       @cancel="changeStatus === false"
-      @ok="changStatus()"
+      @ok="updateApproveStatus()"
     >
       <a-select
-        v-model="selectedOption"
+        v-model:value="value"
+        :default-value="statusShow"
         :options="options"
         style="width: 100%"
       />
     </a-modal>
   </div>
+
+  <!-- snackbar -->
+  <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
+    <div class="text-center">
+      {{ snackBar.titleSnackBar }}
+      <v-icon large class="ml-1" :color="snackBar.colorSnackBar">{{
+        snackBar.iconSnackBar
+      }}</v-icon>
+    </div>
+  </v-snackbar>
 </template>
   
   <script>
@@ -92,11 +106,15 @@ export default {
     "a-select": Select,
   },
   data: () => ({
+    snackBar: {
+      showSnackBar: false,
+      titleSnackBar: "",
+      colorSnackBar: "",
+      iconSnackBar: "",
+    },
     changeStatus: false,
-    bookingStatus: [
-      { status_code: 0, status_name: "รออนุมัติ" },
-      // เพิ่มข้อมูลสถานะอื่น ๆ ตามต้องการ
-    ],
+    dataDetail: [],
+    dataID: [],
   }),
 
   setup() {
@@ -112,9 +130,9 @@ export default {
 
     const selectedOption = ref(null);
     const options = ref([
-      { label: "รออนุมัติ", value: "0" },
-      { label: "อนุมัติ", value: "1" },
-      { label: "ไม่อนุมัติ", value: "2" },
+      { label: "รออนุมัติ", value: 0 },
+      { label: "อนุมัติ", value: 1 },
+      { label: "ไม่อนุมัติ", value: 2 },
     ]);
 
     // ใช้ onMounted เพื่อเพิ่มข้อมูลลงในตารางเมื่อคอมโพเนนต์ถูกแสดง
@@ -134,6 +152,15 @@ export default {
     this.getRoomLab();
   },
   methods: {
+    alertShow(show, title, color, icon) {
+      this.snackBar = {
+        showSnackBar: show,
+        titleSnackBar: title,
+        colorSnackBar: color,
+        iconSnackBar: icon,
+      };
+    },
+
     formatdate(date) {
       const isoDate = date;
       const dateObject = new Date(isoDate);
@@ -202,9 +229,32 @@ export default {
       //console.log(data);
     },
 
-    selectStatus() {
-      this.changeStatus = true,
-      console.log("change status");
+    selectRow(data) {
+      this.changeStatus = true;
+      console.log(data.id);
+      this.dataID = data.id;
+    },
+
+    async updateApproveStatus() {
+      const result = await apiRoomLab.updateApproveStatus(
+        this.dataID,
+        this.value
+      );
+
+      setTimeout(async () => {
+        if (result.data.msg === "ok") {
+          this.alertShow(true, "Success", "success", "mdi-shield-check");
+          this.loadingBtn = false;
+        } else {
+          this.alertShow(
+            true,
+            "มีการใช้ช่วงเวลานี้เเล้ว",
+            "red",
+            "mdi-shield-alert"
+          );
+          this.loadingBtn = false;
+        }
+      }, 1500);
     },
   },
 };
@@ -215,6 +265,5 @@ export default {
   width: 100px; /* ปรับความกว้างตามต้องการ */
   height: 40px; /* ปรับความสูงตามต้องการ */
 }
-
 </style>
   
