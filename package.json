@@ -9,14 +9,23 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
     "@mdi/font": "7.0.96",
+    "@syncfusion/ej2-vue-calendars": "^22.2.12",
+    "ant-design-vue": "^4.0.0-rc.6",
     "axios": "^1.5.0",
     "core-js": "^3.29.0",
     "cors": "^2.8.5",
+    "gapi-client": "^0.0.3",
+    "googleapis": "^105.0.0",
+    "moment": "^2.29.4",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
+    "vue-datepicker": "^1.3.0",
+    "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.0.0",
-    "vuetify": "^3.0.0",
+    "vue3-easy-data-table": "^1.5.47",
+    "vuetify": "^3.3.16",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {

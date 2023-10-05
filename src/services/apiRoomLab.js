@@ -10,15 +10,33 @@ const getRoomLab = async () => {
   return data.data
 };
 
+const getBookingLab = async () => {
+  const { data } = await axios.get(`${apiUrl}mb_booking_lab`);
+  //console.log(data)
+  //console.log(typeof(data.data))
+  return data.data
+};
+
 
 const createBookLabRoom = async (data) => {
-  const result = axios.post(`${apiUrl}bookLabRoom` , data)
-  //console.log('result : ', result)
+  const result = axios.post(`${apiUrl}bookLabRoom`, data)
+  return result
+}
+
+const updateApproveStatus = async (id, statusCode) => {
+  const result = axios.post(`${apiUrl}updateApproveStatus`, {
+    id: id,
+    statusCode: statusCode,
+  })
+  console.log(result)
   return result
 }
 
 
+
 export default {
   getRoomLab,
-  createBookLabRoom
+  getBookingLab,
+  createBookLabRoom,
+  updateApproveStatus
 };
