@@ -15,11 +15,13 @@ import 'ant-design-vue/dist/reset.css';
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+import store from './store';
+
 
 const app = createApp(App)
 
 registerPlugins(app)
 
-app.use(Antd).mount('#app')
+app.use(Antd).use(store).mount('#app')
 
 

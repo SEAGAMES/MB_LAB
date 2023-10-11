@@ -13,12 +13,12 @@
 
     <!-- v-card input data -->
     <v-form ref="form" lazy-validation>
-      <v-card class="mx-auto my-7" width="900" height="320">
+      <v-card class="mx-auto my-7" width="900" height="300">
         <v-card-text>
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-3">
-                <p>ผู้จอง : {{ form.rent_name }}</p>
+                <p>ผู้จอง : {{ $store.state.login_fullname }}</p>
               </div>
             </v-col>
 
@@ -38,7 +38,7 @@
                 ></v-text-field></div
             ></v-col>
           </v-row>
-          <v-row>
+          <v-row class="mt-n5">
             <v-col>
               <div>
                 <v-select
@@ -79,18 +79,44 @@
                 ></v-select></div
             ></v-col>
           </v-row>
-          <v-row class="fontSize18">
-            <div>
+          <v-row class="fontSize18 mt-n3">
+            <!-- <div>
               <p>ช่วงเวลาที่ต้องการจอง :</p>
             </div>
             <div class="mt-n1 ml-2">
               <a-range-picker
                 v-model:value="dateSelect"
+                format="YYYY-MM-DD HH:mm"
                 :rules="dateRules"
                 show-time
                 required
               />
-            </div>
+            </div> -->
+            <p class="mt-3 mr-2 ml-4">เลือกวันและเวลา :</p>
+            <a-date-picker
+              v-model:value="start_date"
+              format="YYYY-MM-DD HH:mm"
+              placeholder="เลือกวันและเวลา"
+              :showNow="false"
+              :disabled-date="disabledDate"
+              :disabled-hours="disabledHours"
+              :rules="dateRules"
+              show-time
+              required
+            ></a-date-picker>
+
+            <p class="mt-3 mr-2 ml-2">ถึง :</p>
+            <a-date-picker
+              v-model:value="end_date"
+              format="YYYY-MM-DD HH:mm"
+              placeholder="เลือกวันและเวลา"
+              :showNow="false"
+              :disabled-date="disabledDate"
+              :disabled-hours="disabledHours"
+              :rules="dateRules"
+              show-time
+              required
+            ></a-date-picker>
           </v-row>
           <v-row>
             <v-btn
@@ -148,7 +174,7 @@
         <v-window-item value="three"> Three </v-window-item>
       </v-window>
     </v-card>
-    
+
     <!-- snackbar -->
     <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
       <div class="text-center">
@@ -200,6 +226,8 @@ export default {
       "https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043",
     tab: null,
     loadingBtn: false,
+    start_date: "",
+    end_time: "",
   }),
 
   mounted() {
@@ -218,6 +246,25 @@ export default {
       };
     },
 
+    disabledDate(currentDate) {
+      // ระงับวันที่เป็นวันที่ผ่านมา (เช่น วันที่มากกว่าวันปัจจุบัน)
+      // console.log(currentDate)
+      return currentDate && currentDate <= new Date();
+    },
+
+    // disabledDate(currentDate) {
+    //   // ระงับวันที่ถ้าเป็นวันจันทร์ถึงวันศุกร์และไม่อยู่ในช่วงวันเสาร์ถึงวันอาทิตย์
+    //   return (
+    //     (currentDate.getDay() >= 1 && currentDate.getDay() <= 5) &&
+    //     (currentDate.getHours() < 4 || currentDate.getHours() >= 8)
+    //   );
+    // },
+
+    disabledHours() {
+      // กำหนดช่วงเวลาที่ไม่สามารถเลือกได้
+      return [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+    },
+
     async validate() {
       this.$refs.form
         .validate()
@@ -233,11 +280,17 @@ export default {
               )
             );
             this.dataBookLab.room_code = dataRoomSelect[0].room_code;
-            console.log(this.dataBookLab.room_code);
+            //console.log(this.dataBookLab.room_code);
 
-            const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
-            this.dataBookLab.start_date = dayObject[0];
-            this.dataBookLab.endtime = dayObject[1];
+            // const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
+            // this.dataBookLab.start_date = dayObject[0];
+            // this.dataBookLab.endtime = dayObject[1];
+            //this.ceateBookLabRoom();
+            const start = JSON.parse(JSON.stringify(this.start_date));
+            const end = JSON.parse(JSON.stringify(this.end_date));
+            this.dataBookLab.start_date = start;
+            this.dataBookLab.endtime = end;
+            console.log(this.dataBookLab);
             this.ceateBookLabRoom();
           }
         })
@@ -291,6 +344,13 @@ export default {
       return room;
     },
   },
+
+  watch: {
+    selectedDateTime(newValue) {
+      console.log("วันและเวลาที่เลือก:", newValue);
+      // ทำสิ่งที่คุณต้องการกับค่าวันและเวลาที่เลือกได้ในตัวแปร selectedDateTime ที่นี่
+    },
+  },
 };
 </script>
 
@@ -306,5 +366,14 @@ export default {
   border: none;
   width: 100%; /* กำหนดความกว้างของ iframe เป็น 100% ของ container */
   height: 575px;
+}
+
+.ant-picker {
+  width: 150px; /* ปรับค่าความกว้างตามที่คุณต้องการ */
+  height: 55px; /* ปรับค่าความสูงตามที่คุณต้องการ */
+}
+
+.ant-picker-input > input {
+  padding-left: 100px; /* ปรับค่าความระยะห่างตามที่คุณต้องการ */
 }
 </style>
