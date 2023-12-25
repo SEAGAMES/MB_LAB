@@ -5,7 +5,7 @@ import { apiUrl } from '../services/getUrl'
 
 const getRoomLab = async () => {
   const { data } = await axios.get(`${apiUrl}mb_lab_room`);
-  //console.log(data)
+  console.log(data)
   //console.log(typeof(data.data))
   return data.data
 };

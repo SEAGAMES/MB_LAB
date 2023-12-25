@@ -107,47 +107,7 @@
       </v-card>
     </v-form>
 
-    <v-card>
-      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-        <v-tab :value="one">ห้องทั้งหมด</v-tab>
-        <v-tab :value="two">ห้องหลัก</v-tab>
-        <v-tab :value="three">Abstract</v-tab>
-      </v-tabs>
-      <v-window v-model="tab" class="mt-3">
-        <v-window-item value="one"> One </v-window-item>
-
-        <v-window-item value="two">
-          <div class="iframe-container">
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTabs=0&showCalendars=0&showTz=0&showPrint=0&src=OTMxZGJmZjYwYjExMjc1NThiODU2ZWU2Y2JhZTg3N2U0ZDI2MTRkODJkN2M1MWE5YzIxN2ExNmIwNGJkNGVkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%234285F4"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&src=YzA1ZGY3Y2U5YWNhMGFlNWY1YTc0MmE2NzY2NTdjMWU0N2U4MzdkOTY4YTg2NmU3ZWQ2NjdlNzU2MzRhY2IzNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238E24AA"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&src=NzI1MjI2ZDZiMDQ0YzYyNzViZjFkNTYyNjAzOWMyNzE3NTljNjgzZDI2NzAyNGYzZjIzYTRiNmM0OGJlYTkwOEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23AD1457"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-          </div>
-        </v-window-item>
-
-        <v-window-item value="three"> Three </v-window-item>
-      </v-window>
-    </v-card>
+ 
     
     <!-- snackbar -->
     <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
@@ -250,6 +210,7 @@ export default {
 
     async ceateBookLabRoom() {
       this.loadingBtn = true;
+      console.log(this.dataBookLab)
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
 
       setTimeout(async () => {
