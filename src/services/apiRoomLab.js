@@ -5,7 +5,7 @@ import { apiUrl } from '../services/getUrl'
 
 const getRoomLab = async () => {
   const { data } = await axios.get(`${apiUrl}mb_lab_room`);
-  console.log(data)
+  //console.log(data)
   //console.log(typeof(data.data))
   return data.data
 };
@@ -14,6 +14,11 @@ const getBookingLab = async () => {
   const { data } = await axios.get(`${apiUrl}mb_booking_lab`);
   //console.log(data)
   //console.log(typeof(data.data))
+  return data.data
+};
+
+const thisLabBooking = async (labNo) => {
+  const { data } = await axios.get(`${apiUrl}thisLabBooking/${labNo}`);
   return data.data
 };
 
@@ -28,7 +33,7 @@ const updateApproveStatus = async (id, statusCode) => {
     id: id,
     statusCode: statusCode,
   })
-  console.log(result)
+  //console.log(result)
   return result
 }
 
@@ -37,6 +42,7 @@ const updateApproveStatus = async (id, statusCode) => {
 export default {
   getRoomLab,
   getBookingLab,
+  thisLabBooking,
   createBookLabRoom,
   updateApproveStatus
 };
