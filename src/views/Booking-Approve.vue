@@ -123,9 +123,10 @@ export default {
     const columns = ref([
       { key: "name", title: "ชื่อ-นามสกุล", dataIndex: "name" },
       { key: "phone", title: "เบอร์", dataIndex: "phone" },
+      { key: "where_lab", title: "ห้อง", dataIndex: "where_lab" },
       { key: "timebook", title: "จองเวลา", dataIndex: "timebook" },
       { key: "start_date", title: "เริ่มใช้เวลา", dataIndex: "start_date" },
-      { key: "endtime", title: "ถึง", dataIndex: "endtime" },
+      { key: "end_date", title: "ถึง", dataIndex: "end_date" },
     ]);
 
     const selectedOption = ref(null);
@@ -183,6 +184,7 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
+        hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
       });
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
@@ -222,16 +224,16 @@ export default {
 
       data.forEach((obj) => {
         obj.start_date = this.formatdate(obj.start_date);
-        obj.endtime = this.formatdate(obj.endtime);
+        obj.end_date = this.formatdate(obj.end_date);
         obj.timebook = this.formatdate(obj.timebook);
       });
       this.dataLoad = data;
-      //console.log(data);
+      console.log(this.dataLoad);
     },
 
     selectRow(data) {
       this.changeStatus = true;
-      console.log(data.id);
+      // console.log(data.id);
       this.dataID = data.id;
     },
 

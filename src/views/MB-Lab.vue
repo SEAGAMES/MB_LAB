@@ -1,6 +1,7 @@
 <template>
   <v-container class="fontSarabun">
     <v-row>
+      <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
       <v-spacer></v-spacer>
@@ -13,11 +14,11 @@
 
     <!-- v-card input data -->
     <v-form ref="form" lazy-validation>
-      <v-card class="mx-auto my-7" width="900" height="320">
+      <v-card class="mx-auto my-7 pl-2 pr-2" width="900" height="305">
         <v-card-text>
           <v-row class="fontSize18"
             ><v-col>
-              <div align="center" class="mt-3">
+              <div align="center" class="mt-4">
                 <p>ผู้จอง : {{ form.rent_name }}</p>
               </div>
             </v-col>
@@ -38,7 +39,7 @@
                 ></v-text-field></div
             ></v-col>
           </v-row>
-          <v-row>
+          <v-row class="mt-n2">
             <v-col>
               <div>
                 <v-select
@@ -76,10 +77,11 @@
                   dense
                   :items="room_list"
                   variant="outlined"
+                  @change="loadBookingLab()"
                 ></v-select></div
             ></v-col>
           </v-row>
-          <v-row class="fontSize18">
+          <v-row class="fontSize18 ml-1">
             <div>
               <p>ช่วงเวลาที่ต้องการจอง :</p>
             </div>
@@ -89,6 +91,8 @@
                 :rules="dateRules"
                 show-time
                 required
+                :format="'YYYY-MM-DD HH:mm'"
+                :disabled-date="disabledDate"
               />
             </div>
           </v-row>
@@ -107,48 +111,24 @@
       </v-card>
     </v-form>
 
-    <v-card>
-      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
-        <v-tab :value="one">ห้องทั้งหมด</v-tab>
-        <v-tab :value="two">ห้องหลัก</v-tab>
-        <v-tab :value="three">Abstract</v-tab>
-      </v-tabs>
-      <v-window v-model="tab" class="mt-3">
-        <v-window-item value="one"> One </v-window-item>
+    <v-card class="mx-auto my-7" width="900"
+      ><a-table :columns="columns" :data-source="dataBookingLab">
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span> ชื่อ-นามสกุล </span>
+          </template>
+        </template>
 
-        <v-window-item value="two">
-          <div class="iframe-container">
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTabs=0&showCalendars=0&showTz=0&showPrint=0&src=OTMxZGJmZjYwYjExMjc1NThiODU2ZWU2Y2JhZTg3N2U0ZDI2MTRkODJkN2M1MWE5YzIxN2ExNmIwNGJkNGVkNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%234285F4"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0&src=YzA1ZGY3Y2U5YWNhMGFlNWY1YTc0MmE2NzY2NTdjMWU0N2U4MzdkOTY4YTg2NmU3ZWQ2NjdlNzU2MzRhY2IzNkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%238E24AA"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-            <iframe
-              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showDate=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&src=NzI1MjI2ZDZiMDQ0YzYyNzViZjFkNTYyNjAzOWMyNzE3NTljNjgzZDI2NzAyNGYzZjIzYTRiNmM0OGJlYTkwOEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23AD1457"
-              style="border-width: 0"
-              width="800"
-              height="600"
-              frameborder="0"
-              scrolling="no"
-            ></iframe>
-          </div>
-        </v-window-item>
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'name'">
+            <a>
+              {{ record.name }}
+            </a>
+          </template>
+        </template>
+      </a-table></v-card
+    >
 
-        <v-window-item value="three"> Three </v-window-item>
-      </v-window>
-    </v-card>
-    
     <!-- snackbar -->
     <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
       <div class="text-center">
@@ -162,9 +142,15 @@
 </template>
 
 <script>
+import moment from "moment";
 import apiRoomLab from "../services/apiRoomLab";
 
 export default {
+  setup() {
+    const version = import.meta.env.VITE_APP_VERSION;
+    return { version };
+  },
+
   data: () => ({
     snackBar: {
       showSnackBar: false,
@@ -182,30 +168,54 @@ export default {
     floorRules: [(v) => !!v || "กรุณาระบุข้อมูล"],
     dateRules: [(v) => !!v || "กรุณาระบุวันที่จอง"],
 
+    columns: [
+      {
+        key: "name",
+        title: "ชื่อ-นามสกุล",
+        dataIndex: "name",
+        align: "center",
+      },
+      { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
+      //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
+      {
+        key: "where_lab",
+        title: "ห้อง",
+        dataIndex: "where_lab",
+        align: "center",
+      },
+      {
+        key: "start_date",
+        title: "เริ่มใช้เวลา",
+        dataIndex: "start_date",
+        align: "center",
+      },
+      { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
+    ],
+
     dataBookLab: {
       ac_name: "thanakrit.nim",
       name: "Thanakrit Nimnual",
       num_in_team: 5,
-      phone: "",
-      zone: "",
-      floor: "",
-      where_lab: "",
+      phone: "07894561",
+      zone: "B",
+      floor: "2",
+      where_lab: "B203",
       start_date: "",
       endtime: "",
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
       room_code: "",
     },
-    googleIframe:
-      "https://calendar.google.com/calendar/embed?height=575&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FBangkok&showTitle=0&showTz=0&mode=WEEK&showTabs=1&src=dC5zZWFnYW1lc0BnbWFpbC5jb20&src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&src=ZmFtaWx5MTM2OTY1MTU1ODQ1MjYyOTA0ODJAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dGgudg&color=%237986CB&color=%2333B679&color=%23C0CA33&color=%230B8043",
     tab: null,
     loadingBtn: false,
+    dataBookingLab: [],
+    dateSelect: [],
   }),
 
   mounted() {
     this.tab = "two";
     this.getRoomLab();
-    //this.ceateBookLabRoom();
+    //this.createBookLabRoom();
   },
 
   methods: {
@@ -218,38 +228,42 @@ export default {
       };
     },
 
+    disabledDate(current) {
+      // ตรวจสอบว่าวันที่ current เป็นวันที่เราต้องการหรือไม่
+      return current && current < moment().startOf("day");
+    },
+
     async validate() {
       this.$refs.form
         .validate()
         .then((result) => {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
-          if (isValid === true) {
-            const dataRoomSelect = JSON.parse(
-              JSON.stringify(
-                this.form.lab_room.filter((row) => {
-                  return row.room_no === this.dataBookLab.where_lab;
-                })
-              )
-            );
-            this.dataBookLab.room_code = dataRoomSelect[0].room_code;
-            console.log(this.dataBookLab.room_code);
-
+          if (isValid === true && this.dateSelect.length === 2) {
             const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
             this.dataBookLab.start_date = dayObject[0];
             this.dataBookLab.endtime = dayObject[1];
-            this.ceateBookLabRoom();
+            this.createBookLabRoom();
+          } else {
+            this.alertShow(
+            true,
+            "กรุณาใส่ข้อมูลให้ครบถ้วน",
+            "red",
+            "mdi-shield-alert"
+          );
+          this.loadingBtn = false;
           }
         })
         .catch((error) => {
           // จัดการข้อผิดพลาดที่อาจเกิดขึ้นในระหว่างการทำ Promise
-          console.error(error);
+          console.log(error);
         });
       //console.log(this.$refs.form.validate());
     },
 
-    async ceateBookLabRoom() {
+    async createBookLabRoom() {
       this.loadingBtn = true;
+      //console.log(this.dataBookLab);
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
 
       setTimeout(async () => {
@@ -271,6 +285,48 @@ export default {
     async getRoomLab() {
       this.form.lab_room = await apiRoomLab.getRoomLab();
       // console.log("this.form.lab_room ", this.form.lab_room);
+    },
+
+    async loadBookingLab() {
+      this.dataBookingLab = await apiRoomLab.thisLabBooking(
+        this.dataBookLab.where_lab
+      );
+      this.dataBookingLab.forEach((obj) => {
+        obj.start_date = this.formatdate(obj.start_date);
+        obj.end_date = this.formatdate(obj.end_date);
+        obj.timebook = this.formatdate(obj.timebook);
+      });
+      this.dataLoad = this.dataBookingLab;
+    },
+
+    formatdate(date) {
+      const isoDate = date;
+      const dateObject = new Date(isoDate);
+
+      // สร้างรายการของชื่อวันในภาษาไทย
+      const thaiDays = [
+        "(อา.)",
+        "(จ.)",
+        "(อ.)",
+        "(พ.)",
+        "(พฤ.)",
+        "(ศ.)",
+        "(ส.)",
+      ];
+
+      // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
+      const dayName = thaiDays[dateObject.getDay()];
+
+      // สร้างรูปแบบในการแสดงผล
+      const timeString = dateObject.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
+      });
+      const formattedDate = `${dayName} ${dateObject.getDate()}/${
+        dateObject.getMonth() + 1
+      }/${dateObject.getFullYear()} (${timeString} น.)`;
+      return formattedDate;
     },
   },
 
@@ -295,16 +351,4 @@ export default {
 </script>
 
 <style>
-.iframe-container {
-  display: flex;
-  flex-wrap: nowrap; /* ป้องกันการขึ้นบันไดในกรณีที่ความกว้างเกินขอบเขตของ container */
-  overflow-x: auto; /* เพื่อสามารถเลื่อนตามเนื้อหา */
-  gap: 10px; /* ระยะห่างระหว่าง iframe */
-}
-
-.iframe-container iframe {
-  border: none;
-  width: 100%; /* กำหนดความกว้างของ iframe เป็น 100% ของ container */
-  height: 575px;
-}
 </style>
