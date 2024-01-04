@@ -112,7 +112,7 @@
     </v-form>
 
     <v-card class="mx-auto my-7" width="900"
-      ><a-table :columns="columns" :data-source="dataBookingLab">
+      ><a-table :columns="columns" :data-source="dataBookingLab.data">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
             <span> ชื่อ-นามสกุล </span>
@@ -230,7 +230,8 @@ export default {
 
     disabledDate(current) {
       // ตรวจสอบว่าวันที่ current เป็นวันที่เราต้องการหรือไม่
-      return current && current < moment().startOf("day");
+      const tomorrow = moment().add(1, "days").startOf("day");
+      return current && current < tomorrow;
     },
 
     async validate() {
@@ -246,12 +247,12 @@ export default {
             this.createBookLabRoom();
           } else {
             this.alertShow(
-            true,
-            "กรุณาใส่ข้อมูลให้ครบถ้วน",
-            "red",
-            "mdi-shield-alert"
-          );
-          this.loadingBtn = false;
+              true,
+              "กรุณาใส่ข้อมูลให้ครบถ้วน",
+              "red",
+              "mdi-shield-alert"
+            );
+            this.loadingBtn = false;
           }
         })
         .catch((error) => {
@@ -291,12 +292,13 @@ export default {
       this.dataBookingLab = await apiRoomLab.thisLabBooking(
         this.dataBookLab.where_lab
       );
-      this.dataBookingLab.forEach((obj) => {
-        obj.start_date = this.formatdate(obj.start_date);
-        obj.end_date = this.formatdate(obj.end_date);
-        obj.timebook = this.formatdate(obj.timebook);
-      });
-      this.dataLoad = this.dataBookingLab;
+      if (this.dataBookingLab.msg !== "not found") {
+        this.dataBookingLab.data.forEach((obj) => {
+          obj.start_date = this.formatdate(obj.start_date);
+          obj.end_date = this.formatdate(obj.end_date);
+          obj.timebook = this.formatdate(obj.timebook);
+        });
+      }
     },
 
     formatdate(date) {
@@ -346,6 +348,10 @@ export default {
       });
       return room;
     },
+  },
+
+  watch: {
+    "dataBookLab.where_lab": "loadBookingLab", // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
   },
 };
 </script>

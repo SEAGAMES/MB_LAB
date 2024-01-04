@@ -77,8 +77,6 @@
       @ok="updateApproveStatus()"
     >
       <a-select
-        v-model:value="value"
-        :default-value="statusShow"
         :options="options"
         style="width: 100%"
       />
@@ -124,7 +122,7 @@ export default {
       { key: "name", title: "ชื่อ-นามสกุล", dataIndex: "name" },
       { key: "phone", title: "เบอร์", dataIndex: "phone" },
       { key: "where_lab", title: "ห้อง", dataIndex: "where_lab" },
-      { key: "timebook", title: "จองเวลา", dataIndex: "timebook" },
+      { key: "timebook", title: "เวลาที่กดจอง", dataIndex: "timebook" },
       { key: "start_date", title: "เริ่มใช้เวลา", dataIndex: "start_date" },
       { key: "end_date", title: "ถึง", dataIndex: "end_date" },
     ]);

@@ -19,7 +19,8 @@ const getBookingLab = async () => {
 
 const thisLabBooking = async (labNo) => {
   const { data } = await axios.get(`${apiUrl}thisLabBooking/${labNo}`);
-  return data.data
+  // console.log(data)
+  return data
 };
 
 
