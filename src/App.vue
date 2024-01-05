@@ -1,8 +1,13 @@
 <template>
-  <router-view />
+  <v-app>
+    <v-main>
+      <router-view />
+      <LanguagePageVue />
+    </v-main>
+  </v-app>
 </template>
 
-<script setup>
+<script>
 //=
 </script>
 

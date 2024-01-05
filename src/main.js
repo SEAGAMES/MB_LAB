@@ -12,6 +12,9 @@ import App from './App.vue'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 
+import store from './store'
+
+
 // Plugins
 import { registerPlugins } from '@/plugins'
 
@@ -20,6 +23,6 @@ const app = createApp(App)
 
 registerPlugins(app)
 
-app.use(Antd).mount('#app')
+app.use(Antd).use(store).mount('#app')
 
 
