@@ -8,7 +8,13 @@
 </template>
 
 <script>
-//=
+import LanguagePageVue from "./components/LanguagePage.vue";
+
+export default {
+  components: {
+    LanguagePageVue,
+  },
+};
 </script>
 
 <style>

@@ -61,7 +61,7 @@ export default {
             //console.log(axios.defaults.headers.common["Authorization"])
             console.log("เข้า ok");
             //this.$router.push({ path: "../views/MB-Lab.vue" }); // ส่งไปที่นี้
-            this.$router.push({ name: 'Mb_Lab' })
+            this.$router.push({ name: 'HomeView' })
           } else {
             console.log("ไม่พบรายชื่อ");
             this.text = "โปรดติดต่อคุณ สุจิต ฝ่าย ITMB";
