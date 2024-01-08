@@ -19,17 +19,21 @@ const routes = [
     path: '/home',
     name: 'HomeView',
     component: () => import('../views/HomeView.vue'),
-    meta: {
-      middleware: [
-        auth
-      ]
-    }
+    // meta: {
+    //   middleware: [
+    //     auth
+    //   ]
+    // }
   },
   {
     path: '/mb-lab',
     name: 'Mb_Lab',
     component: () => import('../views/MB-Lab.vue'),
-    
+    meta: {
+      middleware: [
+        auth
+      ]
+    }
   },
   {
     path: '/mb-approve',

@@ -11,6 +11,9 @@ const store = createStore({
         state.time = new Date(state.time).getTime() + 1000;
       }, 1000);
     },
+    setUserPolicy(state, payload) {
+      state.userPolicy = payload;
+    },
     setShowname(state, payload) {
       state.showname = payload;
     },
@@ -29,6 +32,10 @@ const store = createStore({
       console.log("value : ", value)
       context.commit("setUserData", value);
     },
+    addUserPolicy(context, value){
+      console.log("value : ", value)
+      context.commit("setUserPolicy", value);
+    },
     swapName(context, value) {
       context.commit("setShowname", value);
     },
@@ -45,6 +52,9 @@ const store = createStore({
   getters: {
     userData(state) {
       return state.userData;
+    },
+    userPolicy(state) {
+      return state.userPolicy
     },
     showname(state) {
       return state.showname;

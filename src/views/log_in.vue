@@ -29,7 +29,7 @@ export default {
           //const { getWebUrl } = require("../services/getUrl");
 
           window.location =
-            "http://localhost:3000" + "/login" + "?src=certificate";
+            "http://localhost:3000" + "/login" + "?src=mb_lab";
         }
       });
     } else {
@@ -38,7 +38,7 @@ export default {
       console.log("เข้ามา3");
       setTimeout(function () {
         window.location =
-          "http://localhost:3000" + "/login" + "?src=certificate";
+          "http://localhost:3000" + "/login" + "?src=mb_lab";
       }, 500);
     }
   },
@@ -61,7 +61,7 @@ export default {
             //console.log(axios.defaults.headers.common["Authorization"])
             console.log("เข้า ok");
             //this.$router.push({ path: "../views/MB-Lab.vue" }); // ส่งไปที่นี้
-            this.$router.push({ name: 'HomeView' })
+            this.$router.push({ name: 'Mb_Lab' })
           } else {
             console.log("ไม่พบรายชื่อ");
             this.text = "โปรดติดต่อคุณ สุจิต ฝ่าย ITMB";

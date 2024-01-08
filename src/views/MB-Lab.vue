@@ -1,4 +1,5 @@
 <template>
+  <div>{{ this.$store.getters }}</div>
   <v-container class="fontSarabun">
     <v-row>
       <span>{{ version }}</span>
@@ -6,6 +7,7 @@
       <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
       <v-spacer></v-spacer>
       <a-button
+        v-if="checkUserPolicy()"
         style="background-color: lightgreen"
         @click="$router.push({ name: 'Mb_Approve' })"
         >สำหรับอนุมัติ</a-button
@@ -193,8 +195,8 @@ export default {
     ],
 
     dataBookLab: {
-      ac_name: "thanakrit.nim",
-      name: "Thanakrit Nimnual",
+      ac_name: "",
+      name: "",
       num_in_team: 5,
       phone: "07894561",
       zone: "B",
@@ -204,17 +206,15 @@ export default {
       endtime: "",
       appove_status: "true",
       appove_ac_name: "thanakrit.nim",
-      room_code: "",
     },
-    tab: null,
     loadingBtn: false,
     dataBookingLab: [],
     dateSelect: [],
   }),
 
   mounted() {
-    this.tab = "two";
     this.getRoomLab();
+    this.form.rent_name = this.$store.getters.userData.thainame;
     //this.createBookLabRoom();
   },
 
@@ -226,6 +226,16 @@ export default {
         colorSnackBar: color,
         iconSnackBar: icon,
       };
+    },
+
+    checkUserPolicy() {
+      let found = false;
+      this.$store.getters.userPolicy.forEach((obj) => {
+        if (obj.project_id === "1") {
+          found = true;
+        }
+      });
+      return found;
     },
 
     disabledDate(current) {
