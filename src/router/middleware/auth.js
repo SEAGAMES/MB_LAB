@@ -2,7 +2,7 @@ export default async function guest({ next, axios, store }) {
   if (localStorage.getItem("MB-app") !== null) {
     //ใส่ตรงเพื่อไว้ f5 ไม่งั้น มันไปไม่ถูก 404
     //const {getWebUrl} = require('../../js/geturl')
-    axios.defaults.baseURL = "http://localhost:9200/login";
+    axios.defaults.baseURL = import.meta.env.VITE_AUTH_BASE_URL;
     axios.defaults.headers.common["Authorization"] =
       localStorage.getItem("MB-app"); //for all request
 
@@ -35,7 +35,7 @@ export default async function guest({ next, axios, store }) {
             }
 
             axios
-              .get(`http://localhost:9200/mb_policy/policy_approve`)
+              .get(import.meta.env.VITE_POLICY_APPROVE_URL)
               .then((response) => {
                 // ดึงข้อมูลออกมาจาก response.data
                 const data = response.data.data;

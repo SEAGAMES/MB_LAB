@@ -1,5 +1,4 @@
 <template>
-  <div>{{ this.$store.getters }}</div>
   <v-container class="fontSarabun">
     <v-row>
       <span>{{ version }}</span>
@@ -21,7 +20,7 @@
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-4">
-                <p>ผู้จอง : {{ form.rent_name }}</p>
+                <p>ผู้จอง : {{ dataBookLab.name }}</p>
               </div>
             </v-col>
 
@@ -161,11 +160,6 @@ export default {
       iconSnackBar: "",
     },
 
-    form: {
-      rent_name: "ธนกฤต นิ่มนวล",
-      telNo: "",
-      lab_room: [],
-    },
     telNoRules: [(v) => !!v || "กรุณาใส่เบอร์โทรศัพท์"],
     floorRules: [(v) => !!v || "กรุณาระบุข้อมูล"],
     dateRules: [(v) => !!v || "กรุณาระบุวันที่จอง"],
@@ -194,18 +188,17 @@ export default {
       { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
     ],
 
+    lab_room: [],
+
     dataBookLab: {
       ac_name: "",
       name: "",
-      num_in_team: 5,
       phone: "07894561",
       zone: "B",
       floor: "2",
       where_lab: "B203",
       start_date: "",
       endtime: "",
-      appove_status: "true",
-      appove_ac_name: "thanakrit.nim",
     },
     loadingBtn: false,
     dataBookingLab: [],
@@ -214,7 +207,7 @@ export default {
 
   mounted() {
     this.getRoomLab();
-    this.form.rent_name = this.$store.getters.userData.thainame;
+    this.dataBookLab.name = this.$store.getters.userData.thainame;
     //this.createBookLabRoom();
   },
 
@@ -281,6 +274,7 @@ export default {
         if (result.data.msg === "ok") {
           this.alertShow(true, "Success", "success", "mdi-shield-check");
           this.loadingBtn = false;
+          this.loadBookingLab();
         } else {
           this.alertShow(
             true,
@@ -294,8 +288,7 @@ export default {
     },
 
     async getRoomLab() {
-      this.form.lab_room = await apiRoomLab.getRoomLab();
-      // console.log("this.form.lab_room ", this.form.lab_room);
+      this.lab_room = await apiRoomLab.getRoomLab();
     },
 
     async loadBookingLab() {
@@ -340,12 +333,25 @@ export default {
       }/${dateObject.getFullYear()} (${timeString} น.)`;
       return formattedDate;
     },
+
+    clearInputData() {
+      this.dataBookLab = {
+        ac_name: "",
+        name: "",
+        phone: "",
+        zone: "",
+        floor: "",
+        where_lab: "",
+        start_date: "",
+        endtime: "",
+      };
+    },
   },
 
   computed: {
     room_list() {
       let room = [];
-      let room_filter = this.form.lab_room.filter((row) => {
+      let room_filter = this.lab_room.filter((row) => {
         return (
           row.zone === this.dataBookLab.zone &&
           row.floor === this.dataBookLab.floor

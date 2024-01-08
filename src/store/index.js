@@ -29,11 +29,9 @@ const store = createStore({
   },
   actions: {
     addUserData(context, value) {
-      console.log("value : ", value)
       context.commit("setUserData", value);
     },
-    addUserPolicy(context, value){
-      console.log("value : ", value)
+    addUserPolicy(context, value) {
       context.commit("setUserPolicy", value);
     },
     swapName(context, value) {
@@ -54,7 +52,7 @@ const store = createStore({
       return state.userData;
     },
     userPolicy(state) {
-      return state.userPolicy
+      return state.userPolicy;
     },
     showname(state) {
       return state.showname;
@@ -73,7 +71,6 @@ const store = createStore({
     },
   },
   modules: {},
-  
 });
 
 export default store;
