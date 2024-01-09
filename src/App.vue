@@ -1,6 +1,35 @@
 <template>
   <v-app>
     <v-main>
+      <div>
+        <v-toolbar color="blue-grey-lighten-4" dark>
+          <v-row>
+            <v-col
+              ><v-img src="./assets/mbmu.png" alt="Icon" max-height="70"></v-img
+            ></v-col>
+            <v-col cols="7">
+              <v-toolbar-title align="center"></v-toolbar-title>
+            </v-col>
+            <v-col cols="2">
+              <v-switch
+                v-model="form.language"
+                @change="memoryLanguage"
+                hide-details
+                true-value="ENG"
+                false-value="TH"
+                color="indigo"
+                :label="`${form.language}`"
+              ></v-switch>
+            </v-col>
+            <!-- <v-col
+              ><a-switch
+              v-model:checked="form.language"
+                checked-children="ENG"
+                un-checked-children="TH"
+            /></v-col> -->
+          </v-row>
+        </v-toolbar>
+      </div>
       <router-view />
       <LanguagePageVue />
     </v-main>
@@ -13,6 +42,43 @@ import LanguagePageVue from "./components/LanguagePage.vue";
 export default {
   components: {
     LanguagePageVue,
+  },
+  data() {
+    return {
+      form: {
+        language: "TH",
+      },
+    };
+  },
+
+  mounted() {
+    const dataForm =
+      JSON.parse(localStorage.getItem("mb_select_language")) || {};
+    console.log(dataForm.language);
+    this.form = { ...this.form, ...dataForm };
+
+    if (dataForm.language !== undefined) {
+      console.log("ใช่");
+    }
+    // if (localStorage.getItem("mb_select_language") === null) {
+    //   this.memoryLanguage();
+    // } else {
+    //   this.form.language = localStorage.getItem("mb_select_language");
+    //   if (this.form.language === "TH") {
+    //     this.form.language = 'TH'
+    //     console.log('ดึง TH')
+    //   } else {
+    //     this.form.language = 'ENG'
+    //     console.log('ดึง ENG');
+    //   }
+    // }
+  },
+
+  methods: {
+    memoryLanguage() {
+      console.log("language : ", this.form.language);
+      localStorage.setItem("mb_select_language", JSON.stringify(this.form));
+    },
   },
 };
 </script>
