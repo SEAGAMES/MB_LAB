@@ -1,17 +1,22 @@
 <template>
   <v-app>
     <v-main>
+      <!-- {{ this.$store.getters.language }} -->
       <div>
         <v-toolbar color="blue-grey-lighten-4" dark>
           <v-row>
             <v-col
-              ><v-img src="./assets/mbmu.png" alt="Icon" max-height="70"></v-img
+              ><a href="https://mb.mahidol.ac.th/app/#/">
+                <v-img
+                  src="./assets/mbmu.png"
+                  alt="Icon"
+                  max-height="65"
+                  class="mt-n3"
+                ></v-img> </a
             ></v-col>
-            <v-col cols="7">
-              <v-toolbar-title align="center"></v-toolbar-title>
-            </v-col>
-            <v-col cols="2">
-              <v-switch
+            <v-col cols="7"> </v-col>
+            <v-col cols="2" class="mt-2">
+              <!-- <v-switch
                 v-model="form.language"
                 @change="memoryLanguage"
                 hide-details
@@ -19,14 +24,14 @@
                 false-value="TH"
                 color="indigo"
                 :label="`${form.language}`"
-              ></v-switch>
-            </v-col>
-            <!-- <v-col
-              ><a-switch
-              v-model:checked="form.language"
+              ></v-switch> -->
+              <a-switch
+                v-model:checked="form.language"
+                @change="memoryLanguage"
                 checked-children="ENG"
                 un-checked-children="TH"
-            /></v-col> -->
+              />
+            </v-col>
           </v-row>
         </v-toolbar>
       </div>
@@ -46,20 +51,17 @@ export default {
   data() {
     return {
       form: {
-        language: "TH",
+        language: false,
       },
     };
   },
 
   mounted() {
-    const dataForm =
-      JSON.parse(localStorage.getItem("mb_select_language")) || {};
-    console.log(dataForm.language);
-    this.form = { ...this.form, ...dataForm };
+    // const dataForm =
+    //   JSON.parse(localStorage.getItem("mb_select_language")) || {};
+    // console.log(dataForm.language);
+    // this.form = { ...this.form, ...dataForm };
 
-    if (dataForm.language !== undefined) {
-      console.log("ใช่");
-    }
     // if (localStorage.getItem("mb_select_language") === null) {
     //   this.memoryLanguage();
     // } else {
@@ -72,6 +74,25 @@ export default {
     //     console.log('ดึง ENG');
     //   }
     // }
+
+    const dataForm =
+      JSON.parse(localStorage.getItem("mb_select_language")) || {};
+    this.form = { ...this.form, ...dataForm };
+
+    const language = this.form.language;
+
+    if (localStorage.getItem("mb_select_language") === null) {
+      this.memoryLanguage();
+    } else {
+      this.form.language = localStorage.getItem("mb_select_language");
+      if (language === false) {
+        this.form.language = false;
+        this.$store.dispatch("addLanguage", 'TH')
+      } else {
+        this.form.language = true;
+       // this.$store.dispatch("language", 'ENG')
+      }
+    }
   },
 
   methods: {
@@ -84,6 +105,18 @@ export default {
 </script>
 
 <style>
+.v-main {
+  background-image: url('./assets/background/mb-building2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white; /* สีของข้อความ */
+}
+
+.v-toolbar {
+  height: 50px; /* ปรับความสูงตามที่ต้องการ */
+}
+
 @font-face {
   font-family: "Prompt";
   src: url("./assets/Font/Prompt/Prompt-Regular.ttf") format("truetype");

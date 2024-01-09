@@ -40,7 +40,7 @@ const store = createStore({
     swapPosition(context, value) {
       context.commit("setPosition", value);
     },
-    setLanguage(context, value) {
+    addLanguage(context, value) {
       context.commit("setLanguage", value);
     },
     show_management(context, value) {

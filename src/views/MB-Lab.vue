@@ -3,7 +3,7 @@
     <v-row>
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
-      <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1>
+      <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
       <a-button
         v-if="checkUserPolicy()"
@@ -20,7 +20,7 @@
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-4">
-                <p>ผู้จอง : {{ dataBookLab.name }}</p>
+                <p>{{ languageForShow.booker }} : {{ dataBookLab.name }}</p>
               </div>
             </v-col>
 
@@ -200,12 +200,36 @@ export default {
       start_date: "",
       endtime: "",
     },
+    languageForShow: {
+      booker: "",
+      zone: "",
+      floor: "",
+      room: "",
+      dateTimeBooking: "",
+      sentForm: "",
+    },
+
     loadingBtn: false,
     dataBookingLab: [],
     dateSelect: [],
   }),
 
   mounted() {
+    if (this.$store.getters.language === "TH") {
+      (this.languageForShow.booker = "ผู้จอง"),
+        (this.languageForShow.zone = "โซน"),
+        (this.languageForShow.floor = "ชั้น"),
+        (this.languageForShow.room = "ห้อง"),
+        (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
+        (this.languageForShow.sentForm = "ส่งแบบฟอร์ม");
+    } else {
+      (this.languageForShow.booker = "Booker"),
+        (this.languageForShow.zone = "Zone"),
+        (this.languageForShow.floor = "Floor"),
+        (this.languageForShow.room = "Room"),
+        (this.languageForShow.dateTimeBooking = "Date Time Booking"),
+        (this.languageForShow.sentForm = "Sent Form");
+    }
     this.getRoomLab();
     this.dataBookLab.name = this.$store.getters.userData.thainame;
     //this.createBookLabRoom();
