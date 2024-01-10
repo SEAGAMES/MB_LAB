@@ -20,7 +20,7 @@
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-4">
-                <p>{{ formLanguge }} : {{ dataBookLab.name }}</p>
+                <p>{{ languageForShow.booker }} : {{ dataBookLab.name }}</p>
               </div>
             </v-col>
 
@@ -86,7 +86,7 @@
           </v-row>
           <v-row class="fontSize18 ml-1">
             <div>
-              <p>ช่วงเวลาที่ต้องการจอง :</p>
+              <p>{{ languageForShow.dateTimeBooking }} :</p>
             </div>
             <div class="mt-n1 ml-2">
               <a-range-picker
@@ -107,7 +107,7 @@
               color="green"
               append-icon="mdi-check-circle"
               block
-              >ส่งแบบฟอร์ม</v-btn
+              >{{ languageForShow.sentForm }}</v-btn
             >
           </v-row>
         </v-card-text>
@@ -118,7 +118,19 @@
       ><a-table :columns="columns" :data-source="dataBookingLab.data">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
-            <span> ชื่อ-นามสกุล </span>
+            <span> {{ languageForShow.headerTable.name }} </span>
+          </template>
+          <template v-if="column.key === 'phone'">
+            <span> {{ languageForShow.headerTable.tel }} </span>
+          </template>
+          <template v-if="column.key === 'where_lab'">
+            <span> {{ languageForShow.headerTable.room }} </span>
+          </template>
+          <template v-if="column.key === 'start_date'">
+            <span> {{ languageForShow.headerTable.sentTime }} </span>
+          </template>
+          <template v-if="column.key === 'end_date'">
+            <span> {{ languageForShow.headerTable.endTime }} </span>
           </template>
         </template>
 
@@ -210,6 +222,16 @@ export default {
       room: "",
       dateTimeBooking: "",
       sentForm: "",
+
+      headerTable: {
+        name: "",
+        tel: "",
+        room: "",
+        sentTime: "",
+        startTime: "",
+        endTime: "",
+        status: "",
+      },
     },
 
     loadingBtn: false,
@@ -358,31 +380,14 @@ export default {
         endtime: "",
       };
     },
-
-    test() {
-      
-      this.languageForShow.booker = this.$store.getters.formLanguge.booker  
-      this.languageForShow.zone = this.$store.getters.formLanguge.zone
-      this.languageForShow.floor = this.$store.getters.formLanguge.floor
-      this.languageForShow.room = this.$store.getters.formLanguge.room
-      this.languageForShow.dateTimeBooking = this.$store.getters.formLanguge.dateTimeBooking
-      this.languageForShow.sentForm = this.$store.getters.formLanguge.sentForm
-
-      console.log('dataBookLab : ', this.languageForShow)
-    }
-
-    // booker: "",
-    //   zone: "",
-    //   floor: "",
-    //   room: "",
-    //   dateTimeBooking: "",
-    //   sentForm: "",
-
-   
   },
 
   computed: {
     ...mapGetters(["formLanguge"]),
+
+    languageForShowComputed() {
+      return this.formLanguge || this.languageForShow;
+    },
 
     room_list() {
       let room = [];
@@ -403,9 +408,14 @@ export default {
 
   watch: {
     "dataBookLab.where_lab": "loadBookingLab", // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
-    "formLanguge": 'test'
+
+    languageForShowComputed: {
+      handler(newVal) {
+        this.languageForShow = newVal;
+      },
+      immediate: true, // ให้ watch ทำงานทันทีเมื่อ component ถูกสร้าง
+    },
   },
- 
 };
 </script>
 

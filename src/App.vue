@@ -16,15 +16,6 @@
             ></v-col>
             <v-col cols="7"> </v-col>
             <v-col cols="2" class="mt-2">
-              <!-- <v-switch
-                v-model="form.language"
-                @change="memoryLanguage"
-                hide-details
-                true-value="ENG"
-                false-value="TH"
-                color="indigo"
-                :label="`${form.language}`"
-              ></v-switch> -->
               <a-switch
                 v-model:checked="form.language"
                 @change="memoryLanguage"
@@ -60,29 +51,21 @@ export default {
         room: "",
         dateTimeBooking: "",
         sentForm: "",
+
+        headerTable: {
+          name: "",
+          tel: "",
+          room: "",
+          sentTime: "",
+          startTime: "",
+          endTime: "",
+          status: "",
+        },
       },
     };
   },
 
   mounted() {
-    // const dataForm =
-    //   JSON.parse(localStorage.getItem("mb_select_language")) || {};
-    // console.log(dataForm.language);
-    // this.form = { ...this.form, ...dataForm };
-
-    // if (localStorage.getItem("mb_select_language") === null) {
-    //   this.memoryLanguage();
-    // } else {
-    //   this.form.language = localStorage.getItem("mb_select_language");
-    //   if (this.form.language === "TH") {
-    //     this.form.language = 'TH'
-    //     console.log('ดึง TH')
-    //   } else {
-    //     this.form.language = 'ENG'
-    //     console.log('ดึง ENG');
-    //   }
-    // }
-
     const dataForm =
       JSON.parse(localStorage.getItem("mb_select_language")) || {};
     this.form = { ...this.form, ...dataForm };
@@ -98,12 +81,13 @@ export default {
         this.$store.dispatch("addLanguage", "TH");
       } else {
         this.form.language = true;
-        // this.$store.dispatch("language", 'ENG')
       }
+      this.memoryLanguage();
     }
   },
 
   methods: {
+    // สำหรับเปลี่ยนภาษา
     memoryLanguage() {
       console.log("language : ", this.form.language);
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
@@ -113,7 +97,14 @@ export default {
           (this.languageForShow.floor = "ชั้น"),
           (this.languageForShow.room = "ห้อง"),
           (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
-          (this.languageForShow.sentForm = "ส่งแบบฟอร์ม");
+          (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
+          (this.languageForShow.headerTable.name = "ชื่อ-นามสกุล"),
+          (this.languageForShow.headerTable.tel = "เบอร์"),
+          (this.languageForShow.headerTable.room = "ห้อง"),
+          (this.languageForShow.headerTable.sentTime = "เวลาที่กดจอง"),
+          (this.languageForShow.headerTable.sentTime = "เริ่มใช้เวลา"),
+          (this.languageForShow.headerTable.endTime = "ถึง"),
+          (this.languageForShow.headerTable.status = "สถานะ");
       } else {
         (this.languageForShow.booker = "Booker"),
           (this.languageForShow.zone = "Zone"),
@@ -121,6 +112,13 @@ export default {
           (this.languageForShow.room = "Room"),
           (this.languageForShow.dateTimeBooking = "Date Time Booking"),
           (this.languageForShow.sentForm = "Sent Form");
+        (this.languageForShow.headerTable.name = "Name"),
+          (this.languageForShow.headerTable.tel = "Tel."),
+          (this.languageForShow.headerTable.room = "Room"),
+          (this.languageForShow.headerTable.sentTime = "Sent Time"),
+          (this.languageForShow.headerTable.sentTime = "Start"),
+          (this.languageForShow.headerTable.endTime = "End"),
+          (this.languageForShow.headerTable.status = "Status");
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       console.log(this.$store.getters.formLanguge);
