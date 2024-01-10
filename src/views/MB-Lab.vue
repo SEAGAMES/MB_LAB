@@ -20,7 +20,7 @@
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-4">
-                <p>{{ languageForShow.booker }} : {{ dataBookLab.name }}</p>
+                <p>{{ formLanguge }} : {{ dataBookLab.name }}</p>
               </div>
             </v-col>
 
@@ -52,8 +52,10 @@
                   dense
                   :items="['B', 'C', 'D']"
                   variant="outlined"
-                ></v-select></div
-            ></v-col>
+                  >sss</v-select
+                >
+              </div></v-col
+            >
             <v-col>
               <div>
                 <v-select
@@ -144,6 +146,7 @@
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
 import apiRoomLab from "../services/apiRoomLab";
 
 export default {
@@ -215,21 +218,6 @@ export default {
   }),
 
   mounted() {
-    if (this.$store.getters.language === "TH") {
-      (this.languageForShow.booker = "ผู้จอง"),
-        (this.languageForShow.zone = "โซน"),
-        (this.languageForShow.floor = "ชั้น"),
-        (this.languageForShow.room = "ห้อง"),
-        (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
-        (this.languageForShow.sentForm = "ส่งแบบฟอร์ม");
-    } else {
-      (this.languageForShow.booker = "Booker"),
-        (this.languageForShow.zone = "Zone"),
-        (this.languageForShow.floor = "Floor"),
-        (this.languageForShow.room = "Room"),
-        (this.languageForShow.dateTimeBooking = "Date Time Booking"),
-        (this.languageForShow.sentForm = "Sent Form");
-    }
     this.getRoomLab();
     this.dataBookLab.name = this.$store.getters.userData.thainame;
     //this.createBookLabRoom();
@@ -370,9 +358,32 @@ export default {
         endtime: "",
       };
     },
+
+    test() {
+      
+      this.languageForShow.booker = this.$store.getters.formLanguge.booker  
+      this.languageForShow.zone = this.$store.getters.formLanguge.zone
+      this.languageForShow.floor = this.$store.getters.formLanguge.floor
+      this.languageForShow.room = this.$store.getters.formLanguge.room
+      this.languageForShow.dateTimeBooking = this.$store.getters.formLanguge.dateTimeBooking
+      this.languageForShow.sentForm = this.$store.getters.formLanguge.sentForm
+
+      console.log('dataBookLab : ', this.languageForShow)
+    }
+
+    // booker: "",
+    //   zone: "",
+    //   floor: "",
+    //   room: "",
+    //   dateTimeBooking: "",
+    //   sentForm: "",
+
+   
   },
 
   computed: {
+    ...mapGetters(["formLanguge"]),
+
     room_list() {
       let room = [];
       let room_filter = this.lab_room.filter((row) => {
@@ -392,7 +403,9 @@ export default {
 
   watch: {
     "dataBookLab.where_lab": "loadBookingLab", // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
+    "formLanguge": 'test'
   },
+ 
 };
 </script>
 

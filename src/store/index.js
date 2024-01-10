@@ -14,6 +14,9 @@ const store = createStore({
     setUserPolicy(state, payload) {
       state.userPolicy = payload;
     },
+    setFormLanguage(state, payload) {
+      state.formLanguge = payload;
+    },
     setShowname(state, payload) {
       state.showname = payload;
     },
@@ -34,6 +37,9 @@ const store = createStore({
     addUserPolicy(context, value) {
       context.commit("setUserPolicy", value);
     },
+    addFormLanguage(context, value) {
+      context.commit("setFormLanguage", value);
+    },
     swapName(context, value) {
       context.commit("setShowname", value);
     },
@@ -53,6 +59,9 @@ const store = createStore({
     },
     userPolicy(state) {
       return state.userPolicy;
+    },
+    formLanguge(state) {
+      return state.formLanguge;
     },
     showname(state) {
       return state.showname;

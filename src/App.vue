@@ -53,6 +53,14 @@ export default {
       form: {
         language: false,
       },
+      languageForShow: {
+        booker: "",
+        zone: "",
+        floor: "",
+        room: "",
+        dateTimeBooking: "",
+        sentForm: "",
+      },
     };
   },
 
@@ -87,10 +95,10 @@ export default {
       this.form.language = localStorage.getItem("mb_select_language");
       if (language === false) {
         this.form.language = false;
-        this.$store.dispatch("addLanguage", 'TH')
+        this.$store.dispatch("addLanguage", "TH");
       } else {
         this.form.language = true;
-       // this.$store.dispatch("language", 'ENG')
+        // this.$store.dispatch("language", 'ENG')
       }
     }
   },
@@ -99,6 +107,23 @@ export default {
     memoryLanguage() {
       console.log("language : ", this.form.language);
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
+      if (this.form.language === false) {
+        (this.languageForShow.booker = "ผู้จอง"),
+          (this.languageForShow.zone = "โซน"),
+          (this.languageForShow.floor = "ชั้น"),
+          (this.languageForShow.room = "ห้อง"),
+          (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
+          (this.languageForShow.sentForm = "ส่งแบบฟอร์ม");
+      } else {
+        (this.languageForShow.booker = "Booker"),
+          (this.languageForShow.zone = "Zone"),
+          (this.languageForShow.floor = "Floor"),
+          (this.languageForShow.room = "Room"),
+          (this.languageForShow.dateTimeBooking = "Date Time Booking"),
+          (this.languageForShow.sentForm = "Sent Form");
+      }
+      this.$store.dispatch("addFormLanguage", this.languageForShow);
+      console.log(this.$store.getters.formLanguge);
     },
   },
 };
@@ -106,7 +131,7 @@ export default {
 
 <style>
 .v-main {
-  background-image: url('./assets/background/mb-building2.jpg');
+  background-image: url("./assets/background/mb-building2.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
