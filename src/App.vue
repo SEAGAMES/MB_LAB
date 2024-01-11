@@ -102,7 +102,7 @@ export default {
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
           (this.languageForShow.headerTable.sentTime = "เวลาที่กดจอง"),
-          (this.languageForShow.headerTable.sentTime = "เริ่มใช้เวลา"),
+          (this.languageForShow.headerTable.startTime = "เริ่มใช้เวลา"),
           (this.languageForShow.headerTable.endTime = "ถึง"),
           (this.languageForShow.headerTable.status = "สถานะ");
       } else {
@@ -116,12 +116,12 @@ export default {
           (this.languageForShow.headerTable.tel = "Tel."),
           (this.languageForShow.headerTable.room = "Room"),
           (this.languageForShow.headerTable.sentTime = "Sent Time"),
-          (this.languageForShow.headerTable.sentTime = "Start"),
+          (this.languageForShow.headerTable.startTime = "Start"),
           (this.languageForShow.headerTable.endTime = "End"),
           (this.languageForShow.headerTable.status = "Status");
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
-      console.log(this.$store.getters.formLanguge);
+      //console.log(this.$store.getters.formLanguge);
     },
   },
 };

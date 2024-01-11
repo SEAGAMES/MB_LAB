@@ -31,6 +31,7 @@ const createBookLabRoom = async (data) => {
 }
 
 const updateApproveStatus = async (id, statusCode) => {
+  // console.log(id, statusCode)
   const result = axios.post(`${apiUrl}updateApproveStatus`, {
     id: id,
     statusCode: statusCode,

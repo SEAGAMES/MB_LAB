@@ -2,65 +2,55 @@
   <v-container class="fontSarabun">
     <v-row>
       <v-spacer></v-spacer>
-      <h1 class="text-bold mt-3">ระบบอนุมัติห้องแล็บ</h1>
+      <h1 class="text-bold mt-3 text-indigo-darken-4">ระบบอนุมัติห้องแล็บ</h1>
       <v-spacer></v-spacer>
     </v-row>
-
-    <!-- data -->
-    <a-table :data-source="dataLoad" class="mt-6">
-      <a-table-column
-        v-for="column in columns"
-        :key="column.key"
-        :title="column.title"
-      >
-        <!-- กำหนดการแสดงผลข้อมูลในแต่ละ cell -->
-        <template v-slot:default="{ record }">
-          <tr @click="selectRow(record)" style="cursor: pointer">
-            <td>{{ record[column.key] }}</td>
-          </tr>
+    <v-card class="mx-auto my-7" width="900">
+      <a-table :columns="columns" :data-source="dataLoad">
+        <template #headerCell="{ column }">
+          <template v-if="column.key === 'name'">
+            <span> {{ languageForShow.headerTable.name }} </span>
+          </template>
+          <template v-if="column.key === 'phone'">
+            <span> {{ languageForShow.headerTable.tel }} </span>
+          </template>
+          <template v-if="column.key === 'where_lab'">
+            <span> {{ languageForShow.headerTable.room }} </span>
+          </template>
+          <template v-if="column.key === 'timebook'">
+            <span> {{ languageForShow.headerTable.sentTime }} </span>
+          </template>
+          <template v-if="column.key === 'start_date'">
+            <span> {{ languageForShow.headerTable.startTime }} </span>
+          </template>
+          <template v-if="column.key === 'end_date'">
+            <span> {{ languageForShow.headerTable.endTime }} </span>
+          </template>
+          <template v-if="column.key === 'appove_status'">
+            <span> {{ languageForShow.headerTable.status }} </span>
+          </template>
         </template>
-      </a-table-column>
-
-      <!-- status -->
-      <a-table-column title="สถานะ">
-        <template v-slot:default="{ record }">
-          <a-button
-            class="custom-button"
-            @click="selectRow(record)"
-            :style="getStatusButtonStyle(record.appove_status)"
-          >
-            {{ getStatusLabel(record.appove_status) }}
-          </a-button>
+        <template #bodyCell="{ column, record }">
+          <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
+          <template v-if="column.key === 'appove_status'">
+            <!-- แสดง textbox แทนที่ -->
+            <a-button
+              class="custom-button"
+              @click="selectRow(record)"
+              :style="getStatusButtonStyle(record.appove_status)"
+            >
+              {{ getStatusLabel(record.appove_status) }}
+            </a-button>
+          </template>
+          <!-- กรณีอื่น ๆ -->
+          <template v-else>
+            <!-- แสดงข้อมูลปกติ -->
+            <span>{{ record[column.key] }}</span>
+          </template>
         </template>
-      </a-table-column>
+      </a-table>
+    </v-card>
 
-      <!-- สำรอง status -->
-      <!-- <a-table-column title="สถานะ">
-        <template v-slot:default="{ record }">
-          <a-button
-            class="custom-button"
-            v-if="record.appove_status === 0"
-            style="background-color: orange"
-          >
-            รออนุมัติ
-          </a-button>
-          <a-button
-            class="custom-button"
-            v-if="record.appove_status === 1"
-            style="background-color: lightgreen"
-          >
-            ไม่อนุมัติ
-          </a-button>
-          <a-button
-            class="custom-button"
-            v-if="record.appove_status === 2"
-            style="background-color: lightcoral"
-          >
-            อนุมัติแล้ว
-          </a-button>
-        </template>
-      </a-table-column> -->
-    </a-table>
     <a-button
       style="background-color: lightcoral"
       @click="$router.push({ name: 'Mb_Lab' })"
@@ -77,9 +67,10 @@
       @ok="updateApproveStatus()"
     >
       <a-select
-        :options="options"
+        v-model:value="value"
         style="width: 100%"
-      />
+        :options="options"
+      ></a-select>
     </a-modal>
   </div>
 
@@ -96,6 +87,8 @@
   
   <script>
 import { ref, onMounted } from "vue";
+import { mapGetters } from "vuex";
+import { message } from "ant-design-vue";
 import { Select } from "ant-design-vue";
 import apiRoomLab from "../services/apiRoomLab";
 
@@ -104,6 +97,25 @@ export default {
     "a-select": Select,
   },
   data: () => ({
+    // languageForShow: {
+    //   booker: "",
+    //   zone: "",
+    //   floor: "",
+    //   room: "",
+    //   dateTimeBooking: "",
+    //   sentForm: "",
+
+    //   headerTable: {
+    //     name: "",
+    //     tel: "",
+    //     room: "",
+    //     sentTime: "",
+    //     startTime: "",
+    //     endTime: "",
+    //     status: "",
+    //   },
+    // },
+    loadingBtn: false,
     snackBar: {
       showSnackBar: false,
       titleSnackBar: "",
@@ -113,21 +125,41 @@ export default {
     changeStatus: false,
     dataDetail: [],
     dataID: [],
+
+    columns: [
+      {
+        key: "name",
+        title: "ชื่อ-นามสกุล",
+        dataIndex: "name",
+        align: "center",
+      },
+      { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
+      //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
+      {
+        key: "where_lab",
+        title: "ห้อง",
+        dataIndex: "where_lab",
+        align: "center",
+      },
+      { key: "timebook", title: "เวลาที่กดจอง", dataIndex: "timebook" },
+      {
+        key: "start_date",
+        title: "เริ่มใช้เวลา",
+        dataIndex: "start_date",
+        align: "center",
+      },
+      { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
+      {
+        key: "appove_status",
+        title: "สถานะ",
+        dataIndex: "appove_status",
+        align: "center",
+      },
+    ],
   }),
 
   setup() {
     const dataLoad = ref([]);
-
-    const columns = ref([
-      { key: "name", title: "ชื่อ-นามสกุล", dataIndex: "name" },
-      { key: "phone", title: "เบอร์", dataIndex: "phone" },
-      { key: "where_lab", title: "ห้อง", dataIndex: "where_lab" },
-      { key: "timebook", title: "เวลาที่กดจอง", dataIndex: "timebook" },
-      { key: "start_date", title: "เริ่มใช้เวลา", dataIndex: "start_date" },
-      { key: "end_date", title: "ถึง", dataIndex: "end_date" },
-    ]);
-
-    const selectedOption = ref(null);
     const options = ref([
       { label: "รออนุมัติ", value: 0 },
       { label: "อนุมัติ", value: 1 },
@@ -141,8 +173,6 @@ export default {
 
     return {
       dataLoad,
-      columns,
-      selectedOption,
       options,
     };
   },
@@ -236,6 +266,7 @@ export default {
     },
 
     async updateApproveStatus() {
+      this.changeStatus = false;
       const result = await apiRoomLab.updateApproveStatus(
         this.dataID,
         this.value
@@ -243,18 +274,37 @@ export default {
 
       setTimeout(async () => {
         if (result.data.msg === "ok") {
-          this.alertShow(true, "Success", "success", "mdi-shield-check");
-          this.loadingBtn = false;
+          message.success("save data is success");
+          //this.alertShow(true, "Success", "success", "mdi-shield-check");
+          this.getRoomLab();
         } else {
-          this.alertShow(
-            true,
-            "มีการใช้ช่วงเวลานี้เเล้ว",
-            "red",
-            "mdi-shield-alert"
-          );
-          this.loadingBtn = false;
+          message.error("error can not to save");
+          // this.alertShow(
+          //   true,
+          //   "มีการใช้ช่วงเวลานี้เเล้ว",
+          //   "red",
+          //   "mdi-shield-alert"
+          // );
         }
       }, 1500);
+    },
+  },
+
+  computed: {
+    ...mapGetters(["formLanguge"]),
+
+    languageForShowComputed() {
+      return this.formLanguge || this.languageForShow;
+    },
+  },
+
+  watch: {
+    languageForShowComputed: {
+      handler(newVal) {
+        this.languageForShow = newVal;
+        console.log("this.languageForShow : ", this.languageForShow);
+      },
+      immediate: true, // ให้ watch ทำงานทันทีเมื่อ component ถูกสร้าง
     },
   },
 };

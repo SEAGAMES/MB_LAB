@@ -127,7 +127,7 @@
             <span> {{ languageForShow.headerTable.room }} </span>
           </template>
           <template v-if="column.key === 'start_date'">
-            <span> {{ languageForShow.headerTable.sentTime }} </span>
+            <span> {{ languageForShow.headerTable.startTime }} </span>
           </template>
           <template v-if="column.key === 'end_date'">
             <span> {{ languageForShow.headerTable.endTime }} </span>
@@ -215,24 +215,24 @@ export default {
       start_date: "",
       endtime: "",
     },
-    languageForShow: {
-      booker: "",
-      zone: "",
-      floor: "",
-      room: "",
-      dateTimeBooking: "",
-      sentForm: "",
+    // languageForShow: {
+    //   booker: "",
+    //   zone: "",
+    //   floor: "",
+    //   room: "",
+    //   dateTimeBooking: "",
+    //   sentForm: "",
 
-      headerTable: {
-        name: "",
-        tel: "",
-        room: "",
-        sentTime: "",
-        startTime: "",
-        endTime: "",
-        status: "",
-      },
-    },
+    //   headerTable: {
+    //     name: "",
+    //     tel: "",
+    //     room: "",
+    //     sentTime: "",
+    //     startTime: "",
+    //     endTime: "",
+    //     status: "",
+    //   },
+    // },
 
     loadingBtn: false,
     dataBookingLab: [],

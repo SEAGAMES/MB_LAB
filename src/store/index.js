@@ -80,6 +80,27 @@ const store = createStore({
     },
   },
   modules: {},
+
+  state: {
+    // สำหรับเปลี่ยนภาษา
+    language_TH: {
+      booker: "",
+      zone: "",
+      floor: "",
+      room: "",
+      dateTimeBooking: "",
+      sentForm: "",
+      headerTable: {
+        name: "",
+        tel: "",
+        room: "",
+        sentTime: "",
+        startTime: "",
+        endTime: "",
+        status: "",
+      },
+    },
+  },
 });
 
 export default store;
