@@ -5,7 +5,7 @@
       <h1 class="text-bold mt-3 text-indigo-darken-4">ระบบอนุมัติห้องแล็บ</h1>
       <v-spacer></v-spacer>
     </v-row>
-    <v-card class="mx-auto my-7" width="900">
+    <v-card class="mx-auto my-7" width="1200">
       <a-table :columns="columns" :data-source="dataLoad">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
@@ -31,6 +31,26 @@
           </template>
         </template>
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'name'">
+            <div :style="{ color: '#3F51B5' }">
+              {{ record.name }}
+            </div>
+          </template>
+          <template v-if="column.key === 'where_lab'">
+            <div :style="{ color: '#00BFA5' }">
+              {{ record.where_lab }}
+            </div>
+          </template>
+          <template v-if="column.key === 'start_date'">
+            <div :style="{ color: '#F57C00' }">
+              {{ record.start_date }}
+            </div>
+          </template>
+          <template v-if="column.key === 'end_date'">
+            <div :style="{ color: '#F57C00' }">
+              {{ record.end_date }}
+            </div>
+          </template>
           <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
           <template v-if="column.key === 'appove_status'">
             <!-- แสดง textbox แทนที่ -->
@@ -41,11 +61,6 @@
             >
               {{ getStatusLabel(record.appove_status) }}
             </a-button>
-          </template>
-          <!-- กรณีอื่น ๆ -->
-          <template v-else>
-            <!-- แสดงข้อมูลปกติ -->
-            <span>{{ record[column.key] }}</span>
           </template>
         </template>
       </a-table>
@@ -141,7 +156,12 @@ export default {
         dataIndex: "where_lab",
         align: "center",
       },
-      { key: "timebook", title: "เวลาที่กดจอง", dataIndex: "timebook" },
+      {
+        key: "timebook",
+        title: "เวลาที่กดจอง",
+        dataIndex: "timebook",
+        align: "center",
+      },
       {
         key: "start_date",
         title: "เริ่มใช้เวลา",
@@ -196,13 +216,13 @@ export default {
 
       // สร้างรายการของชื่อวันในภาษาไทย
       const thaiDays = [
-        "(อา.)",
-        "(จ.)",
-        "(อ.)",
-        "(พ.)",
-        "(พฤ.)",
-        "(ศ.)",
-        "(ส.)",
+        "(Sun.)",
+        "(Mon.)",
+        "(Tue.)",
+        "(Wed.)",
+        "(Thu.)",
+        "(Fri.)",
+        "(Sat.)",
       ];
 
       // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
@@ -212,13 +232,44 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
+        hour12: true, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
       });
+
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
-      }/${dateObject.getFullYear()} (${timeString} น.)`;
+      }/${dateObject.getFullYear()} (${timeString})`;
       return formattedDate;
     },
+
+    // formatdate(date) {
+    //   const isoDate = date;
+    //   const dateObject = new Date(isoDate);
+
+    //   // สร้างรายการของชื่อวันในภาษาไทย
+    //   const thaiDays = [
+    //     "(Sun.)",
+    //     "(Mon.)",
+    //     "(Tue.)",
+    //     "(Wed.)",
+    //     "(Thu.)",
+    //     "(Fri.)",
+    //     "(Sat.)",
+    //   ];
+
+    //   // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
+    //   const dayName = thaiDays[dateObject.getDay()];
+
+    //   // สร้างรูปแบบในการแสดงผล
+    //   const timeString = dateObject.toLocaleTimeString([], {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //     hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
+    //   });
+    //   const formattedDate = `${dayName} ${dateObject.getDate()}/${
+    //     dateObject.getMonth() + 1
+    //   }/${dateObject.getFullYear()} (${timeString} น.)`;
+    //   return formattedDate;
+    // },
 
     getStatusButtonStyle(appoveStatus) {
       switch (appoveStatus) {
@@ -236,11 +287,11 @@ export default {
     getStatusLabel(appoveStatus) {
       switch (appoveStatus) {
         case 0:
-          return "รออนุมัติ";
+          return this.languageForShow.status.wait;
         case 1:
-          return "อนุมัติแล้ว";
+          return this.languageForShow.status.allow;
         case 2:
-          return "ไม่อนุมัติ";
+        return this.languageForShow.status.not_Allowed;
         default:
           return "";
       }

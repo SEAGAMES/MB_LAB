@@ -30,7 +30,7 @@ export default async function guest({ next, axios, store }) {
             // store here
             store.dispatch("addUserData", res_data.payload);
             if (store.getters.showname === null) {
-              store.dispatch("swapName", store.getters.userData.thainame);
+              store.dispatch("swapName", store.getters.userData.englishname);
               store.dispatch("swapPosition", store.getters.userData.job_thai);
             }
 

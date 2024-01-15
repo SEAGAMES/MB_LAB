@@ -1,33 +1,38 @@
 <template>
   <v-container class="fontSarabun">
     <v-row>
+      <!-- {{ this.$store.getters }} -->
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
       <a-button
         v-if="checkUserPolicy()"
-        style="background-color: lightgreen"
+      
+        :style="{ backgroundColor: 'lightgreen', color: 'black' }"
         @click="$router.push({ name: 'Mb_Approve' })"
-        >สำหรับอนุมัติ</a-button
+        >{{ languageForShow.approve }}</a-button
       >
     </v-row>
 
     <!-- v-card input data -->
     <v-form ref="form" lazy-validation>
-      <v-card class="mx-auto my-7 pl-2 pr-2" width="900" height="305">
+      <v-card class="mx-auto my-7 pl-2 pr-2" width="1000" height="305">
         <v-card-text>
           <v-row class="fontSize18"
             ><v-col>
               <div align="center" class="mt-4">
-                <p>{{ languageForShow.booker }} : {{ dataBookLab.name }}</p>
+                <span>{{ languageForShow.booker }} : </span>
+                <span :style="{ color: '#607D8B' }">{{
+                  dataBookLab.name
+                }}</span>
               </div>
             </v-col>
 
             <v-col>
               <div align="center">
                 <v-text-field
-                  label="เบอร์ติดต่อ"
+                  :label="languageForShow.headerTable.tel"
                   v-model="dataBookLab.phone"
                   prepend-inner-icon="mdi-phone-plus"
                   :rules="telNoRules"
@@ -46,22 +51,20 @@
                 <v-select
                   v-model="dataBookLab.zone"
                   :rules="floorRules"
-                  label="โซน"
+                  :label="languageForShow.zone"
                   required
                   outlined
                   dense
                   :items="['B', 'C', 'D']"
                   variant="outlined"
-                  >sss</v-select
-                >
-              </div></v-col
-            >
+                ></v-select></div
+            ></v-col>
             <v-col>
               <div>
                 <v-select
                   v-model="dataBookLab.floor"
                   :rules="floorRules"
-                  label="ชั้น"
+                  :label="languageForShow.floor"
                   required
                   outlined
                   dense
@@ -74,7 +77,7 @@
                 <v-select
                   v-model="dataBookLab.where_lab"
                   :rules="floorRules"
-                  label="ห้อง"
+                  :label="languageForShow.room"
                   required
                   outlined
                   dense
@@ -114,7 +117,7 @@
       </v-card>
     </v-form>
 
-    <v-card class="mx-auto my-7" width="900"
+    <v-card class="mx-auto my-7" width="1000"
       ><a-table :columns="columns" :data-source="dataBookingLab.data">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
@@ -139,6 +142,16 @@
             <a>
               {{ record.name }}
             </a>
+          </template>
+          <template v-if="column.key === 'start_date'">
+            <div :style="{ color: '#F57C00' }">
+              {{ record.start_date }}
+            </div>
+          </template>
+          <template v-if="column.key === 'end_date'">
+            <div :style="{ color: '#FF6D00' }">
+              {{ record.end_date }}
+            </div>
           </template>
         </template>
       </a-table></v-card
@@ -241,7 +254,7 @@ export default {
 
   mounted() {
     this.getRoomLab();
-    this.dataBookLab.name = this.$store.getters.userData.thainame;
+    this.dataBookLab.name = this.$store.getters.userData.englishname;
     //this.createBookLabRoom();
   },
 
@@ -344,13 +357,13 @@ export default {
 
       // สร้างรายการของชื่อวันในภาษาไทย
       const thaiDays = [
-        "(อา.)",
-        "(จ.)",
-        "(อ.)",
-        "(พ.)",
-        "(พฤ.)",
-        "(ศ.)",
-        "(ส.)",
+        "(Sun.)",
+        "(Mon.)",
+        "(Tue.)",
+        "(Wed.)",
+        "(Thu.)",
+        "(Fri.)",
+        "(Sat.)",
       ];
 
       // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
@@ -360,13 +373,44 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
+        hour12: true, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
       });
+
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
-      }/${dateObject.getFullYear()} (${timeString} น.)`;
+      }/${dateObject.getFullYear()} (${timeString})`;
       return formattedDate;
     },
+
+    // formatdate(date) {
+    //   const isoDate = date;
+    //   const dateObject = new Date(isoDate);
+
+    //   // สร้างรายการของชื่อวันในภาษาไทย
+    //   const thaiDays = [
+    //     "(Sun.)",
+    //     "(Mon.)",
+    //     "(Tue.)",
+    //     "(Wed.)",
+    //     "(Thu.)",
+    //     "(Fri.)",
+    //     "(Sat.)",
+    //   ];
+
+    //   // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
+    //   const dayName = thaiDays[dateObject.getDay()];
+
+    //   // สร้างรูปแบบในการแสดงผล
+    //   const timeString = dateObject.toLocaleTimeString([], {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //     hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
+    //   });
+    //   const formattedDate = `${dayName} ${dateObject.getDate()}/${
+    //     dateObject.getMonth() + 1
+    //   }/${dateObject.getFullYear()} (${timeString} น.)`;
+    //   return formattedDate;
+    // },
 
     clearInputData() {
       this.dataBookLab = {
@@ -419,5 +463,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.blue-text {
+  color: rgb(31, 199, 115);
+}
 </style>

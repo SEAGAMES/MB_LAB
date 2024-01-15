@@ -61,6 +61,20 @@ export default {
           endTime: "",
           status: "",
         },
+
+        labelSelect: {
+          customZone: "",
+          customFloor: "",
+          customRoom: "",
+        },
+
+        days: [],
+
+        status: {
+          wait: "",
+          allow: "",
+          not_Allowed: "",
+        },
       },
     };
   },
@@ -98,6 +112,8 @@ export default {
           (this.languageForShow.room = "ห้อง"),
           (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
           (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
+          (this.languageForShow.approve = "สำหรับอนุมัติ"),
+          ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "ชื่อ-นามสกุล"),
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
@@ -105,6 +121,20 @@ export default {
           (this.languageForShow.headerTable.startTime = "เริ่มใช้เวลา"),
           (this.languageForShow.headerTable.endTime = "ถึง"),
           (this.languageForShow.headerTable.status = "สถานะ");
+        /////////////////////// btn approve ///////////////////////////
+        (this.languageForShow.status.wait = "รออนุมัติ"),
+          (this.languageForShow.status.allow = "อนุมัติเเล้ว"),
+          (this.languageForShow.status.not_Allowed = "ไม่อนุมัติ"),
+          ///////////////////// ตัวย่อวัน //////////////////////////////
+          (this.languageForShow.days = [
+            "(อา.)",
+            "(จ.)",
+            "(อ.)",
+            "(พ.)",
+            "(พฤ.)",
+            "(ศ.)",
+            "(ส.)",
+          ]);
       } else {
         (this.languageForShow.booker = "Booker"),
           (this.languageForShow.zone = "Zone"),
@@ -112,13 +142,29 @@ export default {
           (this.languageForShow.room = "Room"),
           (this.languageForShow.dateTimeBooking = "Date Time Booking"),
           (this.languageForShow.sentForm = "Sent Form");
-        (this.languageForShow.headerTable.name = "Name"),
+        (this.languageForShow.approve = "Approve"),
+          ///////////////////// headerTable /////////////////////////
+          (this.languageForShow.headerTable.name = "Name"),
           (this.languageForShow.headerTable.tel = "Tel."),
           (this.languageForShow.headerTable.room = "Room"),
           (this.languageForShow.headerTable.sentTime = "Sent Time"),
           (this.languageForShow.headerTable.startTime = "Start"),
           (this.languageForShow.headerTable.endTime = "End"),
           (this.languageForShow.headerTable.status = "Status");
+             /////////////////////// btn approve ///////////////////////////
+        (this.languageForShow.status.wait = "Wait"),
+          (this.languageForShow.status.allow = "Allowed"),
+          (this.languageForShow.status.not_Allowed = "Not Allowed"),
+        ////////////////////////// ตัวย่อวัน ////////////////////////////
+        this.languageForShow.days = [
+          "(Sun.)",
+          "(Mon.)",
+          "(Tue.)",
+          "(Wed.)",
+          "(Thu.)",
+          "(Fri.)",
+          "(Sat.)",
+        ];
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       //console.log(this.$store.getters.formLanguge);
