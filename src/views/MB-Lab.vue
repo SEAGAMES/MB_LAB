@@ -2,13 +2,13 @@
   <v-container class="fontSarabun">
     <v-row>
       <!-- {{ this.$store.getters }} -->
+      <!-- <img src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRfX_0bPte9esUMLtlitPF8JtOJW9vCofwZmb_yjDaMpsTp2UJXDKp0KlMNBQN0cTnSKD5lxfwzFT6dZ3ZvQ5GYw6Fq3g=s1600"> -->
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
       <a-button
         v-if="checkUserPolicy()"
-      
         :style="{ backgroundColor: 'lightgreen', color: 'black' }"
         @click="$router.push({ name: 'Mb_Approve' })"
         >{{ languageForShow.approve }}</a-button
@@ -34,6 +34,7 @@
                 <v-text-field
                   :label="languageForShow.headerTable.tel"
                   v-model="dataBookLab.phone"
+                  @change="memoryData"
                   prepend-inner-icon="mdi-phone-plus"
                   :rules="telNoRules"
                   single-line
@@ -83,7 +84,6 @@
                   dense
                   :items="room_list"
                   variant="outlined"
-                  @change="loadBookingLab()"
                 ></v-select></div
             ></v-col>
           </v-row>
@@ -94,6 +94,7 @@
             <div class="mt-n1 ml-2">
               <a-range-picker
                 v-model:value="dateSelect"
+                @change="memoryData"
                 :rules="dateRules"
                 show-time
                 required
@@ -221,13 +222,16 @@ export default {
     dataBookLab: {
       ac_name: "",
       name: "",
-      phone: "07894561",
-      zone: "B",
-      floor: "2",
-      where_lab: "B203",
+      phone: "",
+      zone: "",
+      floor: "",
+      where_lab: "",
       start_date: "",
       endtime: "",
     },
+
+    //dateSelect: [],
+    
     // languageForShow: {
     //   booker: "",
     //   zone: "",
@@ -249,10 +253,13 @@ export default {
 
     loadingBtn: false,
     dataBookingLab: [],
-    dateSelect: [],
   }),
 
   mounted() {
+    if (localStorage.getItem("bookingLab") !== null) {
+      const data = localStorage.getItem("bookingLab");
+      this.dataBookLab = JSON.parse(data);
+    }
     this.getRoomLab();
     this.dataBookLab.name = this.$store.getters.userData.englishname;
     //this.createBookLabRoom();
@@ -278,6 +285,10 @@ export default {
       return found;
     },
 
+    memoryData() {
+      localStorage.setItem("bookingLab", JSON.stringify(this.dataBookLab));
+    },
+
     disabledDate(current) {
       // ตรวจสอบว่าวันที่ current เป็นวันที่เราต้องการหรือไม่
       const tomorrow = moment().add(1, "days").startOf("day");
@@ -291,7 +302,9 @@ export default {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
-            const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
+            const dayObject = JSON.parse(
+              JSON.stringify(this.dateSelect)
+            );
             this.dataBookLab.start_date = dayObject[0];
             this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
@@ -320,6 +333,7 @@ export default {
       setTimeout(async () => {
         if (result.data.msg === "ok") {
           this.alertShow(true, "Success", "success", "mdi-shield-check");
+          localStorage.removeItem("bookingLab");
           this.loadingBtn = false;
           this.loadBookingLab();
         } else {
@@ -451,7 +465,9 @@ export default {
   },
 
   watch: {
-    "dataBookLab.where_lab": "loadBookingLab", // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
+    "dataBookLab.where_lab": ["loadBookingLab", "memoryData"], // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
+    "dataBookLab.zone": "memoryData",
+    "dataBookLab.floor": "memoryData",
 
     languageForShowComputed: {
       handler(newVal) {
