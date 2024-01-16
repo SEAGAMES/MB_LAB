@@ -151,20 +151,20 @@ export default {
           (this.languageForShow.headerTable.startTime = "Start"),
           (this.languageForShow.headerTable.endTime = "End"),
           (this.languageForShow.headerTable.status = "Status");
-             /////////////////////// btn approve ///////////////////////////
+        /////////////////////// btn approve ///////////////////////////
         (this.languageForShow.status.wait = "Wait"),
           (this.languageForShow.status.allow = "Allowed"),
           (this.languageForShow.status.not_Allowed = "Not Allowed"),
-        ////////////////////////// ตัวย่อวัน ////////////////////////////
-        this.languageForShow.days = [
-          "(Sun.)",
-          "(Mon.)",
-          "(Tue.)",
-          "(Wed.)",
-          "(Thu.)",
-          "(Fri.)",
-          "(Sat.)",
-        ];
+          ////////////////////////// ตัวย่อวัน ////////////////////////////
+          (this.languageForShow.days = [
+            "(Sun.)",
+            "(Mon.)",
+            "(Tue.)",
+            "(Wed.)",
+            "(Thu.)",
+            "(Fri.)",
+            "(Sat.)",
+          ]);
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       //console.log(this.$store.getters.formLanguge);

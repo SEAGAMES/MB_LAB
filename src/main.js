@@ -5,24 +5,20 @@
  */
 
 // Composables
-import { createApp } from 'vue'
+import { createApp } from "vue";
 // Components
-import App from './App.vue'
+import App from "./App.vue";
 // import ant
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/reset.css';
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/reset.css";
 
-import store from './store'
-
+import store from "./store";
 
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from "@/plugins";
 
+const app = createApp(App);
 
-const app = createApp(App)
+registerPlugins(app);
 
-registerPlugins(app)
-
-app.use(Antd).use(store).mount('#app')
-
-
+app.use(Antd).use(store).mount("#app");

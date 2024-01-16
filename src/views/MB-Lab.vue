@@ -1,18 +1,18 @@
 <template>
   <v-container class="fontSarabun">
     <v-row>
-      <!-- {{ this.$store.getters }} -->
+      {{ this.$store.getters }}
       <!-- <img src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRfX_0bPte9esUMLtlitPF8JtOJW9vCofwZmb_yjDaMpsTp2UJXDKp0KlMNBQN0cTnSKD5lxfwzFT6dZ3ZvQ5GYw6Fq3g=s1600"> -->
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
-      <a-button
+      <!-- <a-button
         v-if="checkUserPolicy()"
         :style="{ backgroundColor: 'lightgreen', color: 'black' }"
         @click="$router.push({ name: 'Mb_Approve' })"
         >{{ languageForShow.approve }}</a-button
-      >
+      > -->
     </v-row>
 
     <!-- v-card input data -->
@@ -230,8 +230,8 @@ export default {
       endtime: "",
     },
 
-    //dateSelect: [],
-    
+    dateSelect: [],
+
     // languageForShow: {
     //   booker: "",
     //   zone: "",
@@ -256,13 +256,21 @@ export default {
   }),
 
   mounted() {
-    if (localStorage.getItem("bookingLab") !== null) {
-      const data = localStorage.getItem("bookingLab");
-      this.dataBookLab = JSON.parse(data);
+    // console.log(this.$store.getters.userData);
+    if (
+      this.$store.getters.userData == null ||
+      this.$store.getters.userData == ""
+    ) {
+      this.$router.push({ path: "/home" });
+    } else {
+      if (localStorage.getItem("bookingLab") !== null) {
+        const data = localStorage.getItem("bookingLab");
+        this.dataBookLab = JSON.parse(data);
+      }
+      this.getRoomLab();
+      this.dataBookLab.name = this.$store.getters.userData.englishname;
+      //this.createBookLabRoom();
     }
-    this.getRoomLab();
-    this.dataBookLab.name = this.$store.getters.userData.englishname;
-    //this.createBookLabRoom();
   },
 
   methods: {
@@ -302,9 +310,7 @@ export default {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
-            const dayObject = JSON.parse(
-              JSON.stringify(this.dateSelect)
-            );
+            const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
             this.dataBookLab.start_date = dayObject[0];
             this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
@@ -336,6 +342,8 @@ export default {
           localStorage.removeItem("bookingLab");
           this.loadingBtn = false;
           this.loadBookingLab();
+          this.clearInputData()
+
         } else {
           this.alertShow(
             true,
@@ -427,16 +435,10 @@ export default {
     // },
 
     clearInputData() {
-      this.dataBookLab = {
-        ac_name: "",
-        name: "",
-        phone: "",
-        zone: "",
-        floor: "",
-        where_lab: "",
-        start_date: "",
-        endtime: "",
-      };
+      this.dataBookLab.phone = '',
+      this.dataBookLab.zone = ''
+      this.dataBookLab.floor = ''
+      this.dateSelect= []
     },
   },
 

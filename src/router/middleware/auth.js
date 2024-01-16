@@ -39,7 +39,7 @@ export default async function guest({ next, axios, store }) {
               .then((response) => {
                 // ดึงข้อมูลออกมาจาก response.data
                 const data = response.data.data;
-                const userPolicyData = data
+                const userPolicyData = data;
                 store.dispatch("addUserPolicy", userPolicyData);
               })
               .catch((error) => {
