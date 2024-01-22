@@ -1,7 +1,7 @@
 <template>
   <v-container class="fontSarabun">
     <v-row>
-      {{ this.$store.getters }}
+      <!-- {{ this.$store.getters }} -->
       <!-- <img src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRfX_0bPte9esUMLtlitPF8JtOJW9vCofwZmb_yjDaMpsTp2UJXDKp0KlMNBQN0cTnSKD5lxfwzFT6dZ3ZvQ5GYw6Fq3g=s1600"> -->
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
@@ -232,25 +232,6 @@ export default {
 
     dateSelect: [],
 
-    // languageForShow: {
-    //   booker: "",
-    //   zone: "",
-    //   floor: "",
-    //   room: "",
-    //   dateTimeBooking: "",
-    //   sentForm: "",
-
-    //   headerTable: {
-    //     name: "",
-    //     tel: "",
-    //     room: "",
-    //     sentTime: "",
-    //     startTime: "",
-    //     endTime: "",
-    //     status: "",
-    //   },
-    // },
-
     loadingBtn: false,
     dataBookingLab: [],
   }),
@@ -339,11 +320,10 @@ export default {
       setTimeout(async () => {
         if (result.data.msg === "ok") {
           this.alertShow(true, "Success", "success", "mdi-shield-check");
-          localStorage.removeItem("bookingLab");
           this.loadingBtn = false;
           this.loadBookingLab();
-          this.clearInputData()
-
+          this.clearInputData();
+          this.clearLocalStorage()
         } else {
           this.alertShow(
             true,
@@ -404,41 +384,23 @@ export default {
       return formattedDate;
     },
 
-    // formatdate(date) {
-    //   const isoDate = date;
-    //   const dateObject = new Date(isoDate);
-
-    //   // สร้างรายการของชื่อวันในภาษาไทย
-    //   const thaiDays = [
-    //     "(Sun.)",
-    //     "(Mon.)",
-    //     "(Tue.)",
-    //     "(Wed.)",
-    //     "(Thu.)",
-    //     "(Fri.)",
-    //     "(Sat.)",
-    //   ];
-
-    //   // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
-    //   const dayName = thaiDays[dateObject.getDay()];
-
-    //   // สร้างรูปแบบในการแสดงผล
-    //   const timeString = dateObject.toLocaleTimeString([], {
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //     hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
-    //   });
-    //   const formattedDate = `${dayName} ${dateObject.getDate()}/${
-    //     dateObject.getMonth() + 1
-    //   }/${dateObject.getFullYear()} (${timeString} น.)`;
-    //   return formattedDate;
-    // },
-
     clearInputData() {
-      this.dataBookLab.phone = '',
-      this.dataBookLab.zone = ''
-      this.dataBookLab.floor = ''
-      this.dateSelect= []
+      (this.dataBookLab.phone = ""), (this.dataBookLab.zone = "");
+      this.dataBookLab.floor = "";
+      this.dateSelect = [];
+    },
+
+    // ต้อง settimeout ไม่งั้นเคลียไม่ได้
+    clearLocalStorage() {
+      const data = localStorage.getItem("bookingLab");
+      const setNewData = JSON.parse(data);
+      setNewData.phone = "";
+      setNewData.zone = "";
+      setNewData.floor = "";
+      setNewData.where_lab = "";
+      setTimeout(async () => {
+        localStorage.setItem("bookingLab", JSON.stringify(setNewData));
+      }, 500);
     },
   },
 
