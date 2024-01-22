@@ -307,7 +307,7 @@ export default {
         obj.timebook = this.formatdate(obj.timebook);
       });
       this.dataLoad = data;
-      console.log(this.dataLoad);
+      //console.log(this.dataLoad);
     },
 
     selectRow(data) {
@@ -353,7 +353,7 @@ export default {
     languageForShowComputed: {
       handler(newVal) {
         this.languageForShow = newVal;
-        console.log("this.languageForShow : ", this.languageForShow);
+        //console.log("this.languageForShow : ", this.languageForShow);
       },
       immediate: true, // ให้ watch ทำงานทันทีเมื่อ component ถูกสร้าง
     },

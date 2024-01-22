@@ -40,6 +40,11 @@ const updateApproveStatus = async (id, statusCode) => {
   return result
 }
 
+const deleteBookingLab = async (id) => {
+  const result = await axios.delete(`${apiUrl}delete_bookingLab/${id}`)
+  return result.data
+}
+
 
 
 export default {
@@ -47,5 +52,6 @@ export default {
   getBookingLab,
   thisLabBooking,
   createBookLabRoom,
-  updateApproveStatus
+  updateApproveStatus,
+  deleteBookingLab
 };

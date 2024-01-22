@@ -2,17 +2,16 @@
   <v-container class="fontSarabun">
     <v-row>
       <!-- {{ this.$store.getters }} -->
-      <!-- <img src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRfX_0bPte9esUMLtlitPF8JtOJW9vCofwZmb_yjDaMpsTp2UJXDKp0KlMNBQN0cTnSKD5lxfwzFT6dZ3ZvQ5GYw6Fq3g=s1600"> -->
       <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
-      <!-- <a-button
-        v-if="checkUserPolicy()"
+      <a-button
+        v-if="checkUserPolicy"
         :style="{ backgroundColor: 'lightgreen', color: 'black' }"
         @click="$router.push({ name: 'Mb_Approve' })"
         >{{ languageForShow.approve }}</a-button
-      > -->
+      >
     </v-row>
 
     <!-- v-card input data -->
@@ -136,6 +135,9 @@
           <template v-if="column.key === 'end_date'">
             <span> {{ languageForShow.headerTable.endTime }} </span>
           </template>
+          <template v-if="column.key === 'appove_status'">
+            <span> {{ languageForShow.headerTable.status }} </span>
+          </template>
         </template>
 
         <template #bodyCell="{ column, record }">
@@ -153,6 +155,28 @@
             <div :style="{ color: '#FF6D00' }">
               {{ record.end_date }}
             </div>
+          </template>
+          <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
+          <template v-if="column.key === 'appove_status'">
+            <a-button
+              class="custom-button"
+              :style="getStatusButtonStyle(record.appove_status)"
+              >{{ getStatusLabel(record.appove_status) }}</a-button
+            >
+          </template>
+          <template v-if="column.key === 'action'">
+            <!-- <v-icon
+              @click="editBooking(item)"
+              style="color: rgb(243, 156, 18)"
+              >mdi-pencil</v-icon
+            > -->
+            <a-popconfirm
+              title="Delete ?"
+              @confirm="confirm(record.id)"
+              v-if="this.$store.getters.userData.englishname === record.name"
+            >
+              <v-icon style="color: rgb(255, 0, 0)">mdi-delete</v-icon>
+            </a-popconfirm>
           </template>
         </template>
       </a-table></v-card
@@ -174,6 +198,7 @@
 import moment from "moment";
 import { mapGetters } from "vuex";
 import apiRoomLab from "../services/apiRoomLab";
+import { message } from "ant-design-vue";
 
 export default {
   setup() {
@@ -215,6 +240,14 @@ export default {
         align: "center",
       },
       { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
+
+      {
+        key: "appove_status",
+        title: "สถานะ",
+        dataIndex: "appove_status",
+        align: "center",
+      },
+      { key: "action", title: "action", dataIndex: "action", align: "center" },
     ],
 
     lab_room: [],
@@ -231,13 +264,16 @@ export default {
     },
 
     dateSelect: [],
-
+    found: false,
     loadingBtn: false,
     dataBookingLab: [],
   }),
 
   mounted() {
     // console.log(this.$store.getters.userData);
+    setTimeout(async () => {
+      this.checkUserPolicy();
+    }, 500);
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == ""
@@ -247,7 +283,7 @@ export default {
       if (localStorage.getItem("bookingLab") !== null) {
         const data = localStorage.getItem("bookingLab");
         this.dataBookLab = JSON.parse(data);
-        this.dataBookLab.ac_name = this.$store.getters.userData.accountname
+        this.dataBookLab.ac_name = this.$store.getters.userData.accountname;
       }
       this.getRoomLab();
       this.dataBookLab.name = this.$store.getters.userData.englishname;
@@ -266,13 +302,47 @@ export default {
     },
 
     checkUserPolicy() {
-      let found = false;
       this.$store.getters.userPolicy.forEach((obj) => {
         if (obj.project_id === "1") {
-          found = true;
+          this.found = true;
         }
       });
-      return found;
+    },
+
+    async confirm(id) {
+      const result = await apiRoomLab.deleteBookingLab(id);
+      if (result.msg === "ok") {
+        this.loadBookingLab();
+        message.success("Delete Success.");
+      } else {
+        message.error("Delete Fail.");
+      }
+    },
+
+    getStatusButtonStyle(appoveStatus) {
+      switch (appoveStatus) {
+        case 0:
+          return { backgroundColor: "orange" };
+        case 1:
+          return { backgroundColor: "lightgreen" };
+        case 2:
+          return { backgroundColor: "lightcoral" };
+        default:
+          return {};
+      }
+    },
+
+    getStatusLabel(appoveStatus) {
+      switch (appoveStatus) {
+        case 0:
+          return this.languageForShow.status.wait;
+        case 1:
+          return this.languageForShow.status.allow;
+        case 2:
+          return this.languageForShow.status.not_Allowed;
+        default:
+          return "";
+      }
     },
 
     memoryData() {
@@ -324,7 +394,7 @@ export default {
           this.loadingBtn = false;
           this.loadBookingLab();
           this.clearInputData();
-          this.clearLocalStorage()
+          this.clearLocalStorage();
         } else {
           this.alertShow(
             true,
@@ -383,6 +453,10 @@ export default {
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString})`;
       return formattedDate;
+    },
+
+    deleteBooking(id) {
+      console.log(id);
     },
 
     clearInputData() {
@@ -447,5 +521,10 @@ export default {
 <style scoped>
 .blue-text {
   color: rgb(31, 199, 115);
+}
+
+.custom-button {
+  width: 100px; /* ปรับความกว้างตามต้องการ */
+  height: 40px; /* ปรับความสูงตามต้องการ */
 }
 </style>
