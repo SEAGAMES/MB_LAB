@@ -103,7 +103,7 @@ export default {
   methods: {
     // สำหรับเปลี่ยนภาษา
     memoryLanguage() {
-      console.log("language : ", this.form.language);
+      // console.log("language : ", this.form.language);
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
       if (this.form.language === false) {
         (this.languageForShow.booker = "ผู้จอง"),

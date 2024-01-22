@@ -6,7 +6,7 @@
 export default {
   mounted() {
     // this.$routes.path('/src/views/MB-Lab.vue')
-    console.log(this.$store.getters.userData);
+    // console.log(this.$store.getters.userData);
     this.$router.push({ path: "/mb-lab" });
   },
 };

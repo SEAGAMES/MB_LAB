@@ -247,6 +247,7 @@ export default {
       if (localStorage.getItem("bookingLab") !== null) {
         const data = localStorage.getItem("bookingLab");
         this.dataBookLab = JSON.parse(data);
+        this.dataBookLab.ac_name = this.$store.getters.userData.accountname
       }
       this.getRoomLab();
       this.dataBookLab.name = this.$store.getters.userData.englishname;
@@ -314,7 +315,7 @@ export default {
 
     async createBookLabRoom() {
       this.loadingBtn = true;
-      //console.log(this.dataBookLab);
+      // console.log('dataBookLab : ',this.dataBookLab);
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
 
       setTimeout(async () => {
