@@ -62,6 +62,11 @@ export default {
           status: "",
         },
 
+        ruleAlet: {
+          telNoRules:'',
+          requiredField:'',
+        },
+
         labelSelect: {
           customZone: "",
           customFloor: "",
@@ -151,6 +156,9 @@ export default {
           (this.languageForShow.headerTable.startTime = "Start"),
           (this.languageForShow.headerTable.endTime = "End"),
           (this.languageForShow.headerTable.status = "Status");
+          /////////////////////// rule alet /////////////////////////
+          this.languageForShow.ruleAlet.telNoRules = 'required phone number.',
+          this.languageForShow.ruleAlet.requiredField = 'required field.',
         /////////////////////// btn approve ///////////////////////////
         (this.languageForShow.status.wait = "Wait"),
           (this.languageForShow.status.allow = "Allowed"),

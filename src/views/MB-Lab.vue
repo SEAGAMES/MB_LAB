@@ -1,8 +1,8 @@
 <template>
-  <v-container class="fontSarabun">
-    <v-row>
+  <!-- <span>{{ version }}</span> -->
+  <div class="fontSarabun container text-right">
+    <div class="p-2">
       <!-- {{ this.$store.getters }} -->
-      <span>{{ version }}</span>
       <v-spacer></v-spacer>
       <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
       <v-spacer></v-spacer>
@@ -12,116 +12,120 @@
         @click="$router.push({ name: 'Mb_Approve' })"
         >{{ languageForShow.approve }}</a-button
       >
-    </v-row>
+    </div>
+    <!-- <div class="row">
+      <div class="col-12 col-md-4">test</div>
+      <div class="col-12 col-md-4">test</div>
+      <div class="col12 col-md-4">test</div>
+    </div> -->
 
     <!-- v-card input data -->
-    <v-form ref="form" lazy-validation>
-      <v-card class="mx-auto my-7 pl-2 pr-2" width="1000" height="305">
-        <v-card-text>
-          <v-row class="fontSize18"
-            ><v-col>
-              <div align="center" class="mt-4">
-                <span>{{ languageForShow.booker }} : </span>
-                <span :style="{ color: '#607D8B' }">{{
-                  dataBookLab.name
-                }}</span>
-              </div>
-            </v-col>
+    <v-form
+      ref="form"
+      lazy-validation
+      class="rounded bg-white p-2 p-sm-3 shadow-sm mb-3"
+    >
+      <div class="fontSize18 row">
+        <div align="center" class="col-sm-12 col-lg-6 pb-6">
+          <span>{{ languageForShow.booker }} : </span>
+          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
+        </div>
 
-            <v-col>
-              <div align="center">
-                <v-text-field
-                  :label="languageForShow.headerTable.tel"
-                  v-model="dataBookLab.phone"
-                  @change="memoryData"
-                  prepend-inner-icon="mdi-phone-plus"
-                  :rules="telNoRules"
-                  single-line
-                  type="number"
-                  autofocus
-                  required
-                  outlined
-                  dense
-                ></v-text-field></div
-            ></v-col>
-          </v-row>
-          <v-row class="mt-n2">
-            <v-col>
-              <div>
-                <v-select
-                  v-model="dataBookLab.zone"
-                  :rules="floorRules"
-                  :label="languageForShow.zone"
-                  required
-                  outlined
-                  dense
-                  :items="['B', 'C', 'D']"
-                  variant="outlined"
-                ></v-select></div
-            ></v-col>
-            <v-col>
-              <div>
-                <v-select
-                  v-model="dataBookLab.floor"
-                  :rules="floorRules"
-                  :label="languageForShow.floor"
-                  required
-                  outlined
-                  dense
-                  :items="['2', '3', '4']"
-                  variant="outlined"
-                ></v-select></div
-            ></v-col>
-            <v-col>
-              <div>
-                <v-select
-                  v-model="dataBookLab.where_lab"
-                  :rules="floorRules"
-                  :label="languageForShow.room"
-                  required
-                  outlined
-                  dense
-                  :items="room_list"
-                  variant="outlined"
-                ></v-select></div
-            ></v-col>
-          </v-row>
-          <v-row class="fontSize18 ml-1">
-            <div>
-              <p>{{ languageForShow.dateTimeBooking }} :</p>
-            </div>
-            <div class="mt-n1 ml-2">
-              <a-range-picker
-                v-model:value="dateSelect"
-                @change="memoryData"
-                :rules="dateRules"
-                show-time
-                required
-                :format="'YYYY-MM-DD HH:mm'"
-                :disabled-date="disabledDate"
-              />
-            </div>
-          </v-row>
-          <v-row>
-            <v-btn
-              class="mt-5"
-              @click="validate()"
-              :loading="loadingBtn"
-              color="green"
-              append-icon="mdi-check-circle"
-              block
-              >{{ languageForShow.sentForm }}</v-btn
-            >
-          </v-row>
-        </v-card-text>
-      </v-card>
+        <div
+          align="center"
+          class="mt-n3 col-sm-12 col-lg-6 pt-2"
+        >
+        <!-- mt-n3 col-sm-12 col-lg-6 -->
+          <v-text-field
+            :label="languageForShow.headerTable.tel"
+            v-model="dataBookLab.phone"
+            @change="memoryData"
+            prepend-inner-icon="mdi-phone-plus"
+            :rules="telNoRules"
+            single-line
+            type="number"
+            autofocus
+            required
+            outlined
+            dense
+          ></v-text-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <v-select
+            v-model="dataBookLab.zone"
+            :rules="floorRules"
+            :label="languageForShow.zone"
+            required
+            outlined
+            dense
+            :items="['B', 'C', 'D']"
+            variant="outlined"
+          ></v-select>
+        </div>
+        <div class="col-4">
+          <v-select
+            v-model="dataBookLab.floor"
+            :rules="floorRules"
+            :label="languageForShow.floor"
+            required
+            outlined
+            dense
+            :items="['2', '3', '4']"
+            variant="outlined"
+          ></v-select>
+        </div>
+        <div class="col-4">
+          <v-select
+            v-model="dataBookLab.where_lab"
+            :rules="floorRules"
+            :label="languageForShow.room"
+            required
+            outlined
+            dense
+            :items="room_list"
+            variant="outlined"
+          ></v-select>
+        </div>
+      </div>
+
+      <div class="fontSize18 row text-center">
+        <div class="col-sm-12 col-md-4">
+          <p>{{ languageForShow.dateTimeBooking }} :</p>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <a-range-picker
+            v-model:value="dateSelect"
+            @change="memoryData"
+            :rules="dateRules"
+            show-time
+            required
+            :format="'YYYY-MM-DD HH:mm'"
+            :disabled-date="disabledDate"
+          />
+        </div>
+      </div>
+      <div>
+        <v-btn
+          class="mt-5"
+          @click="validate()"
+          :loading="loadingBtn"
+          color="green"
+          append-icon="mdi-check-circle"
+          block
+          >{{ languageForShow.sentForm }}</v-btn
+        >
+      </div>
     </v-form>
 
-    <v-card class="mx-auto my-7" width="1000"
+    <v-card class="mx-auto my-7 col-12"
       ><a-table :columns="columns" :data-source="dataBookingLab.data">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
-            <span> {{ languageForShow.headerTable.name }} </span>
+            <div>
+              {{ languageForShow.headerTable.name }}
+            </div>
           </template>
           <template v-if="column.key === 'phone'">
             <span> {{ languageForShow.headerTable.tel }} </span>
@@ -191,7 +195,7 @@
         }}</v-icon>
       </div>
     </v-snackbar>
-  </v-container>
+  </div>
 </template>
 
 <script>
