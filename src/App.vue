@@ -6,7 +6,12 @@
         <v-toolbar color="blue-grey-lighten-4" dark>
           <div class="col-4 col-sm-2 col-md-3 col-lg-2">
             <a href="https://mb.mahidol.ac.th/app/#/">
-              <v-img src="./assets/mbmu.png" max-width="200" alt="Icon" class="mt-n3"></v-img>
+              <v-img
+                src="./assets/mbmu.png"
+                max-width="200"
+                alt="Icon"
+                class="mt-n3"
+              ></v-img>
             </a>
           </div>
 
@@ -40,6 +45,8 @@ export default {
         language: false,
       },
       languageForShow: {
+        nameBooking: "",
+        nameApprove: "",
         booker: "",
         zone: "",
         floor: "",
@@ -75,6 +82,10 @@ export default {
           allow: "",
           not_Allowed: "",
         },
+
+        btn: {
+          backPage: "",
+        },
       },
     };
   },
@@ -106,7 +117,9 @@ export default {
       // console.log("language : ", this.form.language);
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
       if (this.form.language === false) {
-        (this.languageForShow.booker = "ผู้จอง"),
+        (this.languageForShow.nameBooking = "ระบบจองห้องแล็บ"),
+        (this.languageForShow.nameApprove = "ระบบอนุมัติห้องแล็บ"),
+          (this.languageForShow.booker = "ผู้จอง"),
           (this.languageForShow.zone = "โซน"),
           (this.languageForShow.floor = "ชั้น"),
           (this.languageForShow.room = "ห้อง"),
@@ -135,8 +148,12 @@ export default {
             "(ศ.)",
             "(ส.)",
           ]);
+        ////////////////////////// ปุ่ม ////////////////////////////
+        this.languageForShow.btn.backPage = "กลับ";
       } else {
-        (this.languageForShow.booker = "Booker"),
+        (this.languageForShow.nameBooking = "Booking Lab"),
+        (this.languageForShow.nameApprove = "Approve Lab"),
+          (this.languageForShow.booker = "Booker"),
           (this.languageForShow.zone = "Zone"),
           (this.languageForShow.floor = "Floor"),
           (this.languageForShow.room = "Room"),
@@ -168,6 +185,9 @@ export default {
             "(Fri.)",
             "(Sat.)",
           ]);
+
+        ////////////////////////// ปุ่ม ////////////////////////////
+        this.languageForShow.btn.backPage = "Back";
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       //console.log(this.$store.getters.formLanguge);
@@ -178,7 +198,7 @@ export default {
 
 <style>
 .v-main {
-  background-image: url("./assets/background/mb-building2.jpg");
+  background-image: url("./assets/background/mb-building3.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

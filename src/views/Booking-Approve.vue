@@ -1,77 +1,78 @@
 <template>
-  <v-container class="fontSarabun">
-    <v-row>
-      <v-spacer></v-spacer>
-      <h1 class="text-bold mt-3 text-indigo-darken-4">ระบบอนุมัติห้องแล็บ</h1>
-      <v-spacer></v-spacer>
-    </v-row>
-    <v-card class="mx-auto my-7" width="1200">
-      <a-table :columns="columns" :data-source="dataLoad">
-        <template #headerCell="{ column }">
-          <template v-if="column.key === 'name'">
-            <span> {{ languageForShow.headerTable.name }} </span>
+  <div class="fontSarabun container text-center">
+    <div>
+      <h1 class="text-bold mt-3 text-indigo-darken-4">{{ languageForShow.nameApprove }}</h1>
+    </div>
+    <v-card>
+      <div class="table-responsive">
+        <a-table :columns="columns" :data-source="dataLoad">
+          <template #headerCell="{ column }">
+            <template v-if="column.key === 'name'">
+              <span> {{ languageForShow.headerTable.name }} </span>
+            </template>
+            <template v-if="column.key === 'phone'">
+              <span> {{ languageForShow.headerTable.tel }} </span>
+            </template>
+            <template v-if="column.key === 'where_lab'">
+              <span> {{ languageForShow.headerTable.room }} </span>
+            </template>
+            <template v-if="column.key === 'timebook'">
+              <span> {{ languageForShow.headerTable.sentTime }} </span>
+            </template>
+            <template v-if="column.key === 'start_date'">
+              <span> {{ languageForShow.headerTable.startTime }} </span>
+            </template>
+            <template v-if="column.key === 'end_date'">
+              <span> {{ languageForShow.headerTable.endTime }} </span>
+            </template>
+            <template v-if="column.key === 'appove_status'">
+              <span> {{ languageForShow.headerTable.status }} </span>
+            </template>
           </template>
-          <template v-if="column.key === 'phone'">
-            <span> {{ languageForShow.headerTable.tel }} </span>
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+              <div :style="{ color: '#3F51B5' }">
+                {{ record.name }}
+              </div>
+            </template>
+            <template v-if="column.key === 'where_lab'">
+              <div :style="{ color: '#00BFA5' }">
+                {{ record.where_lab }}
+              </div>
+            </template>
+            <template v-if="column.key === 'start_date'">
+              <div :style="{ color: '#F57C00' }">
+                {{ record.start_date }}
+              </div>
+            </template>
+            <template v-if="column.key === 'end_date'">
+              <div :style="{ color: '#F57C00' }">
+                {{ record.end_date }}
+              </div>
+            </template>
+            <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
+            <template v-if="column.key === 'appove_status'">
+              <!-- แสดง textbox แทนที่ -->
+              <a-button
+                class="custom-button"
+                @click="selectRow(record)"
+                :style="getStatusButtonStyle(record.appove_status)"
+              >
+                {{ getStatusLabel(record.appove_status) }}
+              </a-button>
+            </template>
           </template>
-          <template v-if="column.key === 'where_lab'">
-            <span> {{ languageForShow.headerTable.room }} </span>
-          </template>
-          <template v-if="column.key === 'timebook'">
-            <span> {{ languageForShow.headerTable.sentTime }} </span>
-          </template>
-          <template v-if="column.key === 'start_date'">
-            <span> {{ languageForShow.headerTable.startTime }} </span>
-          </template>
-          <template v-if="column.key === 'end_date'">
-            <span> {{ languageForShow.headerTable.endTime }} </span>
-          </template>
-          <template v-if="column.key === 'appove_status'">
-            <span> {{ languageForShow.headerTable.status }} </span>
-          </template>
-        </template>
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <div :style="{ color: '#3F51B5' }">
-              {{ record.name }}
-            </div>
-          </template>
-          <template v-if="column.key === 'where_lab'">
-            <div :style="{ color: '#00BFA5' }">
-              {{ record.where_lab }}
-            </div>
-          </template>
-          <template v-if="column.key === 'start_date'">
-            <div :style="{ color: '#F57C00' }">
-              {{ record.start_date }}
-            </div>
-          </template>
-          <template v-if="column.key === 'end_date'">
-            <div :style="{ color: '#F57C00' }">
-              {{ record.end_date }}
-            </div>
-          </template>
-          <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
-          <template v-if="column.key === 'appove_status'">
-            <!-- แสดง textbox แทนที่ -->
-            <a-button
-              class="custom-button"
-              @click="selectRow(record)"
-              :style="getStatusButtonStyle(record.appove_status)"
-            >
-              {{ getStatusLabel(record.appove_status) }}
-            </a-button>
-          </template>
-        </template>
-      </a-table>
+        </a-table>
+      </div>
     </v-card>
-
-    <a-button
-      style="background-color: lightcoral"
-      @click="$router.push({ name: 'Mb_Lab' })"
-      >กลับ</a-button
-    >
-  </v-container>
+    <div class="p-2 text-left">
+      <a-button
+        style="background-color: lightcoral"
+        @click="$router.push({ name: 'Mb_Lab' })"
+        >{{ this.languageForShow.btn.backPage }}</a-button
+      >
+    </div>
+  </div>
 
   <!-- popup เปลี่ยนสถานะ -->
   <div>
@@ -291,7 +292,7 @@ export default {
         case 1:
           return this.languageForShow.status.allow;
         case 2:
-        return this.languageForShow.status.not_Allowed;
+          return this.languageForShow.status.not_Allowed;
         default:
           return "";
       }

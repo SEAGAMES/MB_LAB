@@ -1,17 +1,20 @@
 <template>
   <!-- <span>{{ version }}</span> -->
-  <div class="fontSarabun container text-right">
-    <div class="p-2">
-      <!-- {{ this.$store.getters }} -->
-      <v-spacer></v-spacer>
-      <!-- <h1 class="text-bold mt-3">ระบบจองห้อง Lab</h1> -->
-      <v-spacer></v-spacer>
-      <a-button
-        v-if="checkUserPolicy"
-        :style="{ backgroundColor: 'lightgreen', color: 'black' }"
-        @click="$router.push({ name: 'Mb_Approve' })"
-        >{{ languageForShow.approve }}</a-button
-      >
+  <div class="fontSarabun container">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2 ">
+        <h1 class="text-bold text-indigo-darken-4 text-center">
+          {{ languageForShow.nameBooking }}
+        </h1>
+        <div class="text-right">
+          <a-button
+            v-if="checkUserPolicy"
+            :style="{ backgroundColor: 'lightgreen', color: 'black' }"
+            @click="$router.push({ name: 'Mb_Approve' })"
+            >{{ languageForShow.approve }}</a-button
+          >
+        </div>
+      </div>
     </div>
     <!-- <div class="row">
       <div class="col-12 col-md-4">test</div>
@@ -23,7 +26,7 @@
     <v-form
       ref="form"
       lazy-validation
-      class="rounded bg-white p-2 p-sm-3 shadow-sm mb-3"
+      class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
       <div class="fontSize18 row">
         <div align="center" class="col-sm-12 col-lg-6 pb-6">
@@ -31,11 +34,8 @@
           <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
         </div>
 
-        <div
-          align="center"
-          class="mt-n3 col-sm-12 col-lg-6 pt-2"
-        >
-        <!-- mt-n3 col-sm-12 col-lg-6 -->
+        <div align="center" class="mt-n3 col-sm-12 col-lg-6 pt-2">
+          <!-- mt-n3 col-sm-12 col-lg-6 -->
           <v-text-field
             :label="languageForShow.headerTable.tel"
             v-model="dataBookLab.phone"
@@ -119,71 +119,73 @@
       </div>
     </v-form>
 
-    <v-card class="mx-auto my-7 col-12"
-      ><a-table :columns="columns" :data-source="dataBookingLab.data">
-        <template #headerCell="{ column }">
-          <template v-if="column.key === 'name'">
-            <div>
-              {{ languageForShow.headerTable.name }}
-            </div>
+    <v-card class="mx-auto my-7 col-lg-10"
+      ><div class="table-responsive">
+        <a-table :columns="columns" :data-source="dataBookingLab.data">
+          <template #headerCell="{ column }">
+            <template v-if="column.key === 'name'">
+              <div>
+                {{ languageForShow.headerTable.name }}
+              </div>
+            </template>
+            <template v-if="column.key === 'phone'">
+              <span> {{ languageForShow.headerTable.tel }} </span>
+            </template>
+            <template v-if="column.key === 'where_lab'">
+              <span> {{ languageForShow.headerTable.room }} </span>
+            </template>
+            <template v-if="column.key === 'start_date'">
+              <span> {{ languageForShow.headerTable.startTime }} </span>
+            </template>
+            <template v-if="column.key === 'end_date'">
+              <span> {{ languageForShow.headerTable.endTime }} </span>
+            </template>
+            <template v-if="column.key === 'appove_status'">
+              <span> {{ languageForShow.headerTable.status }} </span>
+            </template>
           </template>
-          <template v-if="column.key === 'phone'">
-            <span> {{ languageForShow.headerTable.tel }} </span>
-          </template>
-          <template v-if="column.key === 'where_lab'">
-            <span> {{ languageForShow.headerTable.room }} </span>
-          </template>
-          <template v-if="column.key === 'start_date'">
-            <span> {{ languageForShow.headerTable.startTime }} </span>
-          </template>
-          <template v-if="column.key === 'end_date'">
-            <span> {{ languageForShow.headerTable.endTime }} </span>
-          </template>
-          <template v-if="column.key === 'appove_status'">
-            <span> {{ languageForShow.headerTable.status }} </span>
-          </template>
-        </template>
 
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a>
-              {{ record.name }}
-            </a>
-          </template>
-          <template v-if="column.key === 'start_date'">
-            <div :style="{ color: '#F57C00' }">
-              {{ record.start_date }}
-            </div>
-          </template>
-          <template v-if="column.key === 'end_date'">
-            <div :style="{ color: '#FF6D00' }">
-              {{ record.end_date }}
-            </div>
-          </template>
-          <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
-          <template v-if="column.key === 'appove_status'">
-            <a-button
-              class="custom-button"
-              :style="getStatusButtonStyle(record.appove_status)"
-              >{{ getStatusLabel(record.appove_status) }}</a-button
-            >
-          </template>
-          <template v-if="column.key === 'action'">
-            <!-- <v-icon
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'name'">
+              <a>
+                {{ record.name }}
+              </a>
+            </template>
+            <template v-if="column.key === 'start_date'">
+              <div :style="{ color: '#F57C00' }">
+                {{ record.start_date }}
+              </div>
+            </template>
+            <template v-if="column.key === 'end_date'">
+              <div :style="{ color: '#FF6D00' }">
+                {{ record.end_date }}
+              </div>
+            </template>
+            <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
+            <template v-if="column.key === 'appove_status'">
+              <a-button
+                class="custom-button"
+                :style="getStatusButtonStyle(record.appove_status)"
+                >{{ getStatusLabel(record.appove_status) }}</a-button
+              >
+            </template>
+            <template v-if="column.key === 'action'">
+              <!-- <v-icon
               @click="editBooking(item)"
               style="color: rgb(243, 156, 18)"
               >mdi-pencil</v-icon
             > -->
-            <a-popconfirm
-              title="Delete ?"
-              @confirm="confirm(record.id)"
-              v-if="this.$store.getters.userData.englishname === record.name"
-            >
-              <v-icon style="color: rgb(255, 0, 0)">mdi-delete</v-icon>
-            </a-popconfirm>
+              <a-popconfirm
+                title="Delete ?"
+                @confirm="confirm(record.id)"
+                v-if="this.$store.getters.userData.englishname === record.name"
+              >
+                <v-icon style="color: rgb(255, 0, 0)">mdi-delete</v-icon>
+              </a-popconfirm>
+            </template>
           </template>
-        </template>
-      </a-table></v-card
+        </a-table>
+      </div></v-card
     >
 
     <!-- snackbar -->
@@ -217,10 +219,11 @@ export default {
       colorSnackBar: "",
       iconSnackBar: "",
     },
+    
 
-    telNoRules: [(v) => !!v || "กรุณาใส่เบอร์โทรศัพท์"],
-    floorRules: [(v) => !!v || "กรุณาระบุข้อมูล"],
-    dateRules: [(v) => !!v || "กรุณาระบุวันที่จอง"],
+    telNoRules: [(v) => !!v || "required field"],
+    floorRules: [(v) => !!v || "required field"],
+    dateRules: [(v) => !!v || "required field"],
 
     columns: [
       {
@@ -229,7 +232,7 @@ export default {
         dataIndex: "name",
         align: "center",
       },
-      { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
+      // { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
       //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
       {
         key: "where_lab",
