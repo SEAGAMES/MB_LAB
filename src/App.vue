@@ -4,30 +4,25 @@
       <!-- {{ this.$store.getters.language }} -->
       <div>
         <v-toolbar color="blue-grey-lighten-4" dark>
-          <v-row>
-            <v-col
-              ><a href="https://mb.mahidol.ac.th/app/#/">
-                <v-img
-                  src="./assets/mbmu.png"
-                  alt="Icon"
-                  max-height="65"
-                  class="mt-n3"
-                ></v-img> </a
-            ></v-col>
-            <v-col cols="7"> </v-col>
-            <v-col cols="2" class="mt-2">
-              <a-switch
-                v-model:checked="form.language"
-                @change="memoryLanguage"
-                checked-children="ENG"
-                un-checked-children="TH"
-              />
-            </v-col>
-          </v-row>
+          <div class="col-4 col-sm-2 col-md-3 col-lg-2">
+            <a href="https://mb.mahidol.ac.th/app/#/">
+              <v-img src="./assets/mbmu.png" max-width="200" alt="Icon" class="mt-n3"></v-img>
+            </a>
+          </div>
+
+          <v-spacer></v-spacer>
+          <div class="p-2 pb-6">
+            <a-switch
+              v-model:checked="form.language"
+              @change="memoryLanguage"
+              checked-children="ENG"
+              un-checked-children="TH"
+            />
+          </div>
         </v-toolbar>
+        <router-view />
+        <LanguagePageVue />
       </div>
-      <router-view />
-      <LanguagePageVue />
     </v-main>
   </v-app>
 </template>
@@ -63,8 +58,8 @@ export default {
         },
 
         ruleAlet: {
-          telNoRules:'',
-          requiredField:'',
+          telNoRules: "",
+          requiredField: "",
         },
 
         labelSelect: {
@@ -156,11 +151,11 @@ export default {
           (this.languageForShow.headerTable.startTime = "Start"),
           (this.languageForShow.headerTable.endTime = "End"),
           (this.languageForShow.headerTable.status = "Status");
-          /////////////////////// rule alet /////////////////////////
-          this.languageForShow.ruleAlet.telNoRules = 'required phone number.',
-          this.languageForShow.ruleAlet.requiredField = 'required field.',
-        /////////////////////// btn approve ///////////////////////////
-        (this.languageForShow.status.wait = "Wait"),
+        /////////////////////// rule alet /////////////////////////
+        (this.languageForShow.ruleAlet.telNoRules = "required phone number."),
+          (this.languageForShow.ruleAlet.requiredField = "required field."),
+          /////////////////////// btn approve ///////////////////////////
+          (this.languageForShow.status.wait = "Wait"),
           (this.languageForShow.status.allow = "Allowed"),
           (this.languageForShow.status.not_Allowed = "Not Allowed"),
           ////////////////////////// ตัวย่อวัน ////////////////////////////
