@@ -2,7 +2,7 @@
   <!-- <span>{{ version }}</span> -->
   <div class="fontSarabun container">
     <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2 ">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2">
         <h1 class="text-bold text-indigo-darken-4 text-center">
           {{ languageForShow.nameBooking }}
         </h1>
@@ -219,7 +219,6 @@ export default {
       colorSnackBar: "",
       iconSnackBar: "",
     },
-    
 
     telNoRules: [(v) => !!v || "required field"],
     floorRules: [(v) => !!v || "required field"],
@@ -278,14 +277,17 @@ export default {
 
   mounted() {
     // console.log(this.$store.getters.userData);
-    setTimeout(async () => {
-      this.checkUserPolicy();
-    }, 500);
+    // setTimeout(async () => {
+    //   this.checkUserPolicy();
+    // }, 500);
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == ""
     ) {
-      this.$router.push({ path: "/home" });
+      //this.$router.push({ path: "/home" });
+      this.$router.push({ path: "/mb-lab" });
+
+      this.getRoomLab();
     } else {
       if (localStorage.getItem("bookingLab") !== null) {
         const data = localStorage.getItem("bookingLab");

@@ -12,6 +12,7 @@ export default {
   },
 
   async mounted() {
+    console.log('test1');
     if (this.$route.query.vfy === "pass" && this.$route.query.c !== null) {
       console.log("เข้ามา1");
       this.login();
@@ -25,7 +26,7 @@ export default {
           localStorage.removeItem("MB-app");
           //const { getWebUrl } = require("../services/getUrl");
 
-          window.location = "http://localhost:3000" + "/login" + "?src=mb_lab";
+          window.location = "https://mb.mahidol.ac.th/mbenter" + "/login" + "?src=mb_lab";
         }
       });
     } else {
@@ -33,16 +34,19 @@ export default {
       //const { getWebUrl } = require("../services/getUrl");
       console.log("เข้ามา3");
       setTimeout(function () {
-        window.location = "http://localhost:3000" + "/login" + "?src=mb_lab";
+        window.location = "https://mb.mahidol.ac.th/mbenter" + "/login" + "?src=mb_lab";
       }, 500);
     }
   },
 
   methods: {
     async login() {
-      console.log(this.$route.query.c);
+      console.log('$route.query.c) : ', this.$route.query.c);
       await axios
-        .post("http://localhost:9200/login/login", { c: this.$route.query.c })
+        //.post("http://localhost:9200/login/login", { c: this.$route.query.c }) //local
+        console.log(this.$route.query.c)
+        .post("https://mb.mahidol.ac.th/mbenter/login", { c: this.$route.query.c }) //server
+
         .then((res) => {
           console.log("c : ", this.$route.query.c);
           const data = res.data;
