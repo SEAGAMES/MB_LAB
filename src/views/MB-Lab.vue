@@ -277,17 +277,17 @@ export default {
 
   mounted() {
     // console.log(this.$store.getters.userData);
-    // setTimeout(async () => {
-    //   this.checkUserPolicy();
-    // }, 500);
+    setTimeout(async () => {
+      this.checkUserPolicy();
+    }, 500);
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == ""
     ) {
       //this.$router.push({ path: "/home" });
-      this.$router.push({ path: "/mb-lab" });
+      this.$router.push({ path: "/home" });
 
-      this.getRoomLab();
+      //this.getRoomLab();
     } else {
       if (localStorage.getItem("bookingLab") !== null) {
         const data = localStorage.getItem("bookingLab");
