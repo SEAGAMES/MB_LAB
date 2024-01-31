@@ -1,8 +1,11 @@
 export default async function guest({ next, axios, store }) {
+
   if (localStorage.getItem("MB-app") !== null) {
     //ใส่ตรงเพื่อไว้ f5 ไม่งั้น มันไปไม่ถูก 404
     //const {getWebUrl} = require('../../js/geturl')
-    axios.defaults.baseURL = import.meta.env.VITE_AUTH_BASE_URL;
+    axios.defaults.baseURL = 'https://mb.mahidol.ac.th/mbpsapi';
+
+    
     axios.defaults.headers.common["Authorization"] =
       localStorage.getItem("MB-app"); //for all request
 
@@ -20,6 +23,7 @@ export default async function guest({ next, axios, store }) {
       }
     );
     console.log("เข้ามาในmiddoleware auth");
+
     await axios
       .get("/profile")
       .then((res) => {
@@ -28,6 +32,7 @@ export default async function guest({ next, axios, store }) {
 
           if (res_data.msg === "ok") {
             // store here
+          
             store.dispatch("addUserData", res_data.payload);
             if (store.getters.showname === null) {
               store.dispatch("swapName", store.getters.userData.englishname);

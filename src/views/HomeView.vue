@@ -1,5 +1,5 @@
 <template>
-  <div>{{ this.$store.getters }}</div>
+  <div></div>
 </template>
 
 <script>
