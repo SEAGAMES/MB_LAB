@@ -3,9 +3,8 @@
   <div class="fontSarabun container">
     <div class="row">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2">
-        {{ this.$store.getters.userData }}
+        <div class="text-bold text-indigo-darken-4 text-center">{{ this.$store.getters }}</div>
         <h1 class="text-bold text-indigo-darken-4 text-center">
-   
           {{ languageForShow.nameBooking }}
         </h1>
         <div class="text-right">
@@ -15,11 +14,6 @@
             @click="$router.push({ name: 'Mb_Approve' })"
             >{{ languageForShow.approve }}</a-button
           > -->
-          <a-button
-            :style="{ backgroundColor: 'lightgreen', color: 'black' }"
-            @click="$router.push({ name: 'Mb_Approve' })"
-            >{{ languageForShow.approve }}</a-button
-          >
         </div>
       </div>
     </div>
@@ -283,7 +277,6 @@ export default {
   }),
 
   mounted() {
-    
     //console.log('มา font')
     // console.log('store : ', this.$store.getters.userData);
     // setTimeout(async () => {
@@ -292,10 +285,11 @@ export default {
 
     //console.log('this.$route.query.vfy : ', this.$route)
     // console.log('this.$route.query.c : ', this.$route.query.c)
-  
+
     if (
       this.$store.getters.userData == null ||
-      this.$store.getters.userData == "" || this.$store.getters.userData == undefined
+      this.$store.getters.userData == "" ||
+      this.$store.getters.userData == undefined
     ) {
       // this.$router.push({ path: "/home" });
       this.$router.push({ path: "/home" });
@@ -324,6 +318,7 @@ export default {
     },
 
     checkUserPolicy() {
+      //console.log(this.$store.getters.userPolicy)
       this.$store.getters.userPolicy.forEach((obj) => {
         if (obj.project_id === "1") {
           this.found = true;
@@ -407,8 +402,8 @@ export default {
 
     async createBookLabRoom() {
       this.loadingBtn = true;
-      // console.log('dataBookLab : ',this.dataBookLab);
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
+      console.log('result : ', result.data)
 
       setTimeout(async () => {
         if (result.data.msg === "ok") {

@@ -55,7 +55,7 @@ export default {
         .then((res) => {
           //console.log("c : ", this.$route.query.c);
           const data = res.data;
-          console.log("data : ", data);
+          //console.log("data : ", data);
 
           if (data.msg === "ok") {
             localStorage.removeItem("MB-app");
