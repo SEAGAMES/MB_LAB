@@ -12,9 +12,6 @@ export default {
   },
 
   async mounted() {
-    //console.log("test1");
-    //console.log('this.$route.query.vfy : ', this.$route)
-    //console.log('this.$route.query.c : ', this.$route.query.c)
     if (this.$route.query.vfy === "pass" && this.$route.query.c !== null) {
       console.log("เข้ามา1");
       this.login();
@@ -33,7 +30,6 @@ export default {
         }
       });
     } else {
-      console.log("มา");
       //const { getWebUrl } = require("../services/getUrl");
       console.log("เข้ามา3");
       setTimeout(function () {
@@ -53,10 +49,7 @@ export default {
         //   c: this.$route.query.c,
         // })
         .then((res) => {
-          //console.log("c : ", this.$route.query.c);
           const data = res.data;
-          //console.log("data : ", data);
-
           if (data.msg === "ok") {
             localStorage.removeItem("MB-app");
             localStorage.setItem("MB-app", data.token);

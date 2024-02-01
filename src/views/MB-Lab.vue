@@ -399,9 +399,7 @@ export default {
 
     async createBookLabRoom() {
       this.loadingBtn = true;
-      console.log(this.dataBookLab)
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
-      console.log('result : ', result.data)
 
       setTimeout(async () => {
         if (result.data.msg === "ok") {
@@ -468,10 +466,6 @@ export default {
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString})`;
       return formattedDate;
-    },
-
-    deleteBooking(id) {
-      console.log(id);
     },
 
     clearInputData() {
