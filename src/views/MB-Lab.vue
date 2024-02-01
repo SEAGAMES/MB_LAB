@@ -3,17 +3,17 @@
   <div class="fontSarabun container">
     <div class="row">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2">
-        <div class="text-bold text-indigo-darken-4 text-center">{{ this.$store.getters }}</div>
+        <!-- <div class="text-bold text-indigo-darken-4 text-center">{{ this.$store.getters }}</div> -->
         <h1 class="text-bold text-indigo-darken-4 text-center">
           {{ languageForShow.nameBooking }}
         </h1>
         <div class="text-right">
-          <!-- <a-button
+          <a-button
             v-if="checkUserPolicy"
             :style="{ backgroundColor: 'lightgreen', color: 'black' }"
             @click="$router.push({ name: 'Mb_Approve' })"
             >{{ languageForShow.approve }}</a-button
-          > -->
+          >
         </div>
       </div>
     </div>
@@ -283,9 +283,6 @@ export default {
     //   this.checkUserPolicy();
     // }, 500);
 
-    //console.log('this.$route.query.vfy : ', this.$route)
-    // console.log('this.$route.query.c : ', this.$route.query.c)
-
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
@@ -402,6 +399,7 @@ export default {
 
     async createBookLabRoom() {
       this.loadingBtn = true;
+      console.log(this.dataBookLab)
       const result = await apiRoomLab.createBookLabRoom(this.dataBookLab);
       console.log('result : ', result.data)
 
