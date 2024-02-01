@@ -20,6 +20,8 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/MB_LAB/',
+  
   define: { 'process.env': {} },
   resolve: {
     alias: {
