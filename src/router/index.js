@@ -1,6 +1,5 @@
-// Composables
-import { createRouter, createWebHistory } from "vue-router"; // for local
-// import { createRouter, createWebHashHistory } from "vue-router"; // for server
+//import { createRouter, createWebHistory } from "vue-router"; // for local
+import { createRouter, createWebHashHistory } from "vue-router"; // for server
 
 import middlewarePipeline from "./middlewarePipeline";
 import store from "../store";
@@ -44,15 +43,16 @@ const routes = [
   },
 ];
 
+// const router = createRouter({
+//   history: createWebHistory(process.env.BASE_URL),
+//   routes,
+// });
+
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
 });
 
-// const router = createRouter({
-//   history: createWebHashHistory(),
-//   routes,
-// });
 router.beforeEach((to, from, next) => {
   if (!to.meta.middleware) {
     return next();
