@@ -206,7 +206,7 @@ export default {
       this.$store.getters.userData == "" ||
       this.$store.getters.userData == undefined
     ) {
-      console.log("มา font ไม่ผ่าน");
+      // console.log("มา font ไม่ผ่าน");
       this.$router.push({ name: "Login" });
     } else {
       this.getRoomLab();

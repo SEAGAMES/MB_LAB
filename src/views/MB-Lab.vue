@@ -9,7 +9,7 @@
         </h1>
         <div class="text-right">
           <a-button
-            v-if="checkUserPolicy"
+            v-if="found"
             :style="{ backgroundColor: 'lightgreen', color: 'black' }"
             @click="$router.push({ name: 'Mb_Approve' })"
             >{{ languageForShow.approve }}</a-button
@@ -277,13 +277,16 @@ export default {
   }),
 
   async mounted() {
-    console.log("มา Font");
+    setTimeout(async () => {
+      this.checkUserPolicy();
+    }, 500);
+    // console.log("มา Font");
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
       this.$store.getters.userData == undefined
     ) {
-      console.log("มา font ไม่ผ่าน");
+      // console.log("มา font ไม่ผ่าน");
       this.$router.push({ name: "Login" });
     } else {
       if (localStorage.getItem("bookingLab") !== null) {

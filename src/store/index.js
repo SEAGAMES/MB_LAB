@@ -5,7 +5,7 @@ const store = createStore({
   mutations: {
     setUserData(state, payload) {
       state.userData = payload;
-      console.log(payload);
+      // console.log(payload);
       clearInterval(state.temp_time);
       state.time = payload.current_time;
       state.temp_time = setInterval(() => {

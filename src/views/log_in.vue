@@ -17,13 +17,13 @@ export default {
       this.login();
     } else if (localStorage.getItem("MB-app")) {
       console.log("เข้ามา2");
-
+      
       await axios
         .post("https://mb.mahidol.ac.th/mbpsapi/checktoken")
         .then(async (res) => {
           //if (res.data.msg === "token-ok") {
           if (res.data.msg === "token-ok") {
-            console.log("ผ่าน msg === token-ok");
+            //console.log("ผ่าน msg === token-ok");
             await this.$router.push({ name: "HomeView" }); // ส่งไปที่นี้
           } else {
             localStorage.removeItem("MB-app");

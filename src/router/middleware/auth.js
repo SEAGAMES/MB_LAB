@@ -24,7 +24,7 @@ export default async function guest({ next, axios, store }) {
 
     await axios
       .get("/profile")
-      .then((res) => {
+      .then( async(res) => {
         if (res.status === 200) {
           const res_data = res.data;
 
@@ -37,21 +37,19 @@ export default async function guest({ next, axios, store }) {
               store.dispatch("swapPosition", store.getters.userData.job_thai);
             }
 
-            let result = axios
+            await axios
               .get(import.meta.env.VITE_POLICY_APPROVE_URL)
               .then((response) => {
                 // ดึงข้อมูลออกมาจาก response.data
                 const data = response.data.data;
+                //console.log('data : ', data)
                 const userPolicyData = data;
                 store.dispatch("addUserPolicy", userPolicyData);
-                
               })
               .catch((error) => {
                 // จัดการข้อผิดพลาด
                 console.log(error);
               });
-
-              console.log("result : ", result)
 
             console.log("return profile is  ok");
             return next();
