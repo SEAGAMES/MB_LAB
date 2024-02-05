@@ -21,7 +21,6 @@ export default {
       await axios
         .post("https://mb.mahidol.ac.th/mbpsapi/checktoken")
         .then(async (res) => {
-          //if (res.data.msg === "token-ok") {
           if (res.data.msg === "token-ok") {
             //console.log("ผ่าน msg === token-ok");
             await this.$router.push({ name: "HomeView" }); // ส่งไปที่นี้
@@ -33,10 +32,6 @@ export default {
               "https://mb.mahidol.ac.th/mbenter" + "/login" + "?src=mb_lab";
           }
         });
-
-      // console.log("ผ่าน msg === token-ok");
-      // // await this.$router.push({ path: "../views/HomeView.vue" }); // ส่งไปที่นี้
-      // await this.$router.push({ name: "HomeView" });
     } else {
       //const { getWebUrl } = require("../services/getUrl");
       console.log("เข้ามา3");
