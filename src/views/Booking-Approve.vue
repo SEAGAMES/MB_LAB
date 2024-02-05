@@ -1,7 +1,9 @@
 <template>
   <div class="fontSarabun container text-center">
     <div>
-      <h1 class="text-bold mt-3 text-indigo-darken-4">{{ languageForShow.nameApprove }}</h1>
+      <h1 class="text-bold mt-3 text-indigo-darken-4">
+        {{ languageForShow.nameApprove }}
+      </h1>
     </div>
     <v-card>
       <div class="table-responsive">
@@ -199,7 +201,16 @@ export default {
   },
 
   mounted() {
-    this.getRoomLab();
+    if (
+      this.$store.getters.userData == null ||
+      this.$store.getters.userData == "" ||
+      this.$store.getters.userData == undefined
+    ) {
+      console.log("มา font ไม่ผ่าน");
+      this.$router.push({ name: "Login" });
+    } else {
+      this.getRoomLab();
+    }
   },
   methods: {
     alertShow(show, title, color, icon) {

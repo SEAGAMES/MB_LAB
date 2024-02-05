@@ -276,22 +276,15 @@ export default {
     dataBookingLab: [],
   }),
 
-  mounted() {
-    //console.log('มา font')
-    // console.log('store : ', this.$store.getters.userData);
-    // setTimeout(async () => {
-    //   this.checkUserPolicy();
-    // }, 500);
-
+  async mounted() {
+    console.log("มา Font");
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
       this.$store.getters.userData == undefined
     ) {
-      // this.$router.push({ path: "/home" });
-      this.$router.push({ path: "/home" });
-
-      //this.getRoomLab();
+      console.log("มา font ไม่ผ่าน");
+      this.$router.push({ name: "Login" });
     } else {
       if (localStorage.getItem("bookingLab") !== null) {
         const data = localStorage.getItem("bookingLab");
@@ -300,9 +293,38 @@ export default {
       }
       this.getRoomLab();
       this.dataBookLab.name = this.$store.getters.userData.englishname;
-      //this.createBookLabRoom();
     }
   },
+
+  // mounted() {
+  //   console.log('มา font')
+  //   // console.log('store : ', this.$store.getters.userData);
+  //   // setTimeout(async () => {
+  //   //   this.checkUserPolicy();
+  //   // }, 500);
+
+  //   if (
+  //     this.$store.getters.userData == null ||
+  //     this.$store.getters.userData == "" ||
+  //     this.$store.getters.userData == undefined
+  //   ) {
+  //     console.log('มา font ไม่ผ่าน')
+
+  //     // this.$router.push({ path: "/home" });
+  //     //this.$router.push({ path: "/home" });
+
+  //     //this.getRoomLab();
+  //   } else {
+  //     if (localStorage.getItem("bookingLab") !== null) {
+  //       const data = localStorage.getItem("bookingLab");
+  //       this.dataBookLab = JSON.parse(data);
+  //       this.dataBookLab.ac_name = this.$store.getters.userData.accountname;
+  //     }
+  //     this.getRoomLab();
+  //     this.dataBookLab.name = this.$store.getters.userData.englishname;
+  //     //this.createBookLabRoom();
+  //   }
+  // },
 
   methods: {
     alertShow(show, title, color, icon) {
