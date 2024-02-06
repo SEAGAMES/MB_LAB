@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o}from"./index-96fd3d37.js";const r={mounted(){this.$router.push({path:"/mb-lab"})}};function s(c,a,n,p,_,i){return t(),o("div")}const u=e(r,[["render",s]]);export{u as default};

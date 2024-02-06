@@ -20,7 +20,7 @@ export default defineConfig({
       },
     }),
   ],
-  //base: '/mb_lab/', // server
+  base: '/mb_lab/', // server
   
   define: { 'process.env': {} },
   resolve: {
