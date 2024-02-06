@@ -98,13 +98,14 @@
         <div class="col-sm-12 col-md-4">
           <a-range-picker
             v-model:value="dateSelect"
-            @change="memoryData"
-            :rules="dateRules"
+            @change="{ memoryData(); dateValidate(); }"
             show-time
             required
             :format="'YYYY-MM-DD HH:mm'"
             :disabled-date="disabledDate"
+            style="width: 100%"
           />
+          <p v-if="dateCheck" class="fontSize12 text-red">required field</p>
         </div>
       </div>
       <div>
@@ -188,17 +189,17 @@
         </a-table>
       </div></v-card
     >
-
-    <!-- snackbar -->
-    <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" top>
-      <div class="text-center">
-        {{ snackBar.titleSnackBar }}
-        <v-icon large class="ml-1" :color="snackBar.colorSnackBar">{{
-          snackBar.iconSnackBar
-        }}</v-icon>
-      </div>
-    </v-snackbar>
   </div>
+
+  <!-- snackbar -->
+  <v-snackbar v-model="snackBar.showSnackBar" :timeout="3000" location="top">
+    <div class="text-center">
+      {{ snackBar.titleSnackBar }}
+      <v-icon large class="ml-1" :color="snackBar.colorSnackBar">{{
+        snackBar.iconSnackBar
+      }}</v-icon>
+    </div>
+  </v-snackbar>
 </template>
 
 <script>
@@ -273,6 +274,7 @@ export default {
     dateSelect: [],
     found: false,
     loadingBtn: false,
+    dateCheck: false,
     dataBookingLab: [],
   }),
 
@@ -376,6 +378,7 @@ export default {
             this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
           } else {
+            this.dateValidate()
             this.alertShow(
               true,
               "กรุณาใส่ข้อมูลให้ครบถ้วน",
@@ -390,6 +393,15 @@ export default {
           console.log(error);
         });
       //console.log(this.$refs.form.validate());
+    },
+
+    dateValidate() {
+      // validate manual ให้ a-datepicker
+      if (this.dateSelect.length === 0) {
+        this.dateCheck = true;
+      } else {
+        this.dateCheck = false;
+      }
     },
 
     async createBookLabRoom() {
@@ -530,5 +542,9 @@ export default {
 .custom-button {
   width: 100px; /* ปรับความกว้างตามต้องการ */
   height: 40px; /* ปรับความสูงตามต้องการ */
+}
+
+.ant-picker {
+  width: 100%;
 }
 </style>

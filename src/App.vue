@@ -15,8 +15,7 @@
             </a>
           </div>
 
-          <v-spacer></v-spacer>
-          <div class="p-2 pb-6">
+          <div class="ml-auto p-2 pb-6">
             <a-switch
               v-model:checked="form.language"
               @change="memoryLanguage"
