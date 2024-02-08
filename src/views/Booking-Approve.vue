@@ -84,11 +84,16 @@
       @cancel="changeStatus === false"
       @ok="updateApproveStatus()"
     >
-      <a-select
-        v-model:value="value"
-        style="width: 100%"
-        :options="options"
-      ></a-select>
+      <v-select
+        v-model="approveStatus_Value"
+        label="Select"
+        :items="approveStatus"
+        item-value="value"
+        item-title="name"
+        outlined
+        hide-details
+        dense
+      ></v-select>
     </a-modal>
   </div>
 
@@ -104,36 +109,13 @@
 </template>
   
   <script>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { mapGetters } from "vuex";
 import { message } from "ant-design-vue";
-import { Select } from "ant-design-vue";
 import apiRoomLab from "../services/apiRoomLab";
 
 export default {
-  components: {
-    "a-select": Select,
-  },
   data: () => ({
-    // languageForShow: {
-    //   booker: "",
-    //   zone: "",
-    //   floor: "",
-    //   room: "",
-    //   dateTimeBooking: "",
-    //   sentForm: "",
-
-    //   headerTable: {
-    //     name: "",
-    //     tel: "",
-    //     room: "",
-    //     sentTime: "",
-    //     startTime: "",
-    //     endTime: "",
-    //     status: "",
-    //   },
-    // },
-    loadingBtn: false,
     snackBar: {
       showSnackBar: false,
       titleSnackBar: "",
@@ -141,7 +123,7 @@ export default {
       iconSnackBar: "",
     },
     changeStatus: false,
-    dataDetail: [],
+    // dataDetail: [],
     dataID: [],
 
     columns: [
@@ -152,7 +134,6 @@ export default {
         align: "center",
       },
       { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
-      //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
       {
         key: "where_lab",
         title: "ห้อง",
@@ -179,24 +160,19 @@ export default {
         align: "center",
       },
     ],
+    approveStatus_Value: 0,
+    approveStatus: [
+      { name: "รออนุมัติ", value: 0 },
+      { name: "อนุมัติ", value: 1 },
+      { name: "ไม่อนุมัติ", value: 2 },
+    ],
   }),
 
   setup() {
     const dataLoad = ref([]);
-    const options = ref([
-      { label: "รออนุมัติ", value: 0 },
-      { label: "อนุมัติ", value: 1 },
-      { label: "ไม่อนุมัติ", value: 2 },
-    ]);
-
-    // ใช้ onMounted เพื่อเพิ่มข้อมูลลงในตารางเมื่อคอมโพเนนต์ถูกแสดง
-    onMounted(() => {
-      // ในที่นี้คุณสามารถดึงข้อมูลจาก API หรือที่เก็บข้อมูลอื่น ๆ แล้วกำหนดให้กับ dataSource
-    });
 
     return {
       dataLoad,
-      options,
     };
   },
 
@@ -253,36 +229,6 @@ export default {
       return formattedDate;
     },
 
-    // formatdate(date) {
-    //   const isoDate = date;
-    //   const dateObject = new Date(isoDate);
-
-    //   // สร้างรายการของชื่อวันในภาษาไทย
-    //   const thaiDays = [
-    //     "(Sun.)",
-    //     "(Mon.)",
-    //     "(Tue.)",
-    //     "(Wed.)",
-    //     "(Thu.)",
-    //     "(Fri.)",
-    //     "(Sat.)",
-    //   ];
-
-    //   // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
-    //   const dayName = thaiDays[dateObject.getDay()];
-
-    //   // สร้างรูปแบบในการแสดงผล
-    //   const timeString = dateObject.toLocaleTimeString([], {
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //     hour12: false, // เปลี่ยนเป็นรูปแบบ 24 ชั่วโมง
-    //   });
-    //   const formattedDate = `${dayName} ${dateObject.getDate()}/${
-    //     dateObject.getMonth() + 1
-    //   }/${dateObject.getFullYear()} (${timeString} น.)`;
-    //   return formattedDate;
-    // },
-
     getStatusButtonStyle(appoveStatus) {
       switch (appoveStatus) {
         case 0:
@@ -324,15 +270,16 @@ export default {
 
     selectRow(data) {
       this.changeStatus = true;
-      // console.log(data.id);
+      //console.log(data);
       this.dataID = data.id;
+      this.approveStatus_Value = data.appove_status;
     },
 
     async updateApproveStatus() {
       this.changeStatus = false;
       const result = await apiRoomLab.updateApproveStatus(
         this.dataID,
-        this.value
+        this.approveStatus_Value
       );
 
       setTimeout(async () => {
@@ -342,12 +289,6 @@ export default {
           this.getRoomLab();
         } else {
           message.error("error can not to save");
-          // this.alertShow(
-          //   true,
-          //   "มีการใช้ช่วงเวลานี้เเล้ว",
-          //   "red",
-          //   "mdi-shield-alert"
-          // );
         }
       }, 1500);
     },

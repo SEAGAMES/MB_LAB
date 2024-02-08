@@ -6,7 +6,7 @@
 export default {
   async mounted() {
     //console.log("มา HomeView");
-    await this.$router.push({ name: "Mb_Lab" });
+    await this.$router.push({ name: "Mb_Approve" });
   },
 };
 </script>
