@@ -86,7 +86,6 @@
     >
       <v-select
         v-model="approveStatus_Value"
-        label="Select"
         :items="approveStatus"
         item-value="value"
         item-title="name"
@@ -177,6 +176,9 @@ export default {
   },
 
   mounted() {
+    this.approveStatus[0].name = this.languageForShow.status.wait
+    this.approveStatus[1].name = this.languageForShow.status.allow
+    this.approveStatus[2].name = this.languageForShow.status.not_Allowed
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
