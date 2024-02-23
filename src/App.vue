@@ -116,8 +116,8 @@ export default {
       // console.log("language : ", this.form.language);
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
       if (this.form.language === false) {
-        (this.languageForShow.nameBooking = "ระบบจองห้องแล็บ"),
-        (this.languageForShow.nameApprove = "ระบบอนุมัติห้องแล็บ"),
+        (this.languageForShow.nameBooking = "ระบบขออนุญาติเข้าใช้ห้องแลบ"),
+        (this.languageForShow.nameApprove = "ระบบอนุมัติการเข้าใช้ห้องแล็บ"),
           (this.languageForShow.booker = "ผู้จอง"),
           (this.languageForShow.zone = "โซน"),
           (this.languageForShow.floor = "ชั้น"),
@@ -150,7 +150,7 @@ export default {
         ////////////////////////// ปุ่ม ////////////////////////////
         this.languageForShow.btn.backPage = "กลับ";
       } else {
-        (this.languageForShow.nameBooking = "Booking Lab"),
+        (this.languageForShow.nameBooking = "Request Lab"),
         (this.languageForShow.nameApprove = "Approve Lab"),
           (this.languageForShow.booker = "Booker"),
           (this.languageForShow.zone = "Zone"),

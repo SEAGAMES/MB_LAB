@@ -17,7 +17,7 @@ export default {
       this.login();
     } else if (localStorage.getItem("MB-app")) {
       console.log("เข้ามา2");
-      
+
       await axios
         .post("https://mb.mahidol.ac.th/mbpsapi/checktoken")
         .then(async (res) => {
@@ -34,7 +34,7 @@ export default {
         });
     } else {
       //const { getWebUrl } = require("../services/getUrl");
-      console.log("เข้ามา3");
+      console.log("เข้ามา3"); // *** ถ้า Dev เเล้ว เข้า 3 รัวๆ ให้ไปใส่ ip dev ที่ backend (mbpsapi) ของจี้ ***
       setTimeout(function () {
         window.location =
           "https://mb.mahidol.ac.th/mbenter" + "/login" + "?src=mb_lab";
@@ -44,7 +44,9 @@ export default {
 
   methods: {
     async login() {
-      // console.log("$route.query.c) : ", this.$route.query.c);
+      console.log("$route.query.c) : ", this.$route.query.c);
+
+      // *** ถ้า Dev เเล้ว เข้า 3 รัวๆ ให้ไปใส่ ip dev ที่ backend (mbpsapi) ของจี้ ***
       await axios
         .post("https://mb.mahidol.ac.th/mbpsapi/login", {
           c: this.$route.query.c,
