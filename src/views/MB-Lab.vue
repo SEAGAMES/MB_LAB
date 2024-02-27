@@ -36,8 +36,7 @@
         </div>
 
         <div align="center" class="mt-n3 col-sm-12 col-lg-6 pt-2">
-          <!-- mt-n3 col-sm-12 col-lg-6 -->
-          <v-text-field
+          <!-- <v-text-field
             :label="languageForShow.headerTable.tel"
             v-model="dataBookLab.phone"
             @change="memoryData"
@@ -49,7 +48,17 @@
             required
             outlined
             dense
-          ></v-text-field>
+          ></v-text-field> -->
+          <v-select
+            :items="aca_Programs"
+            item-title="aca_prog"
+            item-value="aca_id"
+            :label="languageForShow.academic"
+            required
+            outlined
+            dense
+            variant="outlined"
+          ></v-select>
         </div>
       </div>
       <div class="row">
@@ -98,7 +107,12 @@
         <div class="col-sm-12 col-md-4">
           <a-range-picker
             v-model:value="dateSelect"
-            @change="{ memoryData(); dateValidate(); }"
+            @change="
+              {
+                memoryData();
+                dateValidate();
+              }
+            "
             show-time
             required
             :format="'YYYY-MM-DD HH:mm'"
@@ -106,6 +120,16 @@
             style="width: 100%"
           />
           <p v-if="dateCheck" class="fontSize12 text-red">required field</p>
+        </div>
+
+        <div>
+          <v-text-field
+            maxlength="10"
+            v-model="dataBookLab.reason"
+            :rules="floorRules"
+            required
+            label="เหตุผลการขอใช้ห้องแลบ"
+          ></v-text-field>
         </div>
       </div>
       <div>
@@ -206,6 +230,7 @@
 import moment from "moment";
 import { mapGetters } from "vuex";
 import apiRoomLab from "../services/apiRoomLab";
+import apiAcademic from "@/services/apiAcademic";
 import { message } from "ant-design-vue";
 
 export default {
@@ -221,6 +246,21 @@ export default {
       colorSnackBar: "",
       iconSnackBar: "",
     },
+
+    aca: [
+      {
+        aca_id: 1,
+        edu_levels: "Ph.D.\r\n",
+        aca_prog: "Systems Biosciences\r\n",
+        prog_dir: "surapon.pib\r\n",
+      },
+      {
+        aca_id: 2,
+        edu_levels: "Ph.D.\r\n",
+        aca_prog: "Molecular Genetics and Genetic Engineering\r\n",
+        prog_dir: "panadda.boo\r\n",
+      },
+    ],
 
     telNoRules: [(v) => !!v || "required field"],
     floorRules: [(v) => !!v || "required field"],
@@ -258,17 +298,25 @@ export default {
       { key: "action", title: "action", dataIndex: "action", align: "center" },
     ],
 
+    academic_programs: [
+      { name: "รออนุมัติ", value: 0 },
+      { name: "อนุมัติ", value: 1 },
+      { name: "ไม่อนุมัติ", value: 2 },
+    ],
+
     lab_room: [],
+    aca_Programs: [],
 
     dataBookLab: {
       ac_name: "",
       name: "",
-      phone: "",
+      // phone: "",
       zone: "",
       floor: "",
       where_lab: "",
       start_date: "",
       endtime: "",
+      reason: "",
     },
 
     dateSelect: [],
@@ -279,6 +327,10 @@ export default {
   }),
 
   async mounted() {
+    //apiAcademic
+    this.aca_Programs = await apiAcademic.getAcademicPrograms();
+    console.log(this.aca);
+
     setTimeout(async () => {
       this.checkUserPolicy();
     }, 500);
@@ -370,6 +422,7 @@ export default {
       this.$refs.form
         .validate()
         .then((result) => {
+          // console.log(this.dataBookLab)
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
@@ -378,7 +431,7 @@ export default {
             this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
           } else {
-            this.dateValidate()
+            this.dateValidate();
             this.alertShow(
               true,
               "กรุณาใส่ข้อมูลให้ครบถ้วน",

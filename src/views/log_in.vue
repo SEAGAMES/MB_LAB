@@ -44,7 +44,7 @@ export default {
 
   methods: {
     async login() {
-      console.log("$route.query.c) : ", this.$route.query.c);
+      //console.log("$route.query.c) : ", this.$route.query.c);
 
       // *** ถ้า Dev เเล้ว เข้า 3 รัวๆ ให้ไปใส่ ip dev ที่ backend (mbpsapi) ของจี้ ***
       await axios
