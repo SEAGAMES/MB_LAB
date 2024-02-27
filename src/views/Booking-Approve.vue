@@ -283,7 +283,8 @@ export default {
       this.changeStatus = false;
       const result = await apiRoomLab.updateApproveStatus(
         this.dataID,
-        this.approveStatus_Value
+        this.approveStatus_Value,
+        this.$store.getters.userData.accountname
       );
 
       setTimeout(async () => {

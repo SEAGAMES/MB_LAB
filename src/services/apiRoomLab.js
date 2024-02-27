@@ -28,11 +28,12 @@ const createBookLabRoom = async (data) => {
   return result
 }
 
-const updateApproveStatus = async (id, statusCode) => {
-  // console.log(id, statusCode)
+const updateApproveStatus = async (id, statusCode, approver) => {
+  console.log(id, statusCode, approver)
   const result = axios.post(`${apiUrl}updateApproveStatus`, {
     id: id,
     statusCode: statusCode,
+    approver: approver
   })
   //console.log(result)
   return result
