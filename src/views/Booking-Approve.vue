@@ -12,9 +12,9 @@
             <template v-if="column.key === 'name'">
               <span> {{ languageForShow.headerTable.name }} </span>
             </template>
-            <template v-if="column.key === 'phone'">
+            <!-- <template v-if="column.key === 'phone'">
               <span> {{ languageForShow.headerTable.tel }} </span>
-            </template>
+            </template> -->
             <template v-if="column.key === 'where_lab'">
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
@@ -59,6 +59,7 @@
                 class="custom-button"
                 @click="selectRow(record)"
                 :style="getStatusButtonStyle(record.appove_status)"
+                style="width: 80px;"
               >
                 {{ getStatusLabel(record.appove_status) }}
               </a-button>
@@ -127,12 +128,18 @@ export default {
 
     columns: [
       {
+        key: "appove_status",
+        title: "สถานะ",
+        dataIndex: "appove_status",
+        align: "center",
+      },
+      {
         key: "name",
         title: "ชื่อ-นามสกุล",
         dataIndex: "name",
         align: "center",
       },
-      { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
+      // { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
       {
         key: "where_lab",
         title: "ห้อง",
@@ -152,12 +159,7 @@ export default {
         align: "center",
       },
       { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
-      {
-        key: "appove_status",
-        title: "สถานะ",
-        dataIndex: "appove_status",
-        align: "center",
-      },
+      
     ],
     approveStatus_Value: 0,
     approveStatus: [

@@ -139,7 +139,7 @@ export default {
           (this.languageForShow.headerTable.status = "สถานะ");
         /////////////////////// btn approve ///////////////////////////
         (this.languageForShow.status.wait = "รออนุมัติ"),
-          (this.languageForShow.status.allow = "อนุมัติเเล้ว"),
+          (this.languageForShow.status.allow = "อนุมัติ"),
           (this.languageForShow.status.not_Allowed = "ไม่อนุมัติ"),
           ///////////////////// ตัวย่อวัน //////////////////////////////
           (this.languageForShow.days = [
