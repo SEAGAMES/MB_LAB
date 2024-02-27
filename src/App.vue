@@ -53,6 +53,7 @@ export default {
         room: "",
         dateTimeBooking: "",
         sentForm: "",
+        reason:'',
 
         headerTable: {
           name: "",
@@ -125,6 +126,7 @@ export default {
           (this.languageForShow.floor = "ชั้น"),
           (this.languageForShow.room = "ห้อง"),
           (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
+          (this.languageForShow.reason = "เหตุผลการขอใช้ห้องแลบ");
           (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
           ///////////////////// headerTable /////////////////////////
@@ -160,6 +162,7 @@ export default {
           (this.languageForShow.floor = "Floor"),
           (this.languageForShow.room = "Room"),
           (this.languageForShow.dateTimeBooking = "Date Time Booking"),
+          (this.languageForShow.reason = "Reason");
           (this.languageForShow.sentForm = "Sent Form");
         (this.languageForShow.approve = "Approve"),
           ///////////////////// headerTable /////////////////////////

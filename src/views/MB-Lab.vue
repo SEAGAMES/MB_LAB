@@ -50,10 +50,12 @@
             dense
           ></v-text-field> -->
           <v-select
+            v-model="dataBookLab.aca_id"
             :items="aca_Programs"
             item-title="aca_prog"
             item-value="aca_id"
             :label="languageForShow.academic"
+            :rules="floorRules"
             required
             outlined
             dense
@@ -122,19 +124,18 @@
           <p v-if="dateCheck" class="fontSize12 text-red">required field</p>
         </div>
 
-        <div>
+        <div class="mt-2">
           <v-text-field
             maxlength="10"
             v-model="dataBookLab.reason"
             :rules="floorRules"
             required
-            label="เหตุผลการขอใช้ห้องแลบ"
+            :label="languageForShow.reason"
           ></v-text-field>
         </div>
       </div>
       <div>
         <v-btn
-          class="mt-5"
           @click="validate()"
           :loading="loadingBtn"
           color="green"
@@ -154,9 +155,9 @@
                 {{ languageForShow.headerTable.name }}
               </div>
             </template>
-            <template v-if="column.key === 'phone'">
+            <!-- <template v-if="column.key === 'phone'">
               <span> {{ languageForShow.headerTable.tel }} </span>
-            </template>
+            </template> -->
             <template v-if="column.key === 'where_lab'">
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
@@ -247,22 +248,7 @@ export default {
       iconSnackBar: "",
     },
 
-    aca: [
-      {
-        aca_id: 1,
-        edu_levels: "Ph.D.\r\n",
-        aca_prog: "Systems Biosciences\r\n",
-        prog_dir: "surapon.pib\r\n",
-      },
-      {
-        aca_id: 2,
-        edu_levels: "Ph.D.\r\n",
-        aca_prog: "Molecular Genetics and Genetic Engineering\r\n",
-        prog_dir: "panadda.boo\r\n",
-      },
-    ],
-
-    telNoRules: [(v) => !!v || "required field"],
+    //telNoRules: [(v) => !!v || "required field"],
     floorRules: [(v) => !!v || "required field"],
     dateRules: [(v) => !!v || "required field"],
 
@@ -317,6 +303,7 @@ export default {
       start_date: "",
       endtime: "",
       reason: "",
+      aca_id: "",
     },
 
     dateSelect: [],
@@ -329,7 +316,6 @@ export default {
   async mounted() {
     //apiAcademic
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
-    console.log(this.aca);
 
     setTimeout(async () => {
       this.checkUserPolicy();
@@ -529,7 +515,10 @@ export default {
     },
 
     clearInputData() {
-      (this.dataBookLab.phone = ""), (this.dataBookLab.zone = "");
+      // (this.dataBookLab.phone = ""), 
+      (this.dataBookLab.aca_id = "");
+      (this.dataBookLab.reason = "");
+      (this.dataBookLab.zone = "");
       this.dataBookLab.floor = "";
       this.dateSelect = [];
     },
@@ -538,7 +527,9 @@ export default {
     clearLocalStorage() {
       const data = localStorage.getItem("bookingLab");
       const setNewData = JSON.parse(data);
-      setNewData.phone = "";
+      // setNewData.phone = "";
+      setNewData.aca_id = "";
+      setNewData.reason = "";
       setNewData.zone = "";
       setNewData.floor = "";
       setNewData.where_lab = "";
@@ -576,6 +567,9 @@ export default {
     "dataBookLab.where_lab": ["loadBookingLab", "memoryData"], // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
     "dataBookLab.zone": "memoryData",
     "dataBookLab.floor": "memoryData",
+    "dataBookLab.aca_id": "memoryData",
+    "dataBookLab.reason": "memoryData",
+    
 
     languageForShowComputed: {
       handler(newVal) {
