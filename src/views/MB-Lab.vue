@@ -121,12 +121,20 @@
             :disabled-date="disabledDate"
             style="width: 100%"
           />
-          <p v-if="dateCheck" class="fontSize12 text-red">required field</p>
+          <p v-if="dateCheck" class="fontSize12 text-red">required time</p>
         </div>
 
+        <!-- <div class="mt-2">
+          <a-textarea
+            v-model="dataBookLab.reason"
+            :rules="floorRules"
+            :placeholder="languageForShow.reason"
+            :rows="3"
+          />
+        </div> -->
         <div class="mt-2">
           <v-text-field
-            maxlength="10"
+            maxlength="300"
             v-model="dataBookLab.reason"
             :rules="floorRules"
             required
@@ -134,7 +142,7 @@
           ></v-text-field>
         </div>
       </div>
-      <div>
+      <div >
         <v-btn
           @click="validate()"
           :loading="loadingBtn"
@@ -249,8 +257,8 @@ export default {
     },
 
     //telNoRules: [(v) => !!v || "required field"],
-    floorRules: [(v) => !!v || "required field"],
-    dateRules: [(v) => !!v || "required field"],
+    floorRules: [(v) => !!v || ""],
+    dateRules: [(v) => !!v || ""],
 
     columns: [
       {
@@ -515,10 +523,10 @@ export default {
     },
 
     clearInputData() {
-      // (this.dataBookLab.phone = ""), 
-      (this.dataBookLab.aca_id = "");
-      (this.dataBookLab.reason = "");
-      (this.dataBookLab.zone = "");
+      // (this.dataBookLab.phone = ""),
+      this.dataBookLab.aca_id = "";
+      this.dataBookLab.reason = "";
+      this.dataBookLab.zone = "";
       this.dataBookLab.floor = "";
       this.dateSelect = [];
     },
@@ -569,7 +577,6 @@ export default {
     "dataBookLab.floor": "memoryData",
     "dataBookLab.aca_id": "memoryData",
     "dataBookLab.reason": "memoryData",
-    
 
     languageForShowComputed: {
       handler(newVal) {
