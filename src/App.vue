@@ -130,10 +130,10 @@ export default {
           (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
           ///////////////////// headerTable /////////////////////////
-          (this.languageForShow.headerTable.name = "ชื่อ-นามสกุล"),
+          (this.languageForShow.headerTable.name = "ชื่อ"),
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
-          (this.languageForShow.headerTable.sentTime = "เวลาที่กดจอง"),
+          (this.languageForShow.headerTable.sentTime = "เวลาที่จอง"),
           (this.languageForShow.headerTable.startTime = "เริ่มใช้เวลา"),
           (this.languageForShow.headerTable.endTime = "ถึง"),
           (this.languageForShow.headerTable.status = "สถานะ");

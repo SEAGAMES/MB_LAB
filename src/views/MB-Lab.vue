@@ -17,11 +17,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-12 col-md-4">test</div>
-      <div class="col-12 col-md-4">test</div>
-      <div class="col12 col-md-4">test</div>
-    </div> -->
 
     <!-- v-card input data -->
     <v-form
@@ -142,7 +137,7 @@
           ></v-text-field>
         </div>
       </div>
-      <div >
+      <div>
         <v-btn
           @click="validate()"
           :loading="loadingBtn"
@@ -182,9 +177,14 @@
 
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
-              <a>
+              <div :style="{ color: '#3F51B5' }">
                 {{ record.name }}
-              </a>
+              </div>
+            </template>
+            <template v-if="column.key === 'where_lab'">
+              <div :style="{ color: '#00BFA5' }">
+                {{ record.where_lab }}
+              </div>
             </template>
             <template v-if="column.key === 'start_date'">
               <div :style="{ color: '#F57C00' }">

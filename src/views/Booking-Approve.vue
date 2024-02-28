@@ -59,7 +59,7 @@
                 class="custom-button"
                 @click="selectRow(record)"
                 :style="getStatusButtonStyle(record.appove_status)"
-                style="width: 80px;"
+                style="width: 80px; text-align: center"
               >
                 {{ getStatusLabel(record.appove_status) }}
               </a-button>

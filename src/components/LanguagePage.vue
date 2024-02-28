@@ -1,14 +1,10 @@
 <template>
   <div class="d-flex justify-content-end">
     <div class>
-      <!-- <span class="name">{{swapname}}</span> -->
-      <!-- <select name="language" v-model="$i18n.locale" @change="swapName($event)">
-        <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
-      </select> -->
     </div>
-    <div class="d-flex justify-content-end">
+    <!-- <div class="d-flex justify-content-end">
       <button class="ms-2 btn btn-color" @click="logout()">logout</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
