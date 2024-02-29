@@ -24,16 +24,18 @@
       lazy-validation
       class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
-    <div>
-       <div align="center" class="col-sm-12 col-lg-12 pb-6">
+      <div>
+        <div align="center" class="col-sm-12 col-lg-12 pb-6">
           <span>{{ languageForShow.booker }} : </span>
           <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
         </div>
-    </div>
+      </div>
       <div class="fontSize18 row">
-        <div align="center" class="col-sm-12 col-lg-6 ">
+        <div align="center" class="col-sm-12 col-lg-6">
           <v-autocomplete
+            v-model="dataBookLab.student_id"  
             label="ชื่อ-นามสกุล"
+            :rules="floorRules"
             variant="outlined"
             :items="studentDataWithCombinedValue"
             item-title="combinedValue"
@@ -42,19 +44,6 @@
         </div>
 
         <div align="center" class="col-sm-12 col-lg-6">
-          <!-- <v-text-field
-            :label="languageForShow.headerTable.tel"
-            v-model="dataBookLab.phone"
-            @change="memoryData"
-            prepend-inner-icon="mdi-phone-plus"
-            :rules="telNoRules"
-            single-line
-            type="number"
-            autofocus
-            required
-            outlined
-            dense
-          ></v-text-field> -->
           <v-select
             v-model="dataBookLab.aca_id"
             :items="aca_Programs"
@@ -323,6 +312,7 @@ export default {
       start_date: "",
       endtime: "",
       reason: "",
+      student_id: "",
       aca_id: "",
     },
 
@@ -335,8 +325,8 @@ export default {
 
   async mounted() {
     //studentData
-    this.studentData = await apiAcademic.getStudentData()
-    console.log(this.studentData)
+    this.studentData = await apiAcademic.getStudentData();
+    //console.log(this.studentData);
     //apiAcademic
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
 
@@ -379,6 +369,10 @@ export default {
           this.found = true;
         }
       });
+    },
+
+    async check_aca_id(){
+      console.log(this.dataBookLab.student_id)
     },
 
     async confirm(id) {
@@ -539,6 +533,7 @@ export default {
 
     clearInputData() {
       // (this.dataBookLab.phone = ""),
+      this.dataBookLab.student_id = "";
       this.dataBookLab.aca_id = "";
       this.dataBookLab.reason = "";
       this.dataBookLab.zone = "";
@@ -551,6 +546,7 @@ export default {
       const data = localStorage.getItem("bookingLab");
       const setNewData = JSON.parse(data);
       // setNewData.phone = "";
+      setNewData.student_id = "";
       setNewData.aca_id = "";
       setNewData.reason = "";
       setNewData.zone = "";
@@ -587,20 +583,25 @@ export default {
 
     // รวมชื่อกับนามสกุล
     studentDataWithCombinedValue() {
-      return this.studentData.map(item => ({
+      return this.studentData.map((item) => ({
         th_lastname: item.th_lastname,
         th_name: item.th_name,
+        no: item.no,
         combinedValue: `${item.th_name} ${item.th_lastname}`, // รวมข้อมูลทั้งสอง
       }));
     },
   },
 
   watch: {
+    'dataBookLab.student_id': ["check_aca_id", "memoryData"],
     "dataBookLab.where_lab": ["loadBookingLab", "memoryData"], // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
     "dataBookLab.zone": "memoryData",
     "dataBookLab.floor": "memoryData",
-    "dataBookLab.aca_id": "memoryData",
+    "dataBookLab.aca_id": "memoryData", 
     "dataBookLab.reason": "memoryData",
+
+    
+
 
     languageForShowComputed: {
       handler(newVal) {
