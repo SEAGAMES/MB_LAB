@@ -57,6 +57,7 @@ export default {
 
         headerTable: {
           name: "",
+          student_name: '',
           tel: "",
           room: "",
           sentTime: "",
@@ -130,7 +131,8 @@ export default {
           (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
           ///////////////////// headerTable /////////////////////////
-          (this.languageForShow.headerTable.name = "ชื่อ"),
+          (this.languageForShow.headerTable.name = "ผู้จอง"),
+          this.languageForShow.headerTable.student_name = 'นักศึกษา',
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
           (this.languageForShow.headerTable.sentTime = "เวลาที่จอง"),
@@ -166,7 +168,8 @@ export default {
           (this.languageForShow.sentForm = "Sent Form");
         (this.languageForShow.approve = "Approve"),
           ///////////////////// headerTable /////////////////////////
-          (this.languageForShow.headerTable.name = "Name"),
+          (this.languageForShow.headerTable.name = "Booker"),
+          this.languageForShow.headerTable.student_name = 'Student',
           (this.languageForShow.headerTable.tel = "Tel."),
           (this.languageForShow.headerTable.room = "Room"),
           (this.languageForShow.headerTable.sentTime = "Sent Time"),

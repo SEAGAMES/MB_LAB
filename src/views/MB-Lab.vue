@@ -33,7 +33,7 @@
       <div class="fontSize18 row">
         <div align="center" class="col-sm-12 col-lg-6">
           <v-autocomplete
-            v-model="dataBookLab.student_id"  
+            v-model="dataBookLab.student_id"
             label="ชื่อ-นามสกุล"
             :rules="floorRules"
             variant="outlined"
@@ -153,6 +153,11 @@
       ><div class="table-responsive">
         <a-table :columns="columns" :data-source="dataBookingLab.data">
           <template #headerCell="{ column }">
+            <template v-if="column.key === 'student_name'">
+              <div>
+                {{ languageForShow.headerTable.student_name }}
+              </div>
+            </template>
             <template v-if="column.key === 'name'">
               <div>
                 {{ languageForShow.headerTable.name }}
@@ -213,7 +218,7 @@
               <a-popconfirm
                 title="Delete ?"
                 @confirm="confirm(record.id)"
-                v-if="this.$store.getters.userData.englishname === record.name"
+                v-if="this.$store.getters.userData.thainame === record.name"
               >
                 <v-icon style="color: rgb(255, 0, 0)">mdi-delete</v-icon>
               </a-popconfirm>
@@ -261,6 +266,12 @@ export default {
     dateRules: [(v) => !!v || ""],
 
     columns: [
+      {
+        key: "student_name",
+        title: "ชื่อ-นามสกุล",
+        dataIndex: "student_name",
+        align: "center",
+      },
       {
         key: "name",
         title: "ชื่อ-นามสกุล",
@@ -348,7 +359,7 @@ export default {
         this.dataBookLab.ac_name = this.$store.getters.userData.accountname;
       }
       this.getRoomLab();
-      this.dataBookLab.name = this.$store.getters.userData.englishname;
+      this.dataBookLab.name = this.$store.getters.userData.thainame;
     }
   },
 
@@ -369,10 +380,6 @@ export default {
           this.found = true;
         }
       });
-    },
-
-    async check_aca_id(){
-      console.log(this.dataBookLab.student_id)
     },
 
     async confirm(id) {
@@ -429,6 +436,7 @@ export default {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
+            //console.log(this.dataBookLab)
             const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
             this.dataBookLab.start_date = dayObject[0];
             this.dataBookLab.endtime = dayObject[1];
@@ -500,6 +508,17 @@ export default {
       }
     },
 
+    addData_Form_StudentID() {
+      if (this.dataBookLab.student_id) {
+        let studentData = this.studentData[this.dataBookLab.student_id - 1];
+        //console.log(studentData.th_prefix + studentData.th_name + ' ' + studentData.th_lastname);
+        // console.log(studentData);
+        this.dataBookLab.student_name =
+          studentData.th_name + " " + studentData.th_lastname;
+        this.dataBookLab.aca_id = studentData.aca_id;
+      }
+    },
+
     formatdate(date) {
       const isoDate = date;
       const dateObject = new Date(isoDate);
@@ -534,6 +553,7 @@ export default {
     clearInputData() {
       // (this.dataBookLab.phone = ""),
       this.dataBookLab.student_id = "";
+      this.dataBookLab.student_name;
       this.dataBookLab.aca_id = "";
       this.dataBookLab.reason = "";
       this.dataBookLab.zone = "";
@@ -547,6 +567,7 @@ export default {
       const setNewData = JSON.parse(data);
       // setNewData.phone = "";
       setNewData.student_id = "";
+      setNewData.student_name = "";
       setNewData.aca_id = "";
       setNewData.reason = "";
       setNewData.zone = "";
@@ -593,15 +614,12 @@ export default {
   },
 
   watch: {
-    'dataBookLab.student_id': ["check_aca_id", "memoryData"],
+    "dataBookLab.student_id": ["addData_Form_StudentID", "memoryData"],
     "dataBookLab.where_lab": ["loadBookingLab", "memoryData"], // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
     "dataBookLab.zone": "memoryData",
     "dataBookLab.floor": "memoryData",
-    "dataBookLab.aca_id": "memoryData", 
+    "dataBookLab.aca_id": "memoryData",
     "dataBookLab.reason": "memoryData",
-
-    
-
 
     languageForShowComputed: {
       handler(newVal) {
@@ -619,7 +637,7 @@ export default {
 }
 
 .custom-button {
-  width: 100px; /* ปรับความกว้างตามต้องการ */
+  width: px; /* ปรับความกว้างตามต้องการ */
   height: 40px; /* ปรับความสูงตามต้องการ */
 }
 

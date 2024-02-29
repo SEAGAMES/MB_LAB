@@ -23,13 +23,13 @@ const thisLabBooking = async (labNo) => {
 
 
 const createBookLabRoom = async (data) => {
-  console.log(data)
+  console.log('API : ' , data)
   const result = axios.post(`${apiUrl}bookLabRoom`, data)
   return result
 }
 
 const updateApproveStatus = async (id, statusCode, approver) => {
-  console.log(id, statusCode, approver)
+  //console.log(id, statusCode, approver)
   const result = axios.post(`${apiUrl}updateApproveStatus`, {
     id: id,
     statusCode: statusCode,
