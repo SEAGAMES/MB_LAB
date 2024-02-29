@@ -24,13 +24,24 @@
       lazy-validation
       class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
-      <div class="fontSize18 row">
-        <div align="center" class="col-sm-12 col-lg-6 pb-6">
+    <div>
+       <div align="center" class="col-sm-12 col-lg-12 pb-6">
           <span>{{ languageForShow.booker }} : </span>
           <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
         </div>
+    </div>
+      <div class="fontSize18 row">
+        <div align="center" class="col-sm-12 col-lg-6 ">
+          <v-autocomplete
+            label="ชื่อ-นามสกุล"
+            variant="outlined"
+            :items="studentDataWithCombinedValue"
+            item-title="combinedValue"
+            item-value="no"
+          ></v-autocomplete>
+        </div>
 
-        <div align="center" class="mt-n3 col-sm-12 col-lg-6 pt-2">
+        <div align="center" class="col-sm-12 col-lg-6">
           <!-- <v-text-field
             :label="languageForShow.headerTable.tel"
             v-model="dataBookLab.phone"
@@ -300,6 +311,7 @@ export default {
 
     lab_room: [],
     aca_Programs: [],
+    studentData: [],
 
     dataBookLab: {
       ac_name: "",
@@ -322,6 +334,9 @@ export default {
   }),
 
   async mounted() {
+    //studentData
+    this.studentData = await apiAcademic.getStudentData()
+    console.log(this.studentData)
     //apiAcademic
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
 
@@ -568,6 +583,15 @@ export default {
         room.push(element.room_no);
       });
       return room;
+    },
+
+    // รวมชื่อกับนามสกุล
+    studentDataWithCombinedValue() {
+      return this.studentData.map(item => ({
+        th_lastname: item.th_lastname,
+        th_name: item.th_name,
+        combinedValue: `${item.th_name} ${item.th_lastname}`, // รวมข้อมูลทั้งสอง
+      }));
     },
   },
 
