@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col-6 col-lg-4">
           <v-select
             v-model="dataBookLab.zone"
             :rules="floorRules"
@@ -71,7 +71,8 @@
             variant="outlined"
           ></v-select>
         </div>
-        <div class="col-4">
+        <!-- col-sm-12 col-lg-6 -->
+        <div class="col-6 col-lg-4">
           <v-select
             v-model="dataBookLab.floor"
             :rules="floorRules"
@@ -83,7 +84,7 @@
             variant="outlined"
           ></v-select>
         </div>
-        <div class="col-4">
+        <div class="col-lg-4">
           <v-select
             v-model="dataBookLab.where_lab"
             :rules="floorRules"
@@ -104,6 +105,7 @@
         <div class="col-sm-12 col-md-4">
           <a-range-picker
             v-model:value="dateSelect"
+            @click="handleDatePickerClick"
             @change="
               {
                 memoryData();
@@ -154,12 +156,12 @@
         <a-table :columns="columns" :data-source="dataBookingLab.data">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'student_name'">
-              <div>
+              <div :style="{ width: '150px' }">
                 {{ languageForShow.headerTable.student_name }}
               </div>
             </template>
             <template v-if="column.key === 'name'">
-              <div>
+              <div :style="{ width: '150px' }">
                 {{ languageForShow.headerTable.name }}
               </div>
             </template>
@@ -170,10 +172,14 @@
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
             <template v-if="column.key === 'start_date'">
-              <span> {{ languageForShow.headerTable.startTime }} </span>
+              <div :style="{ width: '130px' }">
+                {{ languageForShow.headerTable.startTime }}
+              </div>
             </template>
             <template v-if="column.key === 'end_date'">
-              <span> {{ languageForShow.headerTable.endTime }} </span>
+              <div :style="{ width: '130px' }">
+                {{ languageForShow.headerTable.endTime }}
+              </div>
             </template>
             <template v-if="column.key === 'appove_status'">
               <span> {{ languageForShow.headerTable.status }} </span>
@@ -181,6 +187,11 @@
           </template>
 
           <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'student_name'">
+              <div :style="{ color: '#2979ff' }">
+                {{ record.student_name }}
+              </div>
+            </template>
             <template v-if="column.key === 'name'">
               <div :style="{ color: '#3F51B5' }">
                 {{ record.name }}
@@ -205,7 +216,10 @@
             <template v-if="column.key === 'appove_status'">
               <a-button
                 class="custom-button"
-                :style="getStatusButtonStyle(record.appove_status)"
+                :style="{
+                  ...getStatusButtonStyle(record.appove_status),
+                  width: '110px',
+                }"
                 >{{ getStatusLabel(record.appove_status) }}</a-button
               >
             </template>
@@ -267,6 +281,12 @@ export default {
 
     columns: [
       {
+        key: "where_lab",
+        title: "ห้อง",
+        dataIndex: "where_lab",
+        align: "center",
+      },
+      {
         key: "student_name",
         title: "ชื่อ-นามสกุล",
         dataIndex: "student_name",
@@ -280,12 +300,7 @@ export default {
       },
       // { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
       //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
-      {
-        key: "where_lab",
-        title: "ห้อง",
-        dataIndex: "where_lab",
-        align: "center",
-      },
+     
       {
         key: "start_date",
         title: "เริ่มใช้เวลา",
@@ -364,6 +379,11 @@ export default {
   },
 
   methods: {
+    handleDatePickerClick() {
+      // ลบการเปิดคีย์บอร์ดหากมีการคลิกที่ date picker
+      document.activeElement.blur();
+    },
+
     alertShow(show, title, color, icon) {
       this.snackBar = {
         showSnackBar: show,
