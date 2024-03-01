@@ -24,23 +24,48 @@
       lazy-validation
       class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
-      <div>
-        <div align="center" class="col-sm-12 col-lg-12 pb-6">
+      <div class="row">
+        <div align="center" class="col-12 col-lg-12 pb-6 ">
           <span>{{ languageForShow.booker }} : </span>
           <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
         </div>
+     
       </div>
+
+      <!-- <div class="row">
+        <div align="left" class="col-10 col-lg-10 mt-2">
+          <span>{{ languageForShow.booker }} : </span>
+          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
+        </div>
+        <div class="col-2 col-lg-1 pb-3">
+          <v-btn class="success" icon @click="switchAdd = !switchAdd">
+            <v-icon>mdi-account-edit</v-icon>
+          </v-btn>
+        </div>
+      </div> -->
+
+      <!-- สำหรับ autocomplete -->
       <div class="fontSize18 row">
-        <div align="center" class="col-sm-12 col-lg-6">
+        <div align="center" class="col-sm-12 col-lg-6" v-if="!switchAdd">
           <v-autocomplete
             v-model="dataBookLab.student_id"
-            label="ชื่อ-นามสกุล"
+            :label="languageForShow.student"
             :rules="floorRules"
             variant="outlined"
             :items="studentDataWithCombinedValue"
             item-title="combinedValue"
             item-value="no"
           ></v-autocomplete>
+        </div>
+
+        <!-- สำหรับใส่ชื่อเอง -->
+        <div align="center" class="col-sm-12 col-lg-6" v-if="switchAdd">
+          <v-text-field
+            v-model="dataBookLab.student"
+            :label="languageForShow.academic"
+            :rules="floorRules"
+            variant="outlined"
+          ></v-text-field>
         </div>
 
         <div align="center" class="col-sm-12 col-lg-6">
@@ -105,7 +130,6 @@
         <div class="col-sm-12 col-md-4">
           <a-range-picker
             v-model:value="dateSelect"
-            @click="handleDatePickerClick"
             @change="
               {
                 memoryData();
@@ -300,7 +324,7 @@ export default {
       },
       // { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
       //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
-     
+
       {
         key: "start_date",
         title: "เริ่มใช้เวลา",
@@ -346,6 +370,7 @@ export default {
     found: false,
     loadingBtn: false,
     dateCheck: false,
+    switchAdd: false,
     dataBookingLab: [],
   }),
 
@@ -355,6 +380,7 @@ export default {
     //console.log(this.studentData);
     //apiAcademic
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
+    console.log(this.aca_Programs);
 
     setTimeout(async () => {
       this.checkUserPolicy();
@@ -452,7 +478,7 @@ export default {
       this.$refs.form
         .validate()
         .then((result) => {
-          // console.log(this.dataBookLab)
+          console.log(this.dataBookLab);
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
