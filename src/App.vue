@@ -44,6 +44,7 @@ export default {
         language: false,
       },
       languageForShow: {
+        another: '',
         nameBooking: "",
         nameApprove: "",
         student: '',
@@ -122,6 +123,7 @@ export default {
       if (this.form.language === false) {
         (this.languageForShow.nameBooking = "ระบบขออนุญาติเข้าใช้ห้องแลบ"),
         (this.languageForShow.nameApprove = "ระบบอนุมัติการเข้าใช้ห้องแล็บ"),
+        (this.languageForShow.another = "บุคคลภายนอก"),
           (this.languageForShow.booker = "ผู้ขอ"),
           (this.languageForShow.student = "ผู้ใช้ห้อง"),
           (this.languageForShow.academic = "หลักสูตร"),
@@ -160,6 +162,7 @@ export default {
       } else {
         (this.languageForShow.nameBooking = "Request Lab"),
         (this.languageForShow.nameApprove = "Approve Lab"),
+        (this.languageForShow.another = "Another"),
           (this.languageForShow.booker = "Booker"),
           (this.languageForShow.student = "Student"),
           (this.languageForShow.academic = "Academic Program"),

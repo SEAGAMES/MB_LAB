@@ -35,7 +35,7 @@ export default defineConfig({
       '.ts',
       '.tsx',
       '.vue',
-    ],
+    ],                                               
   },
   server: {
     port: 3200,

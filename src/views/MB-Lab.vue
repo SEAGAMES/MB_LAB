@@ -7,14 +7,14 @@
         <h1 class="text-bold text-indigo-darken-4 text-center">
           {{ languageForShow.nameBooking }}
         </h1>
-        <div class="text-right">
+        <!-- <div class="text-right">
           <a-button
             v-if="found"
             :style="{ backgroundColor: 'lightgreen', color: 'black' }"
             @click="$router.push({ name: 'Mb_Approve' })"
             >{{ languageForShow.approve }}</a-button
           >
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -25,11 +25,17 @@
       class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
       <div class="row">
-        <div align="center" class="col-12 col-lg-12 pb-6 ">
-          <span>{{ languageForShow.booker }} : </span>
-          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
+        <div align="center" class="col-6 col-lg-6 pb-6">
+          <!-- <span>{{ languageForShow.booker }} : </span>
+          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span> -->
         </div>
-     
+        <div align="right" class="col-6 col-lg-6 pb-4">
+          <v-btn
+            @click="switchAdd = !switchAdd"
+            :style="{ backgroundColor: 'lightgreen', color: 'black' }"
+            >{{ languageForShow.another }}</v-btn
+          >
+        </div>
       </div>
 
       <!-- <div class="row">
@@ -55,6 +61,8 @@
             :items="studentDataWithCombinedValue"
             item-title="combinedValue"
             item-value="no"
+            hide-no-data
+            @focus="handleAutocompleteFocus"
           ></v-autocomplete>
         </div>
 
@@ -62,7 +70,7 @@
         <div align="center" class="col-sm-12 col-lg-6" v-if="switchAdd">
           <v-text-field
             v-model="dataBookLab.student"
-            :label="languageForShow.academic"
+            :label="languageForShow.another"
             :rules="floorRules"
             variant="outlined"
           ></v-text-field>
@@ -364,6 +372,7 @@ export default {
       reason: "",
       student_id: "",
       aca_id: "",
+      aca_value: ''
     },
 
     dateSelect: [],
@@ -380,7 +389,7 @@ export default {
     //console.log(this.studentData);
     //apiAcademic
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
-    console.log(this.aca_Programs);
+    // console.log(this.aca_Programs);
 
     setTimeout(async () => {
       this.checkUserPolicy();
@@ -405,6 +414,12 @@ export default {
   },
 
   methods: {
+    handleAutocompleteFocus() {
+      // ในที่นี้คุณสามารถทำอะไรก็ตามที่คุณต้องการเมื่อมีการ focus ที่ autocomplete
+      // ยกตัวอย่างเช่น โชว์ dropdown ทั้งหมดเมื่อ focus
+      this.filteredItems = this.items;
+    },
+
     handleDatePickerClick() {
       // ลบการเปิดคีย์บอร์ดหากมีการคลิกที่ date picker
       document.activeElement.blur();
@@ -565,6 +580,15 @@ export default {
       }
     },
 
+    addData_Form_AcaID() {
+      if (this.dataBookLab.aca_id) {
+        const selectedProgram = this.aca_Programs.find(
+          (program) => program.aca_id === this.dataBookLab.aca_id
+        );
+        this.dataBookLab.aca_value = selectedProgram.aca_prog
+      }
+    },
+
     formatdate(date) {
       const isoDate = date;
       const dateObject = new Date(isoDate);
@@ -664,7 +688,7 @@ export default {
     "dataBookLab.where_lab": ["loadBookingLab", "memoryData"], // ตรวจสอบการเปลี่ยนแปลงใน dataBookLab.where_lab
     "dataBookLab.zone": "memoryData",
     "dataBookLab.floor": "memoryData",
-    "dataBookLab.aca_id": "memoryData",
+    "dataBookLab.aca_id": ["addData_Form_AcaID", "memoryData"], // เพื่อเอา value ชื่อหลักสูตรส่งไปด้วยเพื่อ นำไปแสดงใน email
     "dataBookLab.reason": "memoryData",
 
     languageForShowComputed: {
