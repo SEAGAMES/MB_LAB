@@ -10,7 +10,9 @@
         <a-table :columns="columns" :data-source="dataLoad">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'name'">
-              <span> {{ languageForShow.headerTable.name }} </span>
+              <div :style="{ width: '110px' }">
+                {{ languageForShow.headerTable.name }}
+              </div>
             </template>
             <!-- <template v-if="column.key === 'phone'">
               <span> {{ languageForShow.headerTable.tel }} </span>
@@ -19,7 +21,7 @@
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
             <template v-if="column.key === 'student_name'">
-              <span> {{ languageForShow.student }} </span>
+              <div :style="{ width: '110px' }"> {{ languageForShow.student }}</div>
             </template>
             <template v-if="column.key === 'timebook'">
               <span> {{ languageForShow.headerTable.sentTime }} </span>
@@ -40,7 +42,7 @@
                 {{ record.student_name }}
               </div>
             </template>
-             <template v-if="column.key === 'name'">
+            <template v-if="column.key === 'name'">
               <div :style="{ color: '#3F51B5' }">
                 {{ record.name }}
               </div>
@@ -100,6 +102,7 @@
         item-title="name"
         outlinedF
         hide-details
+        :disabled="!found"
         dense
       ></v-select>
     </a-modal>
@@ -131,6 +134,7 @@ export default {
       iconSnackBar: "",
     },
     changeStatus: false,
+    found: false,
     // dataDetail: [],
     dataID: [],
 
@@ -173,7 +177,6 @@ export default {
         align: "center",
       },
       { key: "end_date", title: "ถึง", dataIndex: "end_date", align: "center" },
-      
     ],
     approveStatus_Value: 0,
     approveStatus: [
@@ -192,9 +195,13 @@ export default {
   },
 
   mounted() {
-    this.approveStatus[0].name = this.languageForShow.status.wait
-    this.approveStatus[1].name = this.languageForShow.status.allow
-    this.approveStatus[2].name = this.languageForShow.status.not_Allowed
+    setTimeout(async () => {
+      this.checkUserPolicy();
+    }, 500);
+
+    this.approveStatus[0].name = this.languageForShow.status.wait;
+    this.approveStatus[1].name = this.languageForShow.status.allow;
+    this.approveStatus[2].name = this.languageForShow.status.not_Allowed;
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
@@ -207,6 +214,15 @@ export default {
     }
   },
   methods: {
+    checkUserPolicy() {
+      //console.log(this.$store.getters.userPolicy)
+      this.$store.getters.userPolicy.forEach((obj) => {
+        if (obj.project_id === "1") {
+          this.found = true;
+        }
+      });
+    },
+
     alertShow(show, title, color, icon) {
       this.snackBar = {
         showSnackBar: show,

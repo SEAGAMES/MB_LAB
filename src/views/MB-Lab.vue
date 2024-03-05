@@ -423,7 +423,7 @@ export default {
     setTimeout(async () => {
       this.checkUserPolicy();
     }, 500);
-    // console.log("มา Font");
+
     if (
       this.$store.getters.userData == null ||
       this.$store.getters.userData == "" ||
