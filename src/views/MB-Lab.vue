@@ -159,6 +159,7 @@
         <div class="col-sm-12 col-md-4">
           <a-range-picker
             v-model:value="dateSelect"
+            @click="handleDatePickerClick"
             @change="
               {
                 memoryData();
@@ -397,6 +398,7 @@ export default {
       aca_value: "",
     },
 
+    checkDevice: "",
     dateSelect: [],
     found: false,
     loadingBtn: false,
@@ -406,6 +408,11 @@ export default {
   }),
 
   async mounted() {
+    // ใช้ฟังก์ชัน isMobileDevice() เพื่อตรวจสอบ
+    if (this.isMobileDevice()) {
+      this.checkDevice = "phone";
+      //console.log("ผู้ใช้เข้าใช้งานทางโทรศัพท์");
+    } 
     //studentData
     this.studentData = await apiAcademic.getStudentData();
     //console.log(this.studentData);
@@ -436,6 +443,12 @@ export default {
   },
 
   methods: {
+    isMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    },
+
     handleAutocompleteFocus() {
       // ในที่นี้คุณสามารถทำอะไรก็ตามที่คุณต้องการเมื่อมีการ focus ที่ autocomplete
       // ยกตัวอย่างเช่น โชว์ dropdown ทั้งหมดเมื่อ focus
@@ -443,8 +456,10 @@ export default {
     },
 
     handleDatePickerClick() {
-      // ลบการเปิดคีย์บอร์ดหากมีการคลิกที่ date picker
-      document.activeElement.blur();
+      // เช็กว่าเป็นมือถือมั้ย ถ้าใช่ให้ ลบการเปิดคีย์บอร์ดหากมีการคลิกที่ date picker
+      if (this.checkDevice === "phone") {
+        document.activeElement.blur();
+      }
     },
 
     alertShow(show, title, color, icon) {
