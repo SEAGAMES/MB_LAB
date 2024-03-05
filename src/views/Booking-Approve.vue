@@ -18,6 +18,9 @@
             <template v-if="column.key === 'where_lab'">
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
+            <template v-if="column.key === 'student_name'">
+              <span> {{ languageForShow.student }} </span>
+            </template>
             <template v-if="column.key === 'timebook'">
               <span> {{ languageForShow.headerTable.sentTime }} </span>
             </template>
@@ -32,7 +35,12 @@
             </template>
           </template>
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'name'">
+            <template v-if="column.key === 'student_name'">
+              <div :style="{ color: '#2979ff' }">
+                {{ record.student_name }}
+              </div>
+            </template>
+             <template v-if="column.key === 'name'">
               <div :style="{ color: '#3F51B5' }">
                 {{ record.name }}
               </div>
@@ -59,7 +67,7 @@
                 class="custom-button"
                 @click="selectRow(record)"
                 :style="getStatusButtonStyle(record.appove_status)"
-                style="width: 80px; text-align: center"
+                style="width: 110px; text-align: center"
               >
                 {{ getStatusLabel(record.appove_status) }}
               </a-button>
@@ -90,7 +98,7 @@
         :items="approveStatus"
         item-value="value"
         item-title="name"
-        outlined
+        outlinedF
         hide-details
         dense
       ></v-select>
@@ -131,6 +139,12 @@ export default {
         key: "appove_status",
         title: "สถานะ",
         dataIndex: "appove_status",
+        align: "center",
+      },
+      {
+        key: "student_name",
+        title: "ชื่อ-นามสกุล",
+        dataIndex: "student_name",
         align: "center",
       },
       {

@@ -31,16 +31,27 @@
         </div>
         <div align="right" class="col-6 col-lg-6 pb-4">
           <v-btn
-          v-if="!switchAdd"
-            @click="switchAdd = !switchAdd ; dataBookLab.student_name = null"
-            :style="{ backgroundColor: 'lightgreen', color: 'black', width: '110px' }"
+            v-if="!switchAdd"
+            @click="
+              switchAdd = !switchAdd;
+              dataBookLab.student_name = null;
+            "
+            :style="{
+              backgroundColor: 'lightgreen',
+              color: 'black',
+              width: '110px',
+            }"
             >{{ languageForShow.another }}</v-btn
           >
 
           <v-btn
-          v-if="switchAdd"
+            v-if="switchAdd"
             @click="switchAdd = !switchAdd"
-            :style="{ backgroundColor: '#FFCC80', color: 'black', width: '110px' }"
+            :style="{
+              backgroundColor: '#FFCC80',
+              color: 'black',
+              width: '110px',
+            }"
             >{{ languageForShow.headerTable.student_name }}</v-btn
           >
         </div>
@@ -103,6 +114,7 @@
         <div class="col-6 col-lg-4">
           <v-select
             v-model="dataBookLab.zone"
+            @click="dataBookLab.where_lab = null"
             :rules="floorRules"
             :label="languageForShow.zone"
             required
@@ -116,6 +128,7 @@
         <div class="col-6 col-lg-4">
           <v-select
             v-model="dataBookLab.floor"
+            @click="dataBookLab.where_lab = null"
             :rules="floorRules"
             :label="languageForShow.floor"
             required
@@ -635,7 +648,7 @@ export default {
     clearInputData() {
       // (this.dataBookLab.phone = ""),
       this.dataBookLab.student_id = "";
-      this.dataBookLab.student_name;
+      this.dataBookLab.student_name = "";
       this.dataBookLab.aca_id = "";
       this.dataBookLab.reason = "";
       this.dataBookLab.zone = "";
