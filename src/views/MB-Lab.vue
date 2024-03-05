@@ -31,9 +31,17 @@
         </div>
         <div align="right" class="col-6 col-lg-6 pb-4">
           <v-btn
-            @click="switchAdd = !switchAdd"
-            :style="{ backgroundColor: 'lightgreen', color: 'black' }"
+          v-if="!switchAdd"
+            @click="switchAdd = !switchAdd ; dataBookLab.student_name = null"
+            :style="{ backgroundColor: 'lightgreen', color: 'black', width: '110px' }"
             >{{ languageForShow.another }}</v-btn
+          >
+
+          <v-btn
+          v-if="switchAdd"
+            @click="switchAdd = !switchAdd"
+            :style="{ backgroundColor: '#FFCC80', color: 'black', width: '110px' }"
+            >{{ languageForShow.headerTable.student_name }}</v-btn
           >
         </div>
       </div>
@@ -69,7 +77,7 @@
         <!-- สำหรับใส่ชื่อเอง -->
         <div align="center" class="col-sm-12 col-lg-6" v-if="switchAdd">
           <v-text-field
-            v-model="dataBookLab.student"
+            v-model="dataBookLab.student_name"
             :label="languageForShow.another"
             :rules="floorRules"
             variant="outlined"
@@ -371,8 +379,9 @@ export default {
       endtime: "",
       reason: "",
       student_id: "",
+      student_status_id: "",
       aca_id: "",
-      aca_value: ''
+      aca_value: "",
     },
 
     dateSelect: [],
@@ -494,6 +503,9 @@ export default {
         .validate()
         .then((result) => {
           console.log(this.dataBookLab);
+          this.switchAdd === true
+            ? (this.dataBookLab.student_status_id = 1)
+            : (this.dataBookLab.student_status_id = 0);
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
@@ -585,7 +597,7 @@ export default {
         const selectedProgram = this.aca_Programs.find(
           (program) => program.aca_id === this.dataBookLab.aca_id
         );
-        this.dataBookLab.aca_value = selectedProgram.aca_prog
+        this.dataBookLab.aca_value = selectedProgram.aca_prog;
       }
     },
 

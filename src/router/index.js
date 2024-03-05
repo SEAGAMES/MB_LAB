@@ -35,6 +35,9 @@ const routes = [
     path: "/mb-approve",
     name: "Mb_Approve",
     component: () => import("../views/Booking-Approve.vue"),
+    meta: {
+      middleware: [auth],
+    },
   },
 
   {
