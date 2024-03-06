@@ -7,7 +7,7 @@
     </div>
     <v-card>
       <div class="table-responsive">
-        <a-table :columns="columns" :data-source="dataLoad">
+        <a-table :pagination="{ pageSize: 10 }"  :columns="columns" :data-source="dataLoad">
           <template #headerCell="{ column }">
             <template v-if="column.key === 'name'">
               <div :style="{ width: '110px' }">
@@ -19,7 +19,7 @@
             </template>
             <template v-if="column.key === 'student_name'">
               <div :style="{ width: '110px' }">
-                {{ languageForShow.student }}
+                {{ languageForShow.headerTable.student_name }}
               </div>
             </template>
             <template v-if="column.key === 'timebook'">
@@ -49,8 +49,8 @@
                 >
                   ({{
                     record.student_status_id === "1"
-                      ? "นักศึกษา"
-                      : "บุคคลภายนอก"
+                      ? languageForShow.student
+                      : languageForShow.another
                   }})
                 </span>
               </div>

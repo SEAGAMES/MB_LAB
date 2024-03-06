@@ -125,7 +125,7 @@ export default {
         (this.languageForShow.nameApprove = "ระบบอนุมัติการเข้าใช้ห้องแล็บ"),
         (this.languageForShow.another = "บุคคลภายนอก"),
           (this.languageForShow.booker = "ผู้ขอ"),
-          (this.languageForShow.student = "ผู้ใช้ห้อง"),
+          (this.languageForShow.student = "นักศึกษา"),
           (this.languageForShow.academic = "หลักสูตร"),
           (this.languageForShow.zone = "โซน"),
           (this.languageForShow.floor = "ชั้น"),
@@ -136,7 +136,7 @@ export default {
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
           ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "ผู้ขออนุญาติ"),
-          this.languageForShow.headerTable.student_name = 'นักศึกษา',
+          this.languageForShow.headerTable.student_name = 'ผู้ใช้ห้อง',
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
           (this.languageForShow.headerTable.sentTime = "เวลาที่จอง"),
@@ -162,7 +162,7 @@ export default {
       } else {
         (this.languageForShow.nameBooking = "Request Lab"),
         (this.languageForShow.nameApprove = "Approve Lab"),
-        (this.languageForShow.another = "Another"),
+        (this.languageForShow.another = "Outsider"),
           (this.languageForShow.booker = "Booker"),
           (this.languageForShow.student = "Student"),
           (this.languageForShow.academic = "Academic Program"),
@@ -175,7 +175,7 @@ export default {
         (this.languageForShow.approve = "Approve"),
           ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "Booker"),
-          this.languageForShow.headerTable.student_name = 'Student',
+          this.languageForShow.headerTable.student_name = 'User',
           (this.languageForShow.headerTable.tel = "Tel."),
           (this.languageForShow.headerTable.room = "Room"),
           (this.languageForShow.headerTable.sentTime = "Sent Time"),

@@ -253,7 +253,9 @@
                   }"
                 >
                   ({{
-                    record.student_status_id === '1' ? "นักศึกษา" : "บุคคลภายนอก"
+                    record.student_status_id === "1"
+                      ? languageForShow.student
+                      : languageForShow.another
                   }})
                 </span>
               </div>
