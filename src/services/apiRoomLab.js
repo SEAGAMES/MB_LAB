@@ -23,7 +23,7 @@ const thisLabBooking = async (labNo) => {
 
 
 const createBookLabRoom = async (data) => {
-  console.log('API : ' , data)
+  // console.log('API : ' , data)
   const result = axios.post(`${apiUrl}bookLabRoom`, data)
   return result
 }

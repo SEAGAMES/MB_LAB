@@ -242,8 +242,20 @@
 
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'student_name'">
-              <div :style="{ color: '#2979ff' }">
-                {{ record.student_name }}
+              <div>
+                <span :style="{ color: '#2979ff' }">{{
+                  record.student_name
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#FB8C00',
+                  }"
+                >
+                  ({{
+                    record.student_status_id === '1' ? "นักศึกษา" : "บุคคลภายนอก"
+                  }})
+                </span>
               </div>
             </template>
             <template v-if="column.key === 'name'">
@@ -277,7 +289,9 @@
                 >{{ getStatusLabel(record.appove_status) }}</a-button
               >
             </template>
-            <template v-if="column.key === 'action'">
+            <template
+              v-if="column.key === 'action' && record.appove_status === 0"
+            >
               <!-- <v-icon
               @click="editBooking(item)"
               style="color: rgb(243, 156, 18)"
@@ -396,6 +410,7 @@ export default {
       student_status_id: "",
       aca_id: "",
       aca_value: "",
+      prog_dir: "",
     },
 
     checkDevice: "",
@@ -412,7 +427,7 @@ export default {
     if (this.isMobileDevice()) {
       this.checkDevice = "phone";
       //console.log("ผู้ใช้เข้าใช้งานทางโทรศัพท์");
-    } 
+    }
     //studentData
     this.studentData = await apiAcademic.getStudentData();
     //console.log(this.studentData);
@@ -532,8 +547,8 @@ export default {
         .then((result) => {
           console.log(this.dataBookLab);
           this.switchAdd === true
-            ? (this.dataBookLab.student_status_id = 1)
-            : (this.dataBookLab.student_status_id = 0);
+            ? (this.dataBookLab.student_status_id = 0)
+            : (this.dataBookLab.student_status_id = 1);
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true && this.dateSelect.length === 2) {
@@ -626,6 +641,7 @@ export default {
           (program) => program.aca_id === this.dataBookLab.aca_id
         );
         this.dataBookLab.aca_value = selectedProgram.aca_prog;
+        this.dataBookLab.prog_dir = selectedProgram.prog_dir;
       }
     },
 

@@ -14,14 +14,13 @@
                 {{ languageForShow.headerTable.name }}
               </div>
             </template>
-            <!-- <template v-if="column.key === 'phone'">
-              <span> {{ languageForShow.headerTable.tel }} </span>
-            </template> -->
             <template v-if="column.key === 'where_lab'">
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
             <template v-if="column.key === 'student_name'">
-              <div :style="{ width: '110px' }"> {{ languageForShow.student }}</div>
+              <div :style="{ width: '110px' }">
+                {{ languageForShow.student }}
+              </div>
             </template>
             <template v-if="column.key === 'timebook'">
               <span> {{ languageForShow.headerTable.sentTime }} </span>
@@ -38,8 +37,22 @@
           </template>
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'student_name'">
-              <div :style="{ color: '#2979ff' }">
-                {{ record.student_name }}
+              <div>
+                <span :style="{ color: '#2979ff' }">{{
+                  record.student_name
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#FB8C00',
+                  }"
+                >
+                  ({{
+                    record.student_status_id === "1"
+                      ? "นักศึกษา"
+                      : "บุคคลภายนอก"
+                  }})
+                </span>
               </div>
             </template>
             <template v-if="column.key === 'name'">
