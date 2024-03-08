@@ -42,7 +42,7 @@ export default async function guest({ next, axios, store }) {
               .then((response) => {
                 // ดึงข้อมูลออกมาจาก response.data
                 const data = response.data.data;
-                //console.log('data : ', data)
+                // console.log('data : ', data)
                 const userPolicyData = data;
                 store.dispatch("addUserPolicy", userPolicyData);
               })
@@ -51,7 +51,7 @@ export default async function guest({ next, axios, store }) {
                 console.log(error);
               });
 
-            console.log("return profile is  ok");
+            console.log("return profile is ok");
             return next();
           } else {
             localStorage.removeItem("MB-app");

@@ -44,22 +44,22 @@ export default {
         language: false,
       },
       languageForShow: {
-        another: '',
+        another: "",
         nameBooking: "",
         nameApprove: "",
-        student: '',
+        student: "",
         booker: "",
-        academic: '',
+        academic: "",
         zone: "",
         floor: "",
         room: "",
         dateTimeBooking: "",
         sentForm: "",
-        reason:'',
+        reason: "",
 
         headerTable: {
           name: "",
-          student_name: '',
+          student_name: "",
           tel: "",
           room: "",
           sentTime: "",
@@ -90,6 +90,8 @@ export default {
         btn: {
           backPage: "",
         },
+
+        approveProject: "",
       },
     };
   },
@@ -122,8 +124,8 @@ export default {
       localStorage.setItem("mb_select_language", JSON.stringify(this.form));
       if (this.form.language === false) {
         (this.languageForShow.nameBooking = "ระบบขออนุญาติเข้าใช้ห้องแลบ"),
-        (this.languageForShow.nameApprove = "ระบบอนุมัติการเข้าใช้ห้องแล็บ"),
-        (this.languageForShow.another = "บุคคลภายนอก"),
+          (this.languageForShow.nameApprove = "ระบบอนุมัติการเข้าใช้ห้องแล็บ"),
+          (this.languageForShow.another = "บุคคลภายนอก"),
           (this.languageForShow.booker = "ผู้ขอ"),
           (this.languageForShow.student = "นักศึกษา"),
           (this.languageForShow.academic = "หลักสูตร"),
@@ -132,11 +134,11 @@ export default {
           (this.languageForShow.room = "ห้อง"),
           (this.languageForShow.dateTimeBooking = "ช่วงเวลาที่ต้องการจอง"),
           (this.languageForShow.reason = "เหตุผลการขอใช้ห้องแลบ");
-          (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
+        (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
           ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "ผู้ขออนุญาติ"),
-          this.languageForShow.headerTable.student_name = 'ผู้ใช้ห้อง',
+          (this.languageForShow.headerTable.student_name = "ผู้ใช้ห้อง"),
           (this.languageForShow.headerTable.tel = "เบอร์"),
           (this.languageForShow.headerTable.room = "ห้อง"),
           (this.languageForShow.headerTable.sentTime = "เวลาที่จอง"),
@@ -159,10 +161,13 @@ export default {
           ]);
         ////////////////////////// ปุ่ม ////////////////////////////
         this.languageForShow.btn.backPage = "กลับ";
+        ///////////////////////// สิทธิ์เข้าถึง ///////////////////////////
+        this.languageForShow.approveProject =
+          "ขออภัย เนื่องจากคุณไม่ได้รับอนุญาติให้เข้าถึงเว็บไซต์นี้";
       } else {
         (this.languageForShow.nameBooking = "Request Lab"),
-        (this.languageForShow.nameApprove = "Approve Lab"),
-        (this.languageForShow.another = "Outsider"),
+          (this.languageForShow.nameApprove = "Approve Lab"),
+          (this.languageForShow.another = "Outsider"),
           (this.languageForShow.booker = "Booker"),
           (this.languageForShow.student = "Student"),
           (this.languageForShow.academic = "Academic Program"),
@@ -171,11 +176,11 @@ export default {
           (this.languageForShow.room = "Room"),
           (this.languageForShow.dateTimeBooking = "Date Time Booking"),
           (this.languageForShow.reason = "Reason");
-          (this.languageForShow.sentForm = "Sent Form");
+        this.languageForShow.sentForm = "Sent Form";
         (this.languageForShow.approve = "Approve"),
           ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "Booker"),
-          this.languageForShow.headerTable.student_name = 'User',
+          (this.languageForShow.headerTable.student_name = "User"),
           (this.languageForShow.headerTable.tel = "Tel."),
           (this.languageForShow.headerTable.room = "Room"),
           (this.languageForShow.headerTable.sentTime = "Sent Time"),
@@ -202,6 +207,9 @@ export default {
 
         ////////////////////////// ปุ่ม ////////////////////////////
         this.languageForShow.btn.backPage = "Back";
+        ///////////////////////// สิทธิ์เข้าถึง ///////////////////////////
+        this.languageForShow.approveProject =
+          "Sorry, you are not authorized to access this page";
       }
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       //console.log(this.$store.getters.formLanguge);

@@ -1,6 +1,24 @@
 <template>
+  <v-app v-if="!found && loadPage">
+    <v-main>
+      <div style="background-color: white">
+        <a-result
+          status="403"
+          title="403"
+          :sub-title="languageForShow.approveProject"
+        >
+          <template #extra>
+            <a-button type="primary" a href="https://mb.mahidol.ac.th/app/#/"
+              >Back Home</a-button
+            >
+          </template>
+        </a-result>
+      </div>
+    </v-main>
+  </v-app>
+
   <!-- <span>{{ version }}</span> -->
-  <div class="fontSarabun container">
+  <div class="fontSarabun container" v-if="found && loadPage">
     <div class="row">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-2">
         <!-- <div class="text-bold text-indigo-darken-4 text-center">{{ this.$store.getters }}</div> -->
@@ -174,6 +192,7 @@
           />
           <p v-if="dateCheck" class="fontSize12 text-red">required time</p>
         </div>
+
 
         <!-- <div class="mt-2">
           <a-textarea
@@ -418,6 +437,7 @@ export default {
     checkDevice: "",
     dateSelect: [],
     found: false,
+    loadPage: false,
     loadingBtn: false,
     dateCheck: false,
     switchAdd: false,
@@ -457,6 +477,10 @@ export default {
       this.getRoomLab();
       this.dataBookLab.name = this.$store.getters.userData.thainame;
     }
+
+    setTimeout(async () => {
+      this.loadPage = true;
+    }, 500);
   },
 
   methods: {
@@ -548,6 +572,7 @@ export default {
         .validate()
         .then((result) => {
           console.log(this.dataBookLab);
+          // this.memoryData();
           this.switchAdd === true
             ? (this.dataBookLab.student_status_id = 0)
             : (this.dataBookLab.student_status_id = 1);
@@ -682,10 +707,13 @@ export default {
       // (this.dataBookLab.phone = ""),
       this.dataBookLab.student_id = "";
       this.dataBookLab.student_name = "";
+      this.dataBookLab.student_status_id = "";
       this.dataBookLab.aca_id = "";
+      this.dataBookLab.aca_value = "";
       this.dataBookLab.reason = "";
       this.dataBookLab.zone = "";
       this.dataBookLab.floor = "";
+      this.dataBookLab.prog_dir = "";
       this.dateSelect = [];
     },
 
@@ -696,7 +724,10 @@ export default {
       // setNewData.phone = "";
       setNewData.student_id = "";
       setNewData.student_name = "";
+      setNewData.student_status_id = "";
       setNewData.aca_id = "";
+      setNewData.aca_value = "";
+      setNewData.prog_dir = "";
       setNewData.reason = "";
       setNewData.zone = "";
       setNewData.floor = "";
@@ -771,5 +802,13 @@ export default {
 
 .ant-picker {
   width: 100%;
+}
+
+.v-main {
+  background-image: url("./assets/background/mb-building3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white; /* สีของข้อความ */
 }
 </style>

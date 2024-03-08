@@ -12,6 +12,10 @@ import App from "./App.vue";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 
+// VDatePicker 
+import VCalendar from 'v-calendar';
+import 'v-calendar/style.css';
+
 import store from "./store";
 
 // Plugins
@@ -21,4 +25,4 @@ const app = createApp(App);
 
 registerPlugins(app);
 
-app.use(Antd).use(store).mount("#app");
+app.use(VCalendar, {}).use(Antd).use(store).mount("#app");
