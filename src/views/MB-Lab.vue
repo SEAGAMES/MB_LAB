@@ -193,6 +193,9 @@
           <p v-if="dateCheck" class="fontSize12 text-red">required time</p>
         </div>
 
+        <div>
+          <VDatePicker v-model="dataBookLab.dateBooking" mode="dateTime" hide-time-header />
+        </div>
 
         <!-- <div class="mt-2">
           <a-textarea
@@ -424,6 +427,7 @@ export default {
       zone: "",
       floor: "",
       where_lab: "",
+      dateBooking: '',
       start_date: "",
       endtime: "",
       reason: "",
