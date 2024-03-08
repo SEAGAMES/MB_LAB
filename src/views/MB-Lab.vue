@@ -171,7 +171,7 @@
       </div>
 
       <div class="fontSize18 row text-center">
-        <div class="col-sm-12 col-md-4">
+        <!-- <div class="col-sm-12 col-md-4">
           <p>{{ languageForShow.dateTimeBooking }} :</p>
         </div>
         <div class="col-sm-12 col-md-4">
@@ -191,10 +191,62 @@
             style="width: 100%"
           />
           <p v-if="dateCheck" class="fontSize12 text-red">required time</p>
-        </div>
+        </div> -->
 
-        <div>
-          <VDatePicker v-model="dataBookLab.dateBooking" mode="dateTime" hide-time-header />
+        <div class="fontSize18 row text-center">
+          <div class="col-6 col-lg-4">
+            <v-menu
+              v-model="menuStart"
+              :close-on-content-click="false"
+              location="top"
+            >
+              <template v-slot:activator="{ props }">
+                <v-text-field
+                  label="Start Date Time"
+                  v-model="startDateShow"
+                  color="indigo"
+                  v-bind="props"
+                  variant="outlined"
+                >
+                </v-text-field>
+              </template>
+              <VDatePicker
+                v-model="dataBookLab.start_date"
+                @change="memoryData()"
+                :rules="floorRules"
+                mode="dateTime"
+                hide-time-header
+                :min-date="new Date()"
+              />
+            </v-menu>
+          </div>
+
+          <div class="col-6 col-lg-4">
+            <v-menu
+              v-model="menuEnd"
+              :close-on-content-click="false"
+              location="top"
+            >
+              <template v-slot:activator="{ props }">
+                <v-text-field
+                  label="End Date Time"
+                  v-model="endDateShow"
+                  @change="memoryData()"
+                  :rules="floorRules"
+                  color="indigo"
+                  v-bind="props"
+                  variant="outlined"
+                >
+                </v-text-field>
+              </template>
+              <VDatePicker
+                v-model="dataBookLab.endtime"
+                mode="dateTime"
+                hide-time-header
+                :min-date="new Date()"
+              />
+            </v-menu>
+          </div>
         </div>
 
         <!-- <div class="mt-2">
@@ -215,6 +267,7 @@
           ></v-text-field>
         </div>
       </div>
+
       <div>
         <v-btn
           @click="validate()"
@@ -427,7 +480,7 @@ export default {
       zone: "",
       floor: "",
       where_lab: "",
-      dateBooking: '',
+      dateBooking: "",
       start_date: "",
       endtime: "",
       reason: "",
@@ -438,6 +491,8 @@ export default {
       prog_dir: "",
     },
 
+    startDateShow: "",
+    endDateShow: "",
     checkDevice: "",
     dateSelect: [],
     found: false,
@@ -445,6 +500,8 @@ export default {
     loadingBtn: false,
     dateCheck: false,
     switchAdd: false,
+    menuStart: false,
+    menuEnd: false,
     dataBookingLab: [],
   }),
 
@@ -575,18 +632,18 @@ export default {
       this.$refs.form
         .validate()
         .then((result) => {
-          console.log(this.dataBookLab);
+          // console.log(this.dataBookLab);
           // this.memoryData();
           this.switchAdd === true
             ? (this.dataBookLab.student_status_id = 0)
             : (this.dataBookLab.student_status_id = 1);
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
-          if (isValid === true && this.dateSelect.length === 2) {
+          if (isValid === true) {
             //console.log(this.dataBookLab)
-            const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
-            this.dataBookLab.start_date = dayObject[0];
-            this.dataBookLab.endtime = dayObject[1];
+            // const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
+            // this.dataBookLab.start_date = dayObject[0];
+            // this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
           } else {
             this.dateValidate();
@@ -676,6 +733,11 @@ export default {
       }
     },
 
+    // formatdateShow() {
+    //   console.log('start Date  : ' ,this.dataBookLab.start_date)
+    //   this.startDateShow = this.formatdate(this.dataBookLab.start_date);
+    // },
+
     formatdate(date) {
       const isoDate = date;
       const dateObject = new Date(isoDate);
@@ -704,6 +766,7 @@ export default {
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString})`;
+      // console.log("formattedDate : ", formattedDate);
       return formattedDate;
     },
 
@@ -718,6 +781,8 @@ export default {
       this.dataBookLab.zone = "";
       this.dataBookLab.floor = "";
       this.dataBookLab.prog_dir = "";
+      this.dataBookLab.start_date = "";
+      this.dataBookLab.endtime = "";
       this.dateSelect = [];
     },
 
@@ -736,6 +801,8 @@ export default {
       setNewData.zone = "";
       setNewData.floor = "";
       setNewData.where_lab = "";
+      setNewData.start_date = "";
+      setNewData.endtime = "";
       setTimeout(async () => {
         localStorage.setItem("bookingLab", JSON.stringify(setNewData));
       }, 500);
@@ -783,6 +850,22 @@ export default {
     "dataBookLab.floor": "memoryData",
     "dataBookLab.aca_id": ["addData_Form_AcaID", "memoryData"], // เพื่อเอา value ชื่อหลักสูตรส่งไปด้วยเพื่อ นำไปแสดงใน email
     "dataBookLab.reason": "memoryData",
+    "dataBookLab.start_date": function () {
+      if (typeof this.dataBookLab.start_date === "object") {
+        this.startDateShow = this.formatdate(this.dataBookLab.start_date);
+        this.memoryData();
+      } else {
+        this.startDateShow = "";
+      }
+    },
+    "dataBookLab.endtime": function () {
+      if (typeof this.dataBookLab.endtime === "object") {
+        this.endDateShow = this.formatdate(this.dataBookLab.endtime);
+        this.memoryData();
+      } else {
+        this.endDateShow = "";
+      }
+    },
 
     languageForShowComputed: {
       handler(newVal) {
