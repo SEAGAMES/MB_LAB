@@ -35,8 +35,7 @@
       class="mx-auto rounded bg-white p-3 mb-3 col-lg-10"
     >
       <div class="row">
-        <div align="center" class="col-6 col-lg-6 pb-6">
-        </div>
+        <div align="center" class="col-6 col-lg-6 pb-6"></div>
         <div align="right" class="col-6 col-lg-6 pb-4">
           <v-btn
             v-if="!switchAdd"
@@ -148,73 +147,73 @@
         </div>
       </div>
 
-        <div class="fontSize18 row text-center">
-          <div class="col-6 col-lg-4">
-            <v-menu
-              v-model="menuStart"
-              :close-on-content-click="false"
-              location="top"
-            >
-              <template v-slot:activator="{ props }">
-                <v-text-field
-                  :label="languageForShow.headerTable.startTime"
-                  v-model="dataBookLab.startDateShow"
-                  :rules="floorRules"
-                  color="indigo"
-                  v-bind="props"
-                  variant="outlined"
-                >
-                </v-text-field>
-              </template>
-              <VDatePicker
-                v-model="dataBookLab.start_date"
-                :rules="timeRules"
-                mode="dateTime"
-                hide-time-header
-                :min-date="new Date()"
-                is24hr
-              />
-            </v-menu>
-          </div>
+      <div class="fontSize18 row text-center">
+        <div class="col-6 col-lg-4">
+          <v-menu
+            v-model="menuStart"
+            :close-on-content-click="false"
+            location="top"
+          >
+            <template v-slot:activator="{ props }">
+              <v-text-field
+                :label="languageForShow.headerTable.startTime"
+                v-model="dataBookLab.startDateShow"
+                :rules="floorRules"
+                color="indigo"
+                v-bind="props"
+                variant="outlined"
+              >
+              </v-text-field>
+            </template>
+            <VDatePicker
+              v-model="dataBookLab.start_date"
+              :rules="timeRules"
+              mode="dateTime"
+              hide-time-header
+              :min-date="new Date().setDate(new Date().getDate() + 1)"
+              is24hr
+            />
+          </v-menu>
+        </div>
 
-          <div class="col-6 col-lg-4">
-            <v-menu
-              v-model="menuEnd"
-              :close-on-content-click="false"
-              location="top"
-            >
-              <template v-slot:activator="{ props }">
-                <v-text-field
+        <div class="col-6 col-lg-4">
+          <v-menu
+            v-model="menuEnd"
+            :close-on-content-click="false"
+            location="top"
+          >
+            <template v-slot:activator="{ props }">
+              <v-text-field
                 :label="languageForShow.headerTable.endTime"
-                  v-model="dataBookLab.endDateShow"
-                  :rules="floorRules"
-                  color="indigo"
-                  v-bind="props"
-                  variant="outlined"
-                >
-                </v-text-field>
-              </template>
-              <VDatePicker
-                v-model="dataBookLab.endtime"
-                :rules="timeRules"
-                mode="dateTime"
-                hide-time-header
-                :min-date="new Date()"
-                is24hr
-              />
-            </v-menu>
-          </div>
+                v-model="dataBookLab.endDateShow"
+                :rules="floorRules"
+                color="indigo"
+                v-bind="props"
+                variant="outlined"
+              >
+              </v-text-field>
+            </template>
+            <VDatePicker
+              v-model="dataBookLab.endtime"
+              :rules="timeRules"
+              mode="dateTime"
+              hide-time-header
+              :min-date="new Date().setDate(new Date().getDate() + 1)"
+              is24hr
+            />
+          </v-menu>
         </div>
+      </div>
 
-        <div class="mt-2">
-          <v-text-field
-            maxlength="300"
-            v-model="dataBookLab.reason"
-            :rules="floorRules"
-            required
-            :label="languageForShow.reason"
-          ></v-text-field>
-        </div>
+      <div class="mt-2">
+        <v-text-field
+          maxlength="300"
+          v-model="dataBookLab.reason"
+          :rules="floorRules"
+          required
+          :label="languageForShow.reason"
+        ></v-text-field>
+      </div>
 
       <div>
         <v-btn
@@ -316,7 +315,7 @@
                     color: '#FB8C00',
                   }"
                 >
-                  {{ record.subString_startTime_show }}
+                  {{ record.subString_endTime_show }}
                 </span>
               </div>
             </template>
@@ -334,7 +333,6 @@
             <template
               v-if="column.key === 'action' && record.appove_status === 0"
             >
-
               <a-popconfirm
                 title="Delete ?"
                 @confirm="confirm(record.id)"
@@ -441,7 +439,6 @@ export default {
       floor: "",
       where_lab: "",
       start_date: "",
-      start_time: "",
       endtime: "",
       reason: "",
       student_id: "",
@@ -473,7 +470,7 @@ export default {
       this.checkDevice = "phone";
     }
     this.studentData = await apiAcademic.getStudentData();
-  
+
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
 
     setTimeout(async () => {
@@ -590,22 +587,34 @@ export default {
         .validate()
         .then((result) => {
           // console.log(this.dataBookLab);
-          // this.memoryData();
-          this.switchAdd === true
-            ? (this.dataBookLab.student_status_id = 0)
-            : (this.dataBookLab.student_status_id = 1);
-          // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
-          const isValid = result.valid;
-          if (isValid === true) {
-            this.createBookLabRoom();
-          } else {
+          const startDate = new Date(this.dataBookLab.start_date);
+          const endDate = new Date(this.dataBookLab.endtime);
+
+          if (startDate >= endDate) {
             this.alertShow(
               true,
-              "กรุณาใส่ข้อมูลให้ครบถ้วน",
-              "red",
+              this.languageForShow.alertTime,
+              "yellow",
               "mdi-shield-alert"
             );
-            this.loadingBtn = false;
+          } else {
+            // console.log(this.dataBookLab)
+            this.switchAdd === true
+              ? (this.dataBookLab.student_status_id = 0)
+              : (this.dataBookLab.student_status_id = 1);
+            // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
+            const isValid = result.valid;
+            if (isValid === true) {
+              this.createBookLabRoom();
+            } else {
+              this.alertShow(
+                true,
+                "กรุณาใส่ข้อมูลให้ครบถ้วน",
+                "red",
+                "mdi-shield-alert"
+              );
+              this.loadingBtn = false;
+            }
           }
         })
         .catch((error) => {

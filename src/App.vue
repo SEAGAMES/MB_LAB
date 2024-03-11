@@ -164,6 +164,8 @@ export default {
         ///////////////////////// สิทธิ์เข้าถึง ///////////////////////////
         this.languageForShow.approveProject =
           "ขออภัย เนื่องจากคุณไม่ได้รับอนุญาติให้เข้าถึงเว็บไซต์นี้";
+        ////////////////////// Alert /////////////////////////////
+        this.languageForShow.alertTime = "กรุณาใส่ช่วงเวลาให้ถูกต้อง";
       } else {
         (this.languageForShow.nameBooking = "Request Lab"),
           (this.languageForShow.nameApprove = "Approve Lab"),
@@ -210,7 +212,11 @@ export default {
         ///////////////////////// สิทธิ์เข้าถึง ///////////////////////////
         this.languageForShow.approveProject =
           "Sorry, you are not authorized to access this page";
+
+        ////////////////////// Alert /////////////////////////////
+        this.languageForShow.alertTime = "Date Time Wrong";
       }
+
       this.$store.dispatch("addFormLanguage", this.languageForShow);
       //console.log(this.$store.getters.formLanguge);
     },
