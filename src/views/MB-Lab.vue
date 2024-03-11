@@ -346,13 +346,33 @@
               </div>
             </template>
             <template v-if="column.key === 'start_date'">
-              <div :style="{ color: '#F57C00' }">
-                {{ record.start_date }}
+              <div>
+                <span :style="{ color: '#26A69A' }">{{
+                  record.subString_startDate_show
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#EC407A',
+                  }"
+                >
+                  {{ record.subString_startTime_show }}
+                </span>
               </div>
             </template>
             <template v-if="column.key === 'end_date'">
-              <div :style="{ color: '#FF6D00' }">
-                {{ record.end_date }}
+              <div>
+                <span :style="{ color: '#2979ff' }">{{
+                  record.subString_endDate_show
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#EC407A',
+                  }"
+                >
+                  {{ record.subString_endTime_show }}
+                </span>
               </div>
             </template>
             <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
@@ -486,6 +506,7 @@ export default {
       where_lab: "",
       dateBooking: "",
       start_date: "",
+      start_time: "",
       endtime: "",
       reason: "",
       student_id: "",
@@ -495,6 +516,10 @@ export default {
       prog_dir: "",
       startDateShow: "",
       endDateShow: "",
+      subString_startDate_show: "",
+      subString_startTime_show: "",
+      subString_endDate_show: "",
+      subString_endTime_show: "",
     },
 
     checkDevice: "",
@@ -709,8 +734,20 @@ export default {
       );
       if (this.dataBookingLab.msg !== "not found") {
         this.dataBookingLab.data.forEach((obj) => {
-          obj.start_date = this.formatdate(obj.start_date);
-          obj.end_date = this.formatdate(obj.end_date);
+          // obj.start_date = this.formatdate(obj.start_date);
+          obj.subString_startDate_show = this.formatdate(obj.start_date)
+            .substring(0, 16)
+            .trim();
+          obj.subString_startTime_show = this.formatdate(obj.start_date)
+            .substring(17, 25)
+            .trim();
+
+          obj.subString_endDate_show = this.formatdate(obj.end_date)
+            .substring(0, 16)
+            .trim();
+          obj.subString_endTime_show = this.formatdate(obj.end_date)
+            .substring(17, 25)
+            .trim();
           obj.timebook = this.formatdate(obj.timebook);
         });
       }
@@ -787,6 +824,8 @@ export default {
       this.dataBookLab.prog_dir = "";
       this.dataBookLab.start_date = "";
       this.dataBookLab.endtime = "";
+      this.dataBookLab.startDateShow = "";
+      this.dataBookLab.endDateShow = "";
       this.dateSelect = [];
     },
 
@@ -807,6 +846,8 @@ export default {
       setNewData.where_lab = "";
       setNewData.start_date = "";
       setNewData.endtime = "";
+      setNewData.startDateShow = "";
+      setNewData.endDateShow = "";
       setTimeout(async () => {
         localStorage.setItem("bookingLab", JSON.stringify(setNewData));
       }, 500);
