@@ -25,14 +25,6 @@
         <h1 class="text-bold text-indigo-darken-4 text-center">
           {{ languageForShow.nameBooking }}
         </h1>
-        <!-- <div class="text-right">
-          <a-button
-            v-if="found"
-            :style="{ backgroundColor: 'lightgreen', color: 'black' }"
-            @click="$router.push({ name: 'Mb_Approve' })"
-            >{{ languageForShow.approve }}</a-button
-          >
-        </div> -->
       </div>
     </div>
 
@@ -44,8 +36,6 @@
     >
       <div class="row">
         <div align="center" class="col-6 col-lg-6 pb-6">
-          <!-- <span>{{ languageForShow.booker }} : </span>
-          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span> -->
         </div>
         <div align="right" class="col-6 col-lg-6 pb-4">
           <v-btn
@@ -74,18 +64,6 @@
           >
         </div>
       </div>
-
-      <!-- <div class="row">
-        <div align="left" class="col-10 col-lg-10 mt-2">
-          <span>{{ languageForShow.booker }} : </span>
-          <span :style="{ color: '#607D8B' }">{{ dataBookLab.name }}</span>
-        </div>
-        <div class="col-2 col-lg-1 pb-3">
-          <v-btn class="success" icon @click="switchAdd = !switchAdd">
-            <v-icon>mdi-account-edit</v-icon>
-          </v-btn>
-        </div>
-      </div> -->
 
       <!-- สำหรับ autocomplete -->
       <div class="fontSize18 row">
@@ -170,29 +148,6 @@
         </div>
       </div>
 
-      <!-- <div class="fontSize18 row text-center"> -->
-        <!-- <div class="col-sm-12 col-md-4">
-          <p>{{ languageForShow.dateTimeBooking }} :</p>
-        </div>
-        <div class="col-sm-12 col-md-4">
-          <a-range-picker
-            v-model:value="dateSelect"
-            @click="handleDatePickerClick"
-            @change="
-              {
-                memoryData();
-                dateValidate();
-              }
-            "
-            show-time
-            required
-            :format="'YYYY-MM-DD HH:mm'"
-            :disabled-date="disabledDate"
-            style="width: 100%"
-          />
-          <p v-if="dateCheck" class="fontSize12 text-red">required time</p>
-        </div> -->
-
         <div class="fontSize18 row text-center">
           <div class="col-6 col-lg-4">
             <v-menu
@@ -251,14 +206,6 @@
           </div>
         </div>
 
-        <!-- <div class="mt-2">
-          <a-textarea
-            v-model="dataBookLab.reason"
-            :rules="floorRules"
-            :placeholder="languageForShow.reason"
-            :rows="3"
-          />
-        </div> -->
         <div class="mt-2">
           <v-text-field
             maxlength="300"
@@ -268,7 +215,6 @@
             :label="languageForShow.reason"
           ></v-text-field>
         </div>
-      <!-- </div> -->
 
       <div>
         <v-btn
@@ -296,9 +242,6 @@
                 {{ languageForShow.headerTable.name }}
               </div>
             </template>
-            <!-- <template v-if="column.key === 'phone'">
-              <span> {{ languageForShow.headerTable.tel }} </span>
-            </template> -->
             <template v-if="column.key === 'where_lab'">
               <span> {{ languageForShow.headerTable.room }} </span>
             </template>
@@ -391,11 +334,7 @@
             <template
               v-if="column.key === 'action' && record.appove_status === 0"
             >
-              <!-- <v-icon
-              @click="editBooking(item)"
-              style="color: rgb(243, 156, 18)"
-              >mdi-pencil</v-icon
-            > -->
+
               <a-popconfirm
                 title="Delete ?"
                 @confirm="confirm(record.id)"
@@ -442,9 +381,7 @@ export default {
       iconSnackBar: "",
     },
 
-    //telNoRules: [(v) => !!v || "required field"],
     floorRules: [(v) => !!v || ""],
-    dateRules: [(v) => !!v || ""],
     timeRules: {
       hours: [21, 22, 23, 0, 1, 2, 3, 4, 5],
       minutes: { interval: 5 },
@@ -469,8 +406,6 @@ export default {
         dataIndex: "name",
         align: "center",
       },
-      // { key: "phone", title: "เบอร์", dataIndex: "phone", align: "center" },
-      //{ key: "timebook", title: "จองเวลา", dataIndex: "timebook", align: 'center' },
 
       {
         key: "start_date",
@@ -502,11 +437,9 @@ export default {
     dataBookLab: {
       ac_name: "",
       name: "",
-      // phone: "",
       zone: "",
       floor: "",
       where_lab: "",
-      dateBooking: "",
       start_date: "",
       start_time: "",
       endtime: "",
@@ -525,11 +458,9 @@ export default {
     },
 
     checkDevice: "",
-    dateSelect: [],
     found: false,
     loadPage: false,
     loadingBtn: false,
-    dateCheck: false,
     switchAdd: false,
     menuStart: false,
     menuEnd: false,
@@ -540,14 +471,10 @@ export default {
     // ใช้ฟังก์ชัน isMobileDevice() เพื่อตรวจสอบ
     if (this.isMobileDevice()) {
       this.checkDevice = "phone";
-      //console.log("ผู้ใช้เข้าใช้งานทางโทรศัพท์");
     }
-    //studentData
     this.studentData = await apiAcademic.getStudentData();
-    //console.log(this.studentData);
-    //apiAcademic
+  
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
-    // console.log(this.aca_Programs);
 
     setTimeout(async () => {
       this.checkUserPolicy();
@@ -605,7 +532,6 @@ export default {
     },
 
     checkUserPolicy() {
-      //console.log(this.$store.getters.userPolicy)
       this.$store.getters.userPolicy.forEach((obj) => {
         if (obj.project_id === "1") {
           this.found = true;
@@ -671,13 +597,8 @@ export default {
           // เข้าถึงค่า "valid" และเก็บไว้ในตัวแปรใหม่
           const isValid = result.valid;
           if (isValid === true) {
-            //console.log(this.dataBookLab)
-            // const dayObject = JSON.parse(JSON.stringify(this.dateSelect));
-            // this.dataBookLab.start_date = dayObject[0];
-            // this.dataBookLab.endtime = dayObject[1];
             this.createBookLabRoom();
           } else {
-            this.dateValidate();
             this.alertShow(
               true,
               "กรุณาใส่ข้อมูลให้ครบถ้วน",
@@ -692,15 +613,6 @@ export default {
           console.log(error);
         });
       //console.log(this.$refs.form.validate());
-    },
-
-    dateValidate() {
-      // validate manual ให้ a-datepicker
-      if (this.dateSelect.length === 0) {
-        this.dateCheck = true;
-      } else {
-        this.dateCheck = false;
-      }
     },
 
     async createBookLabRoom() {
@@ -758,8 +670,6 @@ export default {
     addData_Form_StudentID() {
       if (this.dataBookLab.student_id) {
         let studentData = this.studentData[this.dataBookLab.student_id - 1];
-        //console.log(studentData.th_prefix + studentData.th_name + ' ' + studentData.th_lastname);
-        // console.log(studentData);
         this.dataBookLab.student_name =
           studentData.th_name + " " + studentData.th_lastname;
         this.dataBookLab.aca_id = studentData.aca_id;
@@ -775,11 +685,6 @@ export default {
         this.dataBookLab.prog_dir = selectedProgram.prog_dir;
       }
     },
-
-    // formatdateShow() {
-    //   console.log('start Date  : ' ,this.dataBookLab.start_date)
-    //   this.startDateShow = this.formatdate(this.dataBookLab.start_date);
-    // },
 
     formatdate(date) {
       const isoDate = date;
@@ -828,7 +733,6 @@ export default {
       this.dataBookLab.endtime = "";
       this.dataBookLab.startDateShow = "";
       this.dataBookLab.endDateShow = "";
-      this.dateSelect = [];
     },
 
     // ต้อง settimeout ไม่งั้นเคลียไม่ได้
@@ -912,7 +816,6 @@ export default {
         this.dataBookLab.endDateShow = this.formatdate(
           this.dataBookLab.endtime
         );
-        console.log(this.endDateShow);
         this.memoryData();
       } else {
         this.endDateShow = "";
