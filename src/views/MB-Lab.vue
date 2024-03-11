@@ -170,7 +170,7 @@
         </div>
       </div>
 
-      <div class="fontSize18 row text-center">
+      <!-- <div class="fontSize18 row text-center"> -->
         <!-- <div class="col-sm-12 col-md-4">
           <p>{{ languageForShow.dateTimeBooking }} :</p>
         </div>
@@ -202,8 +202,9 @@
             >
               <template v-slot:activator="{ props }">
                 <v-text-field
-                  label="Start Date Time"
+                  :label="languageForShow.headerTable.startTime"
                   v-model="dataBookLab.startDateShow"
+                  :rules="floorRules"
                   color="indigo"
                   v-bind="props"
                   variant="outlined"
@@ -229,8 +230,9 @@
             >
               <template v-slot:activator="{ props }">
                 <v-text-field
-                  label="End Date Time"
+                :label="languageForShow.headerTable.endTime"
                   v-model="dataBookLab.endDateShow"
+                  :rules="floorRules"
                   color="indigo"
                   v-bind="props"
                   variant="outlined"
@@ -266,7 +268,7 @@
             :label="languageForShow.reason"
           ></v-text-field>
         </div>
-      </div>
+      <!-- </div> -->
 
       <div>
         <v-btn
@@ -353,7 +355,7 @@
                 <br />
                 <span
                   :style="{
-                    color: '#EC407A',
+                    color: '#FB8C00',
                   }"
                 >
                   {{ record.subString_startTime_show }}
@@ -368,10 +370,10 @@
                 <br />
                 <span
                   :style="{
-                    color: '#EC407A',
+                    color: '#FB8C00',
                   }"
                 >
-                  {{ record.subString_endTime_show }}
+                  {{ record.subString_startTime_show }}
                 </span>
               </div>
             </template>
