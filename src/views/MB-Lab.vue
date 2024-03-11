@@ -203,7 +203,7 @@
               <template v-slot:activator="{ props }">
                 <v-text-field
                   label="Start Date Time"
-                  v-model="startDateShow"
+                  v-model="dataBookLab.startDateShow"
                   color="indigo"
                   v-bind="props"
                   variant="outlined"
@@ -212,11 +212,11 @@
               </template>
               <VDatePicker
                 v-model="dataBookLab.start_date"
-                @change="memoryData()"
-                :rules="floorRules"
+                :rules="timeRules"
                 mode="dateTime"
                 hide-time-header
                 :min-date="new Date()"
+                is24hr
               />
             </v-menu>
           </div>
@@ -230,9 +230,7 @@
               <template v-slot:activator="{ props }">
                 <v-text-field
                   label="End Date Time"
-                  v-model="endDateShow"
-                  @change="memoryData()"
-                  :rules="floorRules"
+                  v-model="dataBookLab.endDateShow"
                   color="indigo"
                   v-bind="props"
                   variant="outlined"
@@ -241,9 +239,11 @@
               </template>
               <VDatePicker
                 v-model="dataBookLab.endtime"
+                :rules="timeRules"
                 mode="dateTime"
                 hide-time-header
                 :min-date="new Date()"
+                is24hr
               />
             </v-menu>
           </div>
@@ -423,6 +423,10 @@ export default {
     //telNoRules: [(v) => !!v || "required field"],
     floorRules: [(v) => !!v || ""],
     dateRules: [(v) => !!v || ""],
+    timeRules: {
+      hours: [21, 22, 23, 0, 1, 2, 3, 4, 5],
+      minutes: { interval: 5 },
+    },
 
     columns: [
       {
@@ -489,10 +493,10 @@ export default {
       aca_id: "",
       aca_value: "",
       prog_dir: "",
+      startDateShow: "",
+      endDateShow: "",
     },
 
-    startDateShow: "",
-    endDateShow: "",
     checkDevice: "",
     dateSelect: [],
     found: false,
@@ -760,7 +764,7 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: true, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
+        hour12: false, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
       });
 
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
@@ -852,7 +856,9 @@ export default {
     "dataBookLab.reason": "memoryData",
     "dataBookLab.start_date": function () {
       if (typeof this.dataBookLab.start_date === "object") {
-        this.startDateShow = this.formatdate(this.dataBookLab.start_date);
+        this.dataBookLab.startDateShow = this.formatdate(
+          this.dataBookLab.start_date
+        );
         this.memoryData();
       } else {
         this.startDateShow = "";
@@ -860,7 +866,10 @@ export default {
     },
     "dataBookLab.endtime": function () {
       if (typeof this.dataBookLab.endtime === "object") {
-        this.endDateShow = this.formatdate(this.dataBookLab.endtime);
+        this.dataBookLab.endDateShow = this.formatdate(
+          this.dataBookLab.endtime
+        );
+        console.log(this.endDateShow);
         this.memoryData();
       } else {
         this.endDateShow = "";
