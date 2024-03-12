@@ -38,20 +38,23 @@
         <div align="center" class="col-6 col-lg-6 pb-6"></div>
         <div align="right" class="col-6 col-lg-6 pb-4">
           <v-btn
+            append-icon="mdi-account-multiple"
             v-if="!switchAdd"
             @click="
               switchAdd = !switchAdd;
               dataBookLab.student_name = null;
             "
             :style="{
-              backgroundColor: 'lightgreen',
+              backgroundColor: 'Bisque',
               color: 'black',
-              width: '110px',
+              width: '130px',
             }"
-            >{{ languageForShow.another }}</v-btn
-          >
+            >{{ languageForShow.another
+            }}<template> <v-icon color="black"></v-icon> </template
+          ></v-btn>
 
           <v-btn
+            append-icon="mdi-account-search"
             v-if="switchAdd"
             @click="switchAdd = !switchAdd"
             :style="{
@@ -59,8 +62,9 @@
               color: 'black',
               width: '110px',
             }"
-            >{{ languageForShow.headerTable.student_name }}</v-btn
-          >
+            >{{ languageForShow.student }}
+            <template> <v-icon color="black"></v-icon> </template
+          ></v-btn>
         </div>
       </div>
 
@@ -162,16 +166,17 @@
                 color="indigo"
                 v-bind="props"
                 variant="outlined"
-              > <template v-slot:append-inner>
-              <v-fade-transition leave-absolute>
-                <img
-                  alt=""
-                  height="20"
-                  src="../assets/icon/calendar_icon.png"
-                  width="20"
-                />
-              </v-fade-transition>
-            </template>
+              >
+                <template v-slot:append-inner>
+                  <v-fade-transition leave-absolute>
+                    <img
+                      alt=""
+                      height="20"
+                      src="../assets/icon/calendar_icon.png"
+                      width="20"
+                    />
+                  </v-fade-transition>
+                </template>
               </v-text-field>
             </template>
             <VDatePicker
@@ -199,16 +204,17 @@
                 color="indigo"
                 v-bind="props"
                 variant="outlined"
-              > <template v-slot:append-inner>
-              <v-fade-transition leave-absolute>
-                <img
-                  alt=""
-                  height="20"
-                  src="../assets/icon/calendar_icon.png"
-                  width="20"
-                />
-              </v-fade-transition>
-            </template>
+              >
+                <template v-slot:append-inner>
+                  <v-fade-transition leave-absolute>
+                    <img
+                      alt=""
+                      height="20"
+                      src="../assets/icon/calendar_icon.png"
+                      width="20"
+                    />
+                  </v-fade-transition>
+                </template>
               </v-text-field>
             </template>
             <VDatePicker
@@ -240,8 +246,9 @@
           color="green"
           append-icon="mdi-check-circle"
           block
-          >{{ languageForShow.sentForm }}</v-btn
-        >
+          >{{ languageForShow.sentForm }}
+          <template v-slot:append> <v-icon color="indigo "></v-icon> </template
+        ></v-btn>
       </div>
     </v-form>
 
@@ -735,7 +742,7 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false, 
+        hour12: false,
       });
 
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
