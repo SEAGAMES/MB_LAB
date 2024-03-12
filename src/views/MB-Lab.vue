@@ -717,13 +717,12 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
+        hour12: false, 
       });
 
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString})`;
-      // console.log("formattedDate : ", formattedDate);
       return formattedDate;
     },
 

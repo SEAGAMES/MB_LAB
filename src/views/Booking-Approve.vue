@@ -7,7 +7,11 @@
     </div>
     <v-card>
       <div class="table-responsive">
-        <a-table :pagination="{ pageSize: 10 }"  :columns="columns" :data-source="dataLoad">
+        <a-table
+          :pagination="{ pageSize: 10 }"
+          :columns="columns"
+          :data-source="dataLoad"
+        >
           <template #headerCell="{ column }">
             <template v-if="column.key === 'name'">
               <div :style="{ width: '110px' }">
@@ -66,13 +70,33 @@
               </div>
             </template>
             <template v-if="column.key === 'start_date'">
-              <div :style="{ color: '#F57C00' }">
-                {{ record.start_date }}
+              <div>
+                <span :style="{ color: '#26A69A' }">{{
+                  record.subString_startDate_show
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#FB8C00',
+                  }"
+                >
+                  {{ record.subString_startTime_show }}
+                </span>
               </div>
             </template>
             <template v-if="column.key === 'end_date'">
-              <div :style="{ color: '#F57C00' }">
-                {{ record.end_date }}
+              <div>
+                <span :style="{ color: '#2979ff' }">{{
+                  record.subString_endDate_show
+                }}</span>
+                <br />
+                <span
+                  :style="{
+                    color: '#FB8C00',
+                  }"
+                >
+                  {{ record.subString_endTime_show }}
+                </span>
               </div>
             </template>
             <!-- ตรวจสอบว่า column.key เป็น 'appove_status' และ record.appove_status เป็น 0 -->
@@ -267,7 +291,7 @@ export default {
       const timeString = dateObject.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: true, // เปลี่ยนเป็นรูปแบบ 12 ชั่วโมง AM/PM
+        hour12: false,
       });
 
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
@@ -307,8 +331,19 @@ export default {
       //   console.log(this.formatdate(time[0].start_date))
 
       data.forEach((obj) => {
-        obj.start_date = this.formatdate(obj.start_date);
-        obj.end_date = this.formatdate(obj.end_date);
+        obj.subString_startDate_show = this.formatdate(obj.start_date)
+          .substring(0, 16)
+          .trim();
+        obj.subString_startTime_show = this.formatdate(obj.start_date)
+          .substring(17, 25)
+          .trim();
+
+        obj.subString_endDate_show = this.formatdate(obj.end_date)
+          .substring(0, 16)
+          .trim();
+        obj.subString_endTime_show = this.formatdate(obj.end_date)
+          .substring(17, 25)
+          .trim();
         obj.timebook = this.formatdate(obj.timebook);
       });
       this.dataLoad = data;
