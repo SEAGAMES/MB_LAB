@@ -162,7 +162,16 @@
                 color="indigo"
                 v-bind="props"
                 variant="outlined"
-              >
+              > <template v-slot:append-inner>
+              <v-fade-transition leave-absolute>
+                <img
+                  alt=""
+                  height="20"
+                  src="../assets/icon/calendar_icon.png"
+                  width="20"
+                />
+              </v-fade-transition>
+            </template>
               </v-text-field>
             </template>
             <VDatePicker
@@ -190,7 +199,16 @@
                 color="indigo"
                 v-bind="props"
                 variant="outlined"
-              >
+              > <template v-slot:append-inner>
+              <v-fade-transition leave-absolute>
+                <img
+                  alt=""
+                  height="20"
+                  src="../assets/icon/calendar_icon.png"
+                  width="20"
+                />
+              </v-fade-transition>
+            </template>
               </v-text-field>
             </template>
             <VDatePicker
