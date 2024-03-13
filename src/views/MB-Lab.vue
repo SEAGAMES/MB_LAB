@@ -392,7 +392,6 @@
 </template>
 
 <script>
-import moment from "moment";
 import { mapGetters } from "vuex";
 import apiRoomLab from "../services/apiRoomLab";
 import apiAcademic from "@/services/apiAcademic";
@@ -510,9 +509,9 @@ export default {
 
   async mounted() {
     // ใช้ฟังก์ชัน isMobileDevice() เพื่อตรวจสอบ
-    if (this.isMobileDevice()) {
-      this.checkDevice = "phone";
-    }
+    // if (this.isMobileDevice()) {
+    //   this.checkDevice = "phone";
+    // }
     this.studentData = await apiAcademic.getStudentData();
 
     this.aca_Programs = await apiAcademic.getAcademicPrograms();
@@ -544,23 +543,16 @@ export default {
   },
 
   methods: {
-    isMobileDevice() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-    },
+    // isMobileDevice() {
+    //   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    //     navigator.userAgent
+    //   );
+    // },
 
     handleAutocompleteFocus() {
       // ในที่นี้คุณสามารถทำอะไรก็ตามที่คุณต้องการเมื่อมีการ focus ที่ autocomplete
       // ยกตัวอย่างเช่น โชว์ dropdown ทั้งหมดเมื่อ focus
       this.filteredItems = this.items;
-    },
-
-    handleDatePickerClick() {
-      // เช็กว่าเป็นมือถือมั้ย ถ้าใช่ให้ ลบการเปิดคีย์บอร์ดหากมีการคลิกที่ date picker
-      if (this.checkDevice === "phone") {
-        document.activeElement.blur();
-      }
     },
 
     alertShow(show, title, color, icon) {
@@ -620,17 +612,10 @@ export default {
       localStorage.setItem("bookingLab", JSON.stringify(this.dataBookLab));
     },
 
-    disabledDate(current) {
-      // ตรวจสอบว่าวันที่ current เป็นวันที่เราต้องการหรือไม่
-      const tomorrow = moment().add(1, "days").startOf("day");
-      return current && current < tomorrow;
-    },
-
     async validate() {
       this.$refs.form
         .validate()
         .then((result) => {
-          // console.log(this.dataBookLab);
           const startDate = new Date(this.dataBookLab.start_date);
           const endDate = new Date(this.dataBookLab.endtime);
 
@@ -642,7 +627,6 @@ export default {
               "mdi-shield-alert"
             );
           } else {
-            // console.log(this.dataBookLab)
             this.switchAdd === true
               ? (this.dataBookLab.student_status_id = 0)
               : (this.dataBookLab.student_status_id = 1);
@@ -665,7 +649,6 @@ export default {
           // จัดการข้อผิดพลาดที่อาจเกิดขึ้นในระหว่างการทำ Promise
           console.log(error);
         });
-      //console.log(this.$refs.form.validate());
     },
 
     async createBookLabRoom() {
@@ -701,7 +684,6 @@ export default {
       );
       if (this.dataBookingLab.msg !== "not found") {
         this.dataBookingLab.data.forEach((obj) => {
-          // obj.start_date = this.formatdate(obj.start_date);
           obj.subString_startDate_show = this.formatdate(obj.start_date)
             .substring(0, 16)
             .trim();
@@ -791,7 +773,6 @@ export default {
     clearLocalStorage() {
       const data = localStorage.getItem("bookingLab");
       const setNewData = JSON.parse(data);
-      // setNewData.phone = "";
       setNewData.student_id = "";
       setNewData.student_name = "";
       setNewData.student_status_id = "";
@@ -860,47 +841,47 @@ export default {
         );
         this.memoryData();
 
-        const startDate = new Date(this.dataBookLab.start_date);
-        const startHour = startDate.getHours();
+        // const startDate = new Date(this.dataBookLab.start_date);
+        // const startHour = startDate.getHours();
         //let endDate_temp = new Date(startDate); // สร้างอ็อบเจ็กต์ใหม่ที่มีค่าเดียวกับ startDate
 
-        if (startHour >= 21 && startHour <= 23) {
-          this.numOfEndNextday = false;
+        // if (startHour >= 21 && startHour <= 23) {
+        //   this.numOfEndNextday = false;
 
-          // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
-          // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
-          // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
+        // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
+        // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
+        // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
 
-          // console.log("test : ", endDate_temp, startDate);
+        // console.log("test : ", endDate_temp, startDate);
 
-          // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
-          // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
-          // const minutesDifference = Math.floor(
-          //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-          // ); // หานาทีที่เหลือ
+        // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
+        // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
+        // const minutesDifference = Math.floor(
+        //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        // ); // หานาทีที่เหลือ
 
-          // console.log(
-          //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
-          // );
-        } else {
-          this.numOfEndNextday = true;
+        // console.log(
+        //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
+        // );
+        // } else {
+        //   this.numOfEndNextday = true;
 
-          // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
-          // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
-          // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
+        // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
+        // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
+        // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
 
-          // console.log("test : ", endDate_temp, startDate);
+        // console.log("test : ", endDate_temp, startDate);
 
-          // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
-          // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
-          // const minutesDifference = Math.floor(
-          //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-          // ); // หานาทีที่เหลือ
+        // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
+        // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
+        // const minutesDifference = Math.floor(
+        //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        // ); // หานาทีที่เหลือ
 
-          // console.log(
-          //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
-          // );
-        }
+        // console.log(
+        //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
+        // );
+        // }
       } else {
         this.startDateShow = "";
       }
@@ -910,15 +891,17 @@ export default {
         this.dataBookLab.endDateShow = this.formatdate(
           this.dataBookLab.endtime
         );
-        // let startDate = new Date(this.dataBookLab.start_date);
-        // let endDate = new Date(this.dataBookLab.endtime);
-        // if (startDate.getDate() === endDate.getDate()) {
-        //   // console.log("same day");
-        //   // this.endTimeRules.hours.push(21, 22, 23);
-        // } else {
-        //   // console.log("another day");
-        //   // this.endTimeRules.hours.push(0, 1, 2, 3, 4, 5);
-        // }
+        let startDate = new Date(this.dataBookLab.start_date);
+        let endDate = new Date(this.dataBookLab.endtime);
+        if (startDate.getDate() === endDate.getDate()) {
+          // console.log("same day");
+          // this.endTimeRules.hours.push(21, 22, 23);
+          this.numOfEndNextday = false;
+        } else {
+          // console.log("another day");
+          // this.endTimeRules.hours.push(0, 1, 2, 3, 4, 5);
+          this.numOfEndNextday = true;
+        }
         this.memoryData();
       } else {
         this.endDateShow = "";
