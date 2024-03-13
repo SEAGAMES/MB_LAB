@@ -222,7 +222,10 @@
               :rules="timeRules"
               mode="dateTime"
               hide-time-header
-              :min-date="new Date().setDate(new Date().getDate() + 1)"
+              :min-date="new Date().setDate(new Date(dataBookLab.start_date).getDate() )"
+            
+              :max-date="new Date().setDate(new Date(dataBookLab.start_date).getDate()+1)"
+
               is24hr
             />
           </v-menu>
