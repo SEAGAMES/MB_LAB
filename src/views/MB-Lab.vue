@@ -219,13 +219,18 @@
             </template>
             <VDatePicker
               v-model="dataBookLab.endtime"
-              :rules="timeRules"
+              :rules="numOfEndNextday ? endTimeRulesDay2 : endTimeRulesDay1"
               mode="dateTime"
               hide-time-header
-              :min-date="new Date().setDate(new Date(dataBookLab.start_date).getDate() )"
-            
-              :max-date="new Date().setDate(new Date(dataBookLab.start_date).getDate()+1)"
-
+              :min-date="
+                new Date().setDate(new Date(dataBookLab.start_date).getDate())
+              "
+              :max-date="
+                new Date().setDate(
+                  new Date(dataBookLab.start_date).getDate() +
+                    (numOfEndNextday ? 0 : 1)
+                )
+              "
               is24hr
             />
           </v-menu>
@@ -412,6 +417,14 @@ export default {
       hours: [21, 22, 23, 0, 1, 2, 3, 4, 5],
       minutes: { interval: 5 },
     },
+    endTimeRulesDay1: {
+      hours: [21, 22, 23],
+      minutes: { interval: 5 },
+    },
+    endTimeRulesDay2: {
+      hours: [0, 1, 2, 3, 4, 5],
+      minutes: { interval: 5 },
+    },
 
     columns: [
       {
@@ -482,10 +495,13 @@ export default {
       subString_endTime_show: "",
     },
 
+    endDate_temp: "",
     checkDevice: "",
     found: false,
+
     loadPage: false,
     loadingBtn: false,
+    numOfEndNextday: false,
     switchAdd: false,
     menuStart: false,
     menuEnd: false,
@@ -843,6 +859,48 @@ export default {
           this.dataBookLab.start_date
         );
         this.memoryData();
+
+        const startDate = new Date(this.dataBookLab.start_date);
+        const startHour = startDate.getHours();
+        //let endDate_temp = new Date(startDate); // สร้างอ็อบเจ็กต์ใหม่ที่มีค่าเดียวกับ startDate
+
+        if (startHour >= 21 && startHour <= 23) {
+          this.numOfEndNextday = false;
+
+          // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
+          // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
+          // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
+
+          // console.log("test : ", endDate_temp, startDate);
+
+          // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
+          // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
+          // const minutesDifference = Math.floor(
+          //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          // ); // หานาทีที่เหลือ
+
+          // console.log(
+          //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
+          // );
+        } else {
+          this.numOfEndNextday = true;
+
+          // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
+          // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
+          // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
+
+          // console.log("test : ", endDate_temp, startDate);
+
+          // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
+          // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
+          // const minutesDifference = Math.floor(
+          //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          // ); // หานาทีที่เหลือ
+
+          // console.log(
+          //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
+          // );
+        }
       } else {
         this.startDateShow = "";
       }
@@ -852,6 +910,15 @@ export default {
         this.dataBookLab.endDateShow = this.formatdate(
           this.dataBookLab.endtime
         );
+        // let startDate = new Date(this.dataBookLab.start_date);
+        // let endDate = new Date(this.dataBookLab.endtime);
+        // if (startDate.getDate() === endDate.getDate()) {
+        //   // console.log("same day");
+        //   // this.endTimeRules.hours.push(21, 22, 23);
+        // } else {
+        //   // console.log("another day");
+        //   // this.endTimeRules.hours.push(0, 1, 2, 3, 4, 5);
+        // }
         this.memoryData();
       } else {
         this.endDateShow = "";
