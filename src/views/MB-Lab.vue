@@ -152,7 +152,7 @@
       </div>
 
       <div class="fontSize18 row text-center">
-        <div class="col-5 col-lg-4">
+        <div class="col-6 col-lg-4">
           <v-menu
             v-model="menuStart"
             :close-on-content-click="false"
@@ -190,7 +190,7 @@
           </v-menu>
         </div>
 
-        <div class="col-5 col-lg-4">
+        <div class="col-6 col-lg-4">
           <v-menu
             v-model="menuEnd"
             :close-on-content-click="false"
@@ -236,14 +236,14 @@
           </v-menu>
         </div>
 
-        <div class="col-2 col-lg-4 d-flex align-center">
+        <!-- <div class="col-2 col-lg-4 d-flex align-center">
           <v-btn
             class="mt-n5"
             :color="checkTime ? 'success lighten-2' : 'error darken-2'"
-            :icon="checkTime ? 'mdi-check-circle' : 'mdi-close'"
+            :icon="checkTime ? 'mdi-check-circle' :  ''"
             variant="text"
           ></v-btn>
-        </div>
+        </div> -->
       </div>
 
       <div class="mt-2">
@@ -785,6 +785,7 @@ export default {
       this.dataBookLab.endtime = "";
       this.dataBookLab.startDateShow = "";
       this.dataBookLab.endDateShow = "";
+      this.checkTime = ''
     },
 
     // ต้อง settimeout ไม่งั้นเคลียไม่ได้
