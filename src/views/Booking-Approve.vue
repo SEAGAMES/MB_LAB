@@ -287,18 +287,56 @@ export default {
       // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
       const dayName = thaiDays[dateObject.getDay()];
 
-      // สร้างรูปแบบในการแสดงผล
-      const timeString = dateObject.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
+      // กำหนดเวลาใหม่ให้เป็น 00:00 ถ้าเวลาเป็น 24:00
+      let hours = dateObject.getHours();
+      let minutes = dateObject.getMinutes();
+      if (hours === 24 && minutes === 0) {
+        hours = 0;
+        minutes = 0;
+      }
 
+      // สร้างรูปแบบในการแสดงผล
+      const timeString = `${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}`;
       const formattedDate = `${dayName} ${dateObject.getDate()}/${
         dateObject.getMonth() + 1
       }/${dateObject.getFullYear()} (${timeString})`;
-      return formattedDate;
+      // แทนที่ 24:00 เป็น 00:00
+      return formattedDate.replace("(24:00)", "(00:00)");
     },
+
+
+    // formatdate(date) {
+    //   const isoDate = date;
+    //   const dateObject = new Date(isoDate);
+
+    //   // สร้างรายการของชื่อวันในภาษาไทย
+    //   const thaiDays = [
+    //     "(Sun.)",
+    //     "(Mon.)",
+    //     "(Tue.)",
+    //     "(Wed.)",
+    //     "(Thu.)",
+    //     "(Fri.)",
+    //     "(Sat.)",
+    //   ];
+
+    //   // ดึงชื่อวันโดยใช้ getDay() เพื่อหาว่าวันที่ในสัปดาห์เป็นวันอะไร
+    //   const dayName = thaiDays[dateObject.getDay()];
+
+    //   // สร้างรูปแบบในการแสดงผล
+    //   const timeString = dateObject.toLocaleTimeString([], {
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //     hour12: false,
+    //   });
+
+    //   const formattedDate = `${dayName} ${dateObject.getDate()}/${
+    //     dateObject.getMonth() + 1
+    //   }/${dateObject.getFullYear()} (${timeString})`;
+    //   return formattedDate;
+    // },
 
     getStatusButtonStyle(appoveStatus) {
       switch (appoveStatus) {
