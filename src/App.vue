@@ -136,6 +136,8 @@ export default {
           (this.languageForShow.reason = "เหตุผลการขอใช้ห้องแลบ");
         (this.languageForShow.sentForm = "ส่งแบบฟอร์ม"),
           (this.languageForShow.approve = "สำหรับอนุมัติ"),
+          (this.languageForShow.checkTime = "สามารถใช้เวลานี้ได้"),
+
           ///////////////////// headerTable /////////////////////////
           (this.languageForShow.headerTable.name = "ผู้ขออนุญาติ"),
           (this.languageForShow.headerTable.student_name = "ผู้ใช้ห้อง"),

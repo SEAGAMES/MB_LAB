@@ -152,7 +152,7 @@
       </div>
 
       <div class="fontSize18 row text-center">
-        <div class="col-6 col-lg-4">
+        <div class="col-5 col-lg-4">
           <v-menu
             v-model="menuStart"
             :close-on-content-click="false"
@@ -190,7 +190,7 @@
           </v-menu>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-5 col-lg-4">
           <v-menu
             v-model="menuEnd"
             :close-on-content-click="false"
@@ -219,7 +219,7 @@
             </template>
             <VDatePicker
               v-model="dataBookLab.endtime"
-              :rules="numOfEndNextday ? endTimeRulesDay2 : endTimeRulesDay1"
+              :rules="timeRules"
               mode="dateTime"
               hide-time-header
               :min-date="
@@ -236,8 +236,13 @@
           </v-menu>
         </div>
 
-        <div class="col-lg-4">
-          <v-select :items="hoursUse" required variant="outlined"></v-select>
+        <div class="col-2 col-lg-4 d-flex align-center">
+          <v-btn
+            class="mt-n5"
+            :color="checkTime ? 'success lighten-2' : 'error darken-2'"
+            :icon="checkTime ? 'mdi-check-circle' : 'mdi-close'"
+            variant="text"
+          ></v-btn>
         </div>
       </div>
 
@@ -418,15 +423,7 @@ export default {
     floorRules: [(v) => !!v || ""],
     timeRules: {
       hours: [21, 22, 23, 0, 1, 2, 3, 4, 5],
-      minutes: { interval: 5 },
-    },
-    endTimeRulesDay1: {
-      hours: [21, 22, 23],
-      minutes: { interval: 5 },
-    },
-    endTimeRulesDay2: {
-      hours: [0, 1, 2, 3, 4, 5],
-      minutes: { interval: 5 },
+      minutes: { interval: 15 },
     },
 
     columns: [
@@ -475,7 +472,6 @@ export default {
     lab_room: [],
     aca_Programs: [],
     studentData: [],
-    hoursUse: [],
 
     dataBookLab: {
       ac_name: "",
@@ -498,11 +494,12 @@ export default {
       subString_endDate_show: "",
       subString_endTime_show: "",
     },
-
+    hoursDifference: "",
     endDate_temp: "",
     checkDevice: "",
     found: false,
 
+    checkTime: false,
     loadPage: false,
     loadingBtn: false,
     numOfEndNextday: false,
@@ -541,7 +538,7 @@ export default {
       this.getRoomLab();
       this.dataBookLab.name = this.$store.getters.userData.thainame;
     }
-
+    this.checkTimeToUse();
     setTimeout(async () => {
       this.loadPage = true;
     }, 500);
@@ -615,6 +612,22 @@ export default {
 
     memoryData() {
       localStorage.setItem("bookingLab", JSON.stringify(this.dataBookLab));
+    },
+
+    checkTimeToUse() {
+      const startDate = new Date(this.dataBookLab.start_date);
+      const endDate = new Date(this.dataBookLab.endtime);
+
+      // แปลงเป็นมิลลิวินาที
+      const timeDifferenceInMillis = endDate - startDate;
+
+      // แปลงมิลลิวินาทีเป็นชั่วโมง
+      this.hoursDifference = timeDifferenceInMillis / (1000 * 60 * 60);
+      if (startDate < endDate && this.hoursDifference <= 8) {
+        this.checkTime = true;
+      } else {
+        this.checkTime = false;
+      }
     },
 
     async validate() {
@@ -844,60 +857,18 @@ export default {
         this.dataBookLab.startDateShow = this.formatdate(
           this.dataBookLab.start_date
         );
+        this.dataBookLab.endDateShow = "";
+        this.dataBookLab.endtime = "";
         this.memoryData();
 
-        let numDay = 0;
         const startDate = new Date(this.dataBookLab.start_date);
         const startHour = startDate.getHours();
-        let endDate_temp = new Date(startDate); // สร้างอ็อบเจ็กต์ใหม่ที่มีค่าเดียวกับ startDate
 
         if (startHour >= 21 && startHour <= 23) {
-          numDay = 1;
+          this.numOfEndNextday = false;
         } else {
-          numDay = 0;
+          this.numOfEndNextday = true;
         }
-        endDate_temp.setDate(startDate.getDate() + numDay);
-        endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
-        endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
-
-        // console.log("test : ", endDate_temp, startDate);
-
-        const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
-        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
-        const minutesDifference = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        ); // หานาทีที่เหลือ
-
-        console.log(
-          `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
-        );
-        // } else {
-        //   this.numOfEndNextday = true;
-
-        // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
-        // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
-        // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
-
-        // console.log("test : ", endDate_temp, startDate);
-
-        // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
-        // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
-        // const minutesDifference = Math.floor(
-        //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        // ); // หานาทีที่เหลือ
-
-        // console.log(
-        //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
-        // );
-        // }
-
-        this.hoursUse = [];
-
-        for (let i = 1; i <= hoursDifference; i++) {
-          this.hoursUse.push(i);
-        }
-
-        console.log(this.hoursUse); // ผลลัพธ์: [1, 2, 3, 4, 5]
       } else {
         this.startDateShow = "";
       }
@@ -907,17 +878,8 @@ export default {
         this.dataBookLab.endDateShow = this.formatdate(
           this.dataBookLab.endtime
         );
-        let startDate = new Date(this.dataBookLab.start_date);
-        let endDate = new Date(this.dataBookLab.endtime);
-        if (startDate.getDate() === endDate.getDate()) {
-          // console.log("same day");
-          // this.endTimeRules.hours.push(21, 22, 23);
-          this.numOfEndNextday = false;
-        } else {
-          // console.log("another day");
-          // this.endTimeRules.hours.push(0, 1, 2, 3, 4, 5);
-          this.numOfEndNextday = true;
-        }
+
+        this.checkTimeToUse();
         this.memoryData();
       } else {
         this.endDateShow = "";
