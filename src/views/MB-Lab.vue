@@ -235,6 +235,10 @@
             />
           </v-menu>
         </div>
+
+        <div class="col-lg-4">
+          <v-select :items="hoursUse" required variant="outlined"></v-select>
+        </div>
       </div>
 
       <div class="mt-2">
@@ -471,6 +475,7 @@ export default {
     lab_room: [],
     aca_Programs: [],
     studentData: [],
+    hoursUse: [],
 
     dataBookLab: {
       ac_name: "",
@@ -841,28 +846,31 @@ export default {
         );
         this.memoryData();
 
-        // const startDate = new Date(this.dataBookLab.start_date);
-        // const startHour = startDate.getHours();
-        //let endDate_temp = new Date(startDate); // สร้างอ็อบเจ็กต์ใหม่ที่มีค่าเดียวกับ startDate
+        let numDay = 0;
+        const startDate = new Date(this.dataBookLab.start_date);
+        const startHour = startDate.getHours();
+        let endDate_temp = new Date(startDate); // สร้างอ็อบเจ็กต์ใหม่ที่มีค่าเดียวกับ startDate
 
-        // if (startHour >= 21 && startHour <= 23) {
-        //   this.numOfEndNextday = false;
-
-        // endDate_temp.setDate(startDate.getDate() + 1); // เพิ่มหนึ่งวัน
-        // endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
-        // endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
+        if (startHour >= 21 && startHour <= 23) {
+          numDay = 1;
+        } else {
+          numDay = 0;
+        }
+        endDate_temp.setDate(startDate.getDate() + numDay);
+        endDate_temp.setHours(5); // ตั้งค่าชั่วโมงเป็น 05:
+        endDate_temp.setMinutes(0); // ตั้งค่านาทีเป็น 0 เพื่อให้เป็น 05:00
 
         // console.log("test : ", endDate_temp, startDate);
 
-        // const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
-        // const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
-        // const minutesDifference = Math.floor(
-        //   (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        // ); // หานาทีที่เหลือ
+        const timeDifference = endDate_temp.getTime() - startDate.getTime(); // หาความแตกต่างของเวลาเป็น milliseconds
+        const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // แปลง milliseconds เป็นชั่วโมง
+        const minutesDifference = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        ); // หานาทีที่เหลือ
 
-        // console.log(
-        //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
-        // );
+        console.log(
+          `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
+        );
         // } else {
         //   this.numOfEndNextday = true;
 
@@ -882,6 +890,14 @@ export default {
         //   `ความแตกต่าง: ${hoursDifference} ชั่วโมง ${minutesDifference} นาที`
         // );
         // }
+
+        this.hoursUse = [];
+
+        for (let i = 1; i <= hoursDifference; i++) {
+          this.hoursUse.push(i);
+        }
+
+        console.log(this.hoursUse); // ผลลัพธ์: [1, 2, 3, 4, 5]
       } else {
         this.startDateShow = "";
       }
